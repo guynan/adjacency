@@ -7,6 +7,7 @@
 
 #define LINE_SIZE               128
 #define FILE_PATH               "./list.txt"
+#define FILE_OUT                "out.txt"
 
 
 /* Contains a distinguishing id (for human readable purposes), pointer
@@ -25,7 +26,7 @@ typedef struct _vertex {
 
 /* Vertex compilation unit function prototypes */
 Vertex initVertex(uint32_t vid, uint32_t n);
-int containsVertex(Vertex v, Vertex* arr);
+int containsVertex(Vertex v, Vertex adj);
 void removeAdjacent(Vertex v, Vertex adj);
 void addAdjacent(Vertex v, Vertex adj);
 void printAdjacent(Vertex v);

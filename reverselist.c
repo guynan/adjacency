@@ -18,7 +18,10 @@ int main(int argc, char** argv)
         reverseArcs(v);
         printAdjacent(v);
         printAdjacent(x);
-        printf("%"PRIu32"\n", containsVertex(r, v->adjacent));
+        printAdjacent(r);
+        reverseArcs(x);
+        reverseArcs(r);
+        printAdjacent(v);
 
 //        printf("%"PRIu32"\n", ((v->adjacent)[v->count -1])->id );
 
@@ -56,8 +59,7 @@ void addAdjacent(Vertex v, Vertex adj)
         }
         
         (v->adjacent)[v->count] = adj;
-        v->count++;
-
+        v->count++; 
         return;
 
 }
@@ -82,10 +84,13 @@ void addAdjacent(Vertex v, Vertex adj)
  * */
 void reverseArcs(Vertex v)
 {
-        Vertex* arr = v->adjacent;
+        Vertex* arr = (v->adjacent);
+
         for(uint32_t i = 0; i < v->count; i++){
 
-                if(!arr) continue;
+                if(!arr[i]){ 
+                        continue;
+                }
 
                 Vertex adj = arr[i];
 
@@ -94,13 +99,10 @@ void reverseArcs(Vertex v)
                 uint32_t rev = !(adj->reversed ^ v->reversed);
 
                 /* Then we reverse */
-                if(rev && !containsVertex(v, adj->adjacent)){
+                if(rev && !containsVertex(v, adj)){
                                 addAdjacent(adj, v);
                                 removeAdjacent(v, adj);
-                                puts("hi");
                 }
-
-                arr++;
 
         }
 
@@ -108,41 +110,48 @@ void reverseArcs(Vertex v)
 
 }
 
-/* Checks if vertex v is in the list arr */
-int containsVertex(Vertex v, Vertex* arr)
+
+/* Checks if vertex v is in the adjacency list of adj */
+int containsVertex(Vertex v, Vertex adj)
 {
-        while(*arr){
-                if(v == *arr){
+        Vertex* tmp = (adj->adjacent);
+
+        for(uint32_t i = 0; i < adj->count; i++){
+
+                if(v == tmp[i]){
                         return 1;
                 }
-                arr++;
         }
 
         return 0;
 
 }
 
-/* This function adds the adjacent vertex `adj` to the adjacency list
+
+/* This function removes the adjacent vertex `adj` from the adjacency list
  * of vertex v */
 void removeAdjacent(Vertex v, Vertex adj)
 {
-        Vertex* tmp = v->adjacent;
+        Vertex* tmp = (v->adjacent);
 
         /* HOLD UP DO I KEEP COUNT THE SAME */
 
-        while(*tmp){
+        for(uint32_t i = 0; i < v->count; i++){
 
-                if(*tmp == adj){
-                        tmp = NULL;
+                if(!tmp[i]){
+                        continue;
                 }
 
-                tmp++;
+                if(tmp[i] == adj){
+                        tmp[i] = NULL; 
+                }
 
         }
 
         return;
 
 }
+
 
 /* Simply prints the adjacency list of vertex v. Example output:
  *
@@ -151,11 +160,14 @@ void removeAdjacent(Vertex v, Vertex adj)
  * Which designates that vertex 2 (v) is adjacent to vertices 3, 5, 6 */
 void printAdjacent(Vertex v)
 {
+        Vertex* tmp = v->adjacent;
+
         printf("%"PRIu32": ", v->id);
 
-        Vertex* tmp = v->adjacent;
         for(uint32_t i = 0; i < v->count; i++){
-                if(!tmp) continue;
+
+                if(!tmp[i]) continue;
+
                 printf("%"PRIu32" ", (tmp[i])->id);
 
         }
