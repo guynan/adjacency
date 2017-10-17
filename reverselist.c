@@ -89,8 +89,12 @@ void reverseArcs(Vertex v)
 
                 Vertex adj = arr[i];
 
+                /* An arc is reversible either when neither are reversed
+                 * or both are reversed. We can check this thusly: */
+                uint32_t rev = !(adj->reversed ^ v->reversed);
+
                 /* Then we reverse */
-                if(!(adj->reversed) && !containsVertex(v, adj->adjacent)){
+                if(rev && !containsVertex(v, adj->adjacent)){
                                 addAdjacent(adj, v);
                                 removeAdjacent(v, adj);
                                 puts("hi");
