@@ -162,3 +162,23 @@ void freeVertex(Vertex v)
         return;
 }
 
+
+/* If you are lazy and want to initialise `n` vertices and have
+ * them packaged nicely in an array for you, this is the function
+ * for you! Returns a pointer to said array */
+Vertex* initVertices(uint32_t n)
+{
+        Vertex* vert = malloc((n + 2) * sizeof(Vertex));
+        if(!vert) return NULL;
+
+        /* A note on some of my design choices:
+         *      This array starts at 1 as 0 is an invalid
+         *      node name... Maybe? */
+        for(uint32_t i = 1; i <= n; i++){
+               vert[i] = initVertex(i, n + 1); 
+        }
+
+        return vert;
+
+}
+

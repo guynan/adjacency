@@ -28,6 +28,7 @@ Vertex initVertex(uint32_t vid, uint32_t n);
 void removeAdjacent(Vertex v, Vertex adj);
 int containsVertex(Vertex v, Vertex adj);
 void addAdjacent(Vertex v, Vertex adj);
+Vertex* initVertices(uint32_t n);
 void printAdjacent(Vertex v);
 void reverseArcs(Vertex v);
 void freeVertex(Vertex v);
