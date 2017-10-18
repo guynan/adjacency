@@ -21,7 +21,7 @@ int main(int argc, char** argv)
         printAdjacent(r);
         reverseArcs(x);
         reverseArcs(r);
-        reverseArcs(v);
+
         printAdjacent(v);
 
 //        printf("%"PRIu32"\n", ((v->adjacent)[v->count -1])->id );
@@ -97,7 +97,8 @@ void reverseArcs(Vertex v)
 
                 /* An arc is reversible either when neither are reversed
                  * or both are reversed. We can check this thusly: */
-                uint32_t rev = !(adj->reversed ^ v->reversed);
+//                uint32_t rev = !(adj->reversed ^ v->reversed);
+                uint32_t rev = !(v->reversed) || adj->reversed;
 
                 /* Then we reverse */
                 if(rev && !containsVertex(v, adj)){
