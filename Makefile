@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall -Wextra 
 LFLAGS=
-SRC= reverselist.c vertex.c #fileutils.c
+SRC= reverselist.c vertex.c fileutils.c
 OUT=main
 
 all:

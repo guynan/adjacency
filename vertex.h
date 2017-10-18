@@ -25,11 +25,13 @@ typedef struct _vertex {
 
 /* Vertex compilation unit function prototypes */
 Vertex initVertex(uint32_t vid, uint32_t n);
-int containsVertex(Vertex v, Vertex adj);
 void removeAdjacent(Vertex v, Vertex adj);
+int containsVertex(Vertex v, Vertex adj);
 void addAdjacent(Vertex v, Vertex adj);
 void printAdjacent(Vertex v);
 void reverseArcs(Vertex v);
+void freeVertex(Vertex v);
 
 
 #endif
+

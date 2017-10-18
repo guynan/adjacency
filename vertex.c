@@ -152,3 +152,13 @@ void printAdjacent(Vertex v)
 
 }
 
+void freeVertex(Vertex v)
+{
+        if(v && v->adjacent){
+                free(v->adjacent);
+                free(v);
+        }
+        
+        return;
+}
+
