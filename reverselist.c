@@ -24,25 +24,20 @@ int main(int argc, char** argv)
          * io stage. For dealing with larger files, fix that first */
 //        uint32_t vert = VERTICES;
 
-//        uint32_t count = countAdjList(adjlist);
-        uint32_t count = 5;
-        //printf("%d\n", (int)count);
+        uint32_t count = countAdjList(adjlist);
+
+        Vertex* vert = initVertices(count);
 
 
-        Vertex* vertices = initVertices(count);
-        printAdjacent(*vertices);
-
-
-//        linkVertices(vertices, adjlist, count);
-
-        /*
-        while(*vertices){
-                printAdjacent(*vertices);
-
+        linkVertices(vert, adjlist, count);
+        reverseGraph(vert, count);
+        vert++;
+        while(*vert){
+                printAdjacent(*vert++);
         }
-        */
 
 
+        /* Incomplete free */
         free(adjlist);
 
         return 0;

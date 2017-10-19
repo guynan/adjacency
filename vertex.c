@@ -87,6 +87,17 @@ void reverseArcs(Vertex v)
 }
 
 
+void reverseGraph(Graph g, uint32_t n)
+{
+        for(uint32_t i = 1; i <= n; i++){
+                if(!g[i]) continue;
+                reverseArcs(g[i]);
+        }
+
+        return;
+
+}
+
 /* Checks if vertex v is in the adjacency list of adj */
 int containsVertex(Vertex v, Vertex adj)
 {
@@ -138,6 +149,8 @@ void printAdjacent(Vertex v)
 {
         Vertex* tmp = v->adjacent;
 
+        if(!v) return;
+
         printf("%"PRIu32": ", v->id);
 
         for(uint32_t i = 0; i < v->count; i++){
@@ -182,14 +195,20 @@ void freeGraph(Graph g)
 Vertex* initVertices(uint32_t n)
 {
         Vertex* vert = malloc((n + 2) * sizeof(Vertex));
+
         if(!vert) return NULL;
 
         /* A note on some of my design choices:
          *      This array starts at 1 as 0 is an invalid
          *      node name... Maybe? */
+
+        vert[0] = NULL;
         for(uint32_t i = 1; i <= n; i++){
-               vert[i] = initVertex(i, n + 1); 
+               Vertex v = initVertex(i, n + 1); 
+               vert[i] = v;
         }
+//        vert[0]
+        
 
         return vert;
 
