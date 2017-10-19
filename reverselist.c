@@ -20,29 +20,40 @@ int main(int argc, char** argv)
 
         uint32_t** adjlist = parseFile(FILE_PATH, LINE_SIZE);
 
-        puts("got here");
         /* This is redundant as number of vertices is taken care of in file
          * io stage. For dealing with larger files, fix that first */
 //        uint32_t vert = VERTICES;
 
-        uint32_t count = countAdjList(adjlist);
+//        uint32_t count = countAdjList(adjlist);
+        uint32_t count = 5;
+        //printf("%d\n", (int)count);
+
 
         Vertex* vertices = initVertices(count);
-        linkVertices(vertices, adjlist, count);
-
-//        free(adjlist);
+        printAdjacent(*vertices);
 
 
-//        printf("%"PRIu32"\n", ((v->adjacent)[v->count -1])->id );
+//        linkVertices(vertices, adjlist, count);
+
+        /*
+        while(*vertices){
+                printAdjacent(*vertices);
+
+        }
+        */
+
+
+        free(adjlist);
 
         return 0;
 }
 
 uint32_t countAdjList(uint32_t** adj)
 {
-        uint32_t c;
+        uint32_t** tmp = adj;
+        uint32_t c = 0;
 
-        for( ; *adj++; c++)
+        for( ; *tmp++; c++)
                 ;
 
         return c;
@@ -53,6 +64,7 @@ uint32_t countAdjList(uint32_t** adj)
 void linkVertices(Vertex* vertices, uint32_t** adjlist, uint32_t n)
 {
         for(uint32_t i = 1; i <= n; i++){
+
                 uint32_t* line = adjlist[i - 1];
                 for(uint32_t j = 0; j <= n; j++){
                         if(!line[j]) break;

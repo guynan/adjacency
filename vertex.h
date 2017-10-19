@@ -20,7 +20,7 @@ typedef struct _vertex {
         uint32_t count;
         uint32_t eletotal;
         uint16_t reversed;
-} *Vertex;
+} __vertex, *Vertex, **Graph;
 
 
 /* Vertex compilation unit function prototypes */
@@ -32,6 +32,7 @@ Vertex* initVertices(uint32_t n);
 void printAdjacent(Vertex v);
 void reverseArcs(Vertex v);
 void freeVertex(Vertex v);
+void freeGraph(Graph g);
 
 
 #endif

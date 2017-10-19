@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra 
+CFLAGS=-Wall -Wextra -g
 LFLAGS=
 SRC= reverselist.c vertex.c fileutils.c
 OUT=main

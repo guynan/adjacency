@@ -11,10 +11,10 @@
  * whether or not the arc has been reversed in the past */
 Vertex initVertex(uint32_t vid, uint32_t n)
 {
-        Vertex v = malloc(sizeof(Vertex));
+        Vertex v = malloc(sizeof(__vertex));
 
         v->id = vid;
-        v->adjacent = malloc(n * sizeof(Vertex));
+        v->adjacent = malloc((n + 1) * sizeof(Vertex));
         v->count = 0;
         v->eletotal = n;
         v->reversed = 0;
@@ -160,6 +160,19 @@ void freeVertex(Vertex v)
         }
         
         return;
+}
+
+
+void freeGraph(Graph g)
+{
+        if(!g) return;
+
+        while(*g){
+                freeVertex(*g);
+        }
+
+        free(g);
+
 }
 
 
