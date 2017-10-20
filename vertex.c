@@ -72,12 +72,15 @@ void reverseArcs(Vertex v)
                 /* An arc is reversible either when neither are reversed
                  * or both are reversed. We can check this thusly: */
 //                uint32_t rev = !(adj->reversed ^ v->reversed);
-                uint32_t rev = !(v->reversed) || adj->reversed;
+//                uint32_t rev = !(v->reversed) || adj->reversed;
+                uint32_t rev = !(adj -> reversed) || (adj ->reversed ==
+                !(v->reversed));
 
                 /* Then we reverse */
                 if(rev && !containsVertex(v, adj)){
                                 addAdjacent(adj, v);
                                 removeAdjacent(v, adj);
+                                adj->reversed = !(adj->reversed);
                 }
 
         }
@@ -164,6 +167,23 @@ void printAdjacent(Vertex v)
         printf("\n");
 
 }
+
+
+void printGraph(Graph g, uint32_t n)
+{
+        Graph tmp = g;
+        
+        for(uint32_t i = 1; i <= n; i++){
+                if(!tmp[i]) continue;
+
+                printAdjacent(tmp[i]);
+
+        }
+
+        return;
+
+}
+
 
 void freeVertex(Vertex v)
 {

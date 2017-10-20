@@ -29,6 +29,7 @@ void removeAdjacent(Vertex v, Vertex adj);
 int containsVertex(Vertex v, Vertex adj);
 void addAdjacent(Vertex v, Vertex adj);
 void reverseGraph(Graph g, uint32_t n);
+void printGraph(Graph g, uint32_t n);
 Vertex* initVertices(uint32_t n);
 void printAdjacent(Vertex v);
 void reverseArcs(Vertex v);

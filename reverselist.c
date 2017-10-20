@@ -30,11 +30,13 @@ int main(int argc, char** argv)
 
 
         linkVertices(vert, adjlist, count);
+        printGraph(vert, count);
+        puts("");
         reverseGraph(vert, count);
-        vert++;
-        while(*vert){
-                printAdjacent(*vert++);
-        }
+//        reverseArcs(vert[5]);
+        printGraph(vert, count);
+        reverseGraph(vert, count);
+        printGraph(vert, count);
 
 
         /* Incomplete free */
