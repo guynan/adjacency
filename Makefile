@@ -7,6 +7,9 @@ OUT=main
 all:
 	$(CC) $(CFLAGS) -o $(OUT) $(SRC) $(LFLAGS)
 
+run: all
+	./$(OUT)
+
 clean:
 	rm $(OUT)
 

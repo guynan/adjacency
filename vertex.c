@@ -1,7 +1,9 @@
 /* This compilation unit includes all the content that pertains to 
  * initialising and manipulating relationships betweeen vertices */
 
+
 #include "vertex.h"
+
 
 /* This function breathes life into our vertex structure. We give it a 
  * unique vertex id, and pass in how many possible elements in the 
@@ -38,6 +40,7 @@ void addAdjacent(Vertex v, Vertex adj)
         return;
 
 }
+
 
 /* We reverse an arc when there is a directed arc pointing at one vertex
  * but the vertex does not return the love. 
@@ -100,6 +103,7 @@ void reverseGraph(Graph g, uint32_t n)
         return;
 
 }
+
 
 /* Checks if vertex v is in the adjacency list of adj */
 int containsVertex(Vertex v, Vertex adj)
@@ -223,12 +227,11 @@ Vertex* initVertices(uint32_t n)
          *      node name... Maybe? */
 
         vert[0] = NULL;
+
         for(uint32_t i = 1; i <= n; i++){
                Vertex v = initVertex(i, n + 1); 
                vert[i] = v;
         }
-//        vert[0]
-        
 
         return vert;
 

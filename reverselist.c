@@ -8,6 +8,7 @@
 #define VERTICES                32
 
 void linkVertices(Vertex* vertices, uint32_t** adjlist, uint32_t n);
+void writeAdjacencyList(Graph g, const char* path, uint32_t n);
 uint32_t** parseFile(const char* path, size_t ls);
 uint32_t countAdjList(uint32_t** adj);
 int main(int argc, char** argv);
@@ -30,17 +31,12 @@ int main(int argc, char** argv)
 
 
         linkVertices(vert, adjlist, count);
-        printGraph(vert, count);
-        puts("");
         reverseGraph(vert, count);
-//        reverseArcs(vert[5]);
-        printGraph(vert, count);
-        reverseGraph(vert, count);
-        printGraph(vert, count);
-
+        writeAdjacencyList(vert, FILE_OUT, count);
 
         /* Incomplete free */
         free(adjlist);
+        freeGraph(vert);
 
         return 0;
 }

@@ -4,15 +4,18 @@
 #include <stdint.h>
 #include <string.h>
 #include <inttypes.h>
+#include "vertex.h"
 
 #define BASE            10
 #define VERTICAL_LINES  32
 
 
-uint32_t strtoint(char* s);
-int main(int argc, char** argv);
-uint32_t* readVertices(char* line, uint32_t ls);
+void writeAdjacencyList(Graph g, const char* path, uint32_t n);
 uint32_t** parseFile(const char* path, size_t ls);
+uint32_t* readVertices(char* line, uint32_t ls);
+void writeAdjacent(Vertex v, FILE* file);
+int main(int argc, char** argv);
+uint32_t strtoint(char* s);
 
 
 /* The path to the file and the *proposed* size of the line are passed in
@@ -85,3 +88,49 @@ uint32_t strtoint(char* s)
 
 }
 
+void writeAdjacencyList(Graph g, const char* path, uint32_t n)
+{
+
+
+        Graph tmp = g;
+        FILE *file = fopen(path, "w");
+
+        if (!file){
+                printf("Error opening file!\n");
+                exit(1);
+        }
+
+        
+        for(uint32_t i = 1; i <= n; i++){
+
+                if(!tmp[i]) continue;
+
+                writeAdjacent(tmp[i], file);
+
+        }
+
+        fclose(file);
+        
+
+}
+
+
+void writeAdjacent(Vertex v, FILE* file)
+{
+        Vertex* tmp = v->adjacent;
+
+        if(!v) return;
+
+        for(uint32_t i = 0; i < v->count; i++){
+
+                if(!tmp[i]) continue;
+
+                fprintf(file, "%"PRIu32",", (tmp[i])->id);
+
+        }
+
+        fprintf(file, "\n");
+
+        return;
+
+}
