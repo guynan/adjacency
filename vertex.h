@@ -20,16 +20,18 @@ typedef struct _vertex {
         uint32_t count;
         uint32_t eletotal;
         uint16_t reversed;
+        uint16_t visited;
 } __vertex, *Vertex, **Graph;
 
 
 /* Vertex compilation unit function prototypes */
+void linkVertices(Vertex* vertices, uint32_t** adjlist, uint32_t n);
 Vertex initVertex(uint32_t vid, uint32_t n);
 void removeAdjacent(Vertex v, Vertex adj);
-int containsVertex(Vertex v, Vertex adj);
 void addAdjacent(Vertex v, Vertex adj);
 void reverseGraph(Graph g, uint32_t n);
 void printGraph(Graph g, uint32_t n);
+int isAdjacent(Vertex v, Vertex adj);
 Vertex* initVertices(uint32_t n);
 void printAdjacent(Vertex v);
 void reverseArcs(Vertex v);

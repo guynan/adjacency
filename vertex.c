@@ -20,6 +20,7 @@ Vertex initVertex(uint32_t vid, uint32_t n)
         v->count = 0;
         v->eletotal = n;
         v->reversed = 0;
+        v->visited = 0;
 
         return v;
 
@@ -62,33 +63,37 @@ void addAdjacent(Vertex v, Vertex adj)
  * */
 void reverseArcs(Vertex v)
 {
+        if(!v) return;
+
         Vertex* arr = (v->adjacent);
 
         for(uint32_t i = 0; i < v->count; i++){
 
-                if(!arr[i]){ 
-                        continue;
-                }
+                if(!arr[i]) continue;
 
                 Vertex adj = arr[i];
 
                 /* An arc is reversible either when neither are reversed
                  * or both are reversed. We can check this thusly: */
-//                uint32_t rev = !(adj->reversed ^ v->reversed);
-//                uint32_t rev = !(v->reversed) || adj->reversed;
-                uint32_t rev = !(adj -> reversed) || (adj ->reversed ==
-                !(v->reversed));
+                uint32_t rev = (adj->reversed ^ v->reversed);
+ //               uint32_t rev = (v->reversed) || !adj->reversed;
+//                uint32_t rev = !(adj -> reversed) || (adj ->reversed ==
+ //               !(v->reversed));
+//                uint32_t rev = 1;
+//                uint32_t rev = !(adj->reversed);
 
                 /* Then we reverse */
-                if(rev && !containsVertex(v, adj)){
+                if(rev && !isAdjacent(v, adj)){
                                 addAdjacent(adj, v);
                                 removeAdjacent(v, adj);
+                                reverseArcs(adj);
                                 adj->reversed = !(adj->reversed);
+
                 }
 
         }
 
-        v->reversed = !(v->reversed);
+//        v->reversed = !(v->reversed);
 
 }
 
@@ -106,15 +111,15 @@ void reverseGraph(Graph g, uint32_t n)
 
 
 /* Checks if vertex v is in the adjacency list of adj */
-int containsVertex(Vertex v, Vertex adj)
+int isAdjacent(Vertex v, Vertex adj)
 {
+        if(!v || !adj) return 0;
+
         Vertex* tmp = (adj->adjacent);
 
         for(uint32_t i = 0; i < adj->count; i++){
 
-                if(v == tmp[i]){
-                        return 1;
-                }
+                if(v == tmp[i]) return 1;
         }
 
         return 0;
@@ -126,9 +131,9 @@ int containsVertex(Vertex v, Vertex adj)
  * of vertex v */
 void removeAdjacent(Vertex v, Vertex adj)
 {
-        Vertex* tmp = (v->adjacent);
+        if(!v) return;
 
-        /* HOLD UP DO I KEEP COUNT THE SAME */
+        Vertex* tmp = (v->adjacent);
 
         for(uint32_t i = 0; i < v->count; i++){
 
@@ -236,4 +241,20 @@ Vertex* initVertices(uint32_t n)
         return vert;
 
 }
+
+
+/* Links the `n` vertices according to the adjacency list provided */
+void linkVertices(Vertex* vertices, uint32_t** adjlist, uint32_t n)
+{
+        for(uint32_t i = 1; i <= n; i++){
+
+                uint32_t* line = adjlist[i - 1];
+                for(uint32_t j = 0; j <= n; j++){
+                        if(!line[j]) break;
+                        addAdjacent(vertices[i], vertices[line[j]]);
+                }
+        }
+        return;
+}
+
 
