@@ -1,15 +1,19 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -g
 LFLAGS=
-SRC= reverselist.c vertex.c fileutils.c
+REVSRC= reverselist.c vertex.c fileutils.c
+DFSSRC= dfs.c vertex.c fileutils.c
 OUT=main
 
 all:
-	$(CC) $(CFLAGS) -o $(OUT) $(SRC) $(LFLAGS)
+	$(CC) $(CFLAGS) -o $(OUT) $(REVSRC) $(LFLAGS)
+
+dfs:
+	$(CC) $(CFLAGS) -o $(OUT) $(DFSSRC) $(LFLAGS)
 
 run: all
 	./$(OUT)
 
 clean:
-	rm $(OUT)
+	rm $(OUT) out.txt
 
