@@ -7,9 +7,9 @@
 #define FILE_OUT                "out.txt"
 #define VERTICES                32
 
+extern void writeAdjacencyList(Graph g, const char* path, uint32_t n);
 void linkVertices(Vertex* vertices, uint32_t** adjlist, uint32_t n);
-void writeAdjacencyList(Graph g, const char* path, uint32_t n);
-uint32_t** parseFile(const char* path, size_t ls);
+extern uint32_t** parseFile(const char* path, size_t ls);
 uint32_t countAdjList(uint32_t** adj);
 int main(int argc, char** argv);
 

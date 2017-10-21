@@ -88,6 +88,7 @@ uint32_t strtoint(char* s)
 
 }
 
+
 void writeAdjacencyList(Graph g, const char* path, uint32_t n)
 {
 
@@ -117,9 +118,10 @@ void writeAdjacencyList(Graph g, const char* path, uint32_t n)
 
 void writeAdjacent(Vertex v, FILE* file)
 {
-        Vertex* tmp = v->adjacent;
 
         if(!v) return;
+
+        Vertex* tmp = v->adjacent;
 
         for(uint32_t i = 0; i < v->count; i++){
 
@@ -128,9 +130,11 @@ void writeAdjacent(Vertex v, FILE* file)
                 fprintf(file, "%"PRIu32",", (tmp[i])->id);
 
         }
+        (void) getc(file);
 
         fprintf(file, "\n");
 
         return;
 
 }
+
