@@ -7,7 +7,7 @@
 #include "vertex.h"
 
 #define BASE            10
-#define VERTICAL_LINES  32
+#define VERTICAL_LINES  64
 
 
 void writeAdjacencyList(Graph g, const char* path, uint32_t n);
@@ -40,14 +40,15 @@ uint32_t** parseFile(const char* path, size_t ls)
 
         /* This is all pretty sloppy, especially with how much memory
          * gets allocated here */
-        for(uint32_t i = 1; fgets(line, ls, file); i++){
+        for(uint32_t i = 0; fgets(line, ls, file); i++){
                
                 /* Note that ls is decisively overkill */
-                adjList[i-1] = readVertices(line, ls);
+                adjList[i] = readVertices(line, ls);
 
                 if(i == vert - 1){
                         // reaaaalloccc and update veeert
                 }
+                memset(line, 0, ls);
         }
 
         free(line); 
@@ -63,18 +64,29 @@ uint32_t* readVertices(char* line, uint32_t ls)
         uint32_t* vert = malloc(ls * sizeof(uint32_t));
         char* s;
 
+//        uint32_t len = strlen(line);
+
+        /* Replace all the commas with null terminators */
+        /*
+        for(uint32_t i = 0; i < len; i++){
+                if(s[i] == ',') s[i] = '\0';
+        }
+        */
+
         for(uint32_t i = 0; (s = strtok(line, ",")); i++){
-
-                /* Certainly one way to fo it looool */
-                if(!*s || *s == '\n') break;
-
                 vert[i] = strtoint(s);
+                if(vert[i] == 0){
+                        vert[i] = -1;
+                }
+
                 line = NULL;
+                 
         }
 
         return vert;
 
 }
+
 
 uint32_t strtoint(char* s)
 {
@@ -102,7 +114,7 @@ void writeAdjacencyList(Graph g, const char* path, uint32_t n)
         }
 
         
-        for(uint32_t i = 1; i <= n; i++){
+        for(uint32_t i = 0; i < n; i++){
 
                 if(!tmp[i]) continue;
 
@@ -130,7 +142,6 @@ void writeAdjacent(Vertex v, FILE* file)
                 fprintf(file, "%"PRIu32",", (tmp[i])->id);
 
         }
-        (void) getc(file);
 
         fprintf(file, "\n");
 

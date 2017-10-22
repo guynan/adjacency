@@ -13,13 +13,18 @@
  * whether or not the arc has been reversed in the past */
 Vertex initVertex(uint32_t vid, uint32_t n)
 {
+        /* The following hack is such that we can distinguish between 
+         * a value that is read from the file as 0, and also the 0 value
+         * that the adjacency list is initialised to */
+        if(vid == (uint32_t) -1) vid = 0;
+
         Vertex v = malloc(sizeof(__vertex));
 
         v->id = vid;
         v->adjacent = malloc((n + 1) * sizeof(Vertex));
         v->count = 0;
         v->eletotal = n;
-        v->reversed = 0;
+        v->reversedBy = malloc((n + 1) * sizeof(Vertex));
         v->visited = 0;
 
         return v;
@@ -75,34 +80,36 @@ void reverseArcs(Vertex v)
 
                 /* An arc is reversible either when neither are reversed
                  * or both are reversed. We can check this thusly: */
-                uint32_t rev = (adj->reversed ^ v->reversed);
- //               uint32_t rev = (v->reversed) || !adj->reversed;
-//                uint32_t rev = !(adj -> reversed) || (adj ->reversed ==
- //               !(v->reversed));
-//                uint32_t rev = 1;
-//                uint32_t rev = !(adj->reversed);
 
                 /* Then we reverse */
-                if(rev && !isAdjacent(v, adj)){
+                if(!reversedBy(v, adj) && !isAdjacent(v, adj)){
                                 addAdjacent(adj, v);
                                 removeAdjacent(v, adj);
-                                reverseArcs(adj);
-                                adj->reversed = !(adj->reversed);
+                                insertReversedBy(v, adj);
 
                 }
 
         }
 
-//        v->reversed = !(v->reversed);
 
 }
 
 
 void reverseGraph(Graph g, uint32_t n)
 {
-        for(uint32_t i = 1; i <= n; i++){
+        for(uint32_t i = 0; i < n; i++){
                 if(!g[i]) continue;
                 reverseArcs(g[i]);
+        }
+
+        /* Make the graph reversible again */
+        for(uint32_t i = 0; i < n; i++){
+                if(!g[i]) continue;
+
+                Vertex v = g[i];
+                for(uint32_t i = 0; i < v->count; i++){
+                        v->reversedBy[i] = NULL;
+                }
         }
 
         return;
@@ -182,7 +189,7 @@ void printGraph(Graph g, uint32_t n)
 {
         Graph tmp = g;
         
-        for(uint32_t i = 1; i <= n; i++){
+        for(uint32_t i = 0; i < n; i++){
                 if(!tmp[i]) continue;
 
                 printAdjacent(tmp[i]);
@@ -231,10 +238,8 @@ Vertex* initVertices(uint32_t n)
          *      This array starts at 1 as 0 is an invalid
          *      node name... Maybe? */
 
-        vert[0] = NULL;
-
-        for(uint32_t i = 1; i <= n; i++){
-               Vertex v = initVertex(i, n + 1); 
+        for(uint32_t i = 0; i < n; i++){
+               Vertex v = initVertex(i, n); 
                vert[i] = v;
         }
 
@@ -246,15 +251,72 @@ Vertex* initVertices(uint32_t n)
 /* Links the `n` vertices according to the adjacency list provided */
 void linkVertices(Vertex* vertices, uint32_t** adjlist, uint32_t n)
 {
-        for(uint32_t i = 1; i <= n; i++){
+        for(uint32_t i = 0; i < n; i++){
 
-                uint32_t* line = adjlist[i - 1];
-                for(uint32_t j = 0; j <= n; j++){
+                uint32_t* line = adjlist[i];
+                for(uint32_t j = 0; j < n; j++){
                         if(!line[j]) break;
+
+                        /* To understand this hack see initVertex */
+                        if(line[j] == (uint32_t) -1) line[j] = 0;
                         addAdjacent(vertices[i], vertices[line[j]]);
                 }
         }
         return;
 }
 
+
+/* Checks to see if the vertex v has reversed the arc between v and adj */
+int reversedBy(Vertex v, Vertex adj)
+{
+        if(!v || !adj) return 0;
+
+        Vertex* tmp = (adj->reversedBy);
+
+        for(uint32_t i = 0; i < adj->count; i++){
+
+                if(v == tmp[i]) return 1;
+        }
+
+        return 0;
+
+}
+
+
+void insertReversedBy(Vertex v, Vertex adj)
+{
+        if(!v || !adj) return;
+
+        Vertex* tmp = (v->reversedBy);
+
+        for(uint32_t i = 0; i < v->count; i++){
+                if(!tmp[i]){
+                        tmp[i] = adj;
+                        return;
+                }
+
+        }
+
+        return;
+
+}
+
+
+/* Sort the adjacency lists using a quicksort according to the id of vertex */
+void sortGraph(Graph g, uint32_t n)
+{
+        if(!g) return;
+
+        for(uint32_t i = 0; i < n; i++){
+                Vertex adj = g[i];
+                qsort(adj->adjacent, adj->count, sizeof(Vertex), vertexCompare);
+        }
+
+}
+
+
+int vertexCompare(const void* a, const void* b)
+{
+        return (((Vertex) a)->id > ((Vertex) b)->id);
+}
 

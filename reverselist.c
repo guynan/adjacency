@@ -31,12 +31,13 @@ int main(int argc, char** argv)
 
         linkVertices(vert, adjlist, count);
         reverseGraph(vert, count);
+        sortGraph(vert, count);
         printGraph(vert, count);
         writeAdjacencyList(vert, FILE_OUT, count);
 
         /* Incomplete free */
         free(adjlist);
-        freeGraph(vert);
+ //       freeGraph(vert);
 
         return 0;
 }
