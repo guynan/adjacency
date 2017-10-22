@@ -48,7 +48,8 @@ uint32_t** parseFile(const char* path, size_t ls)
                 if(i == vert - 1){
                         // reaaaalloccc and update veeert
                 }
-                memset(line, 0, ls);
+
+//                memset(line, 0, ls);
         }
 
         free(line); 
@@ -135,11 +136,19 @@ void writeAdjacent(Vertex v, FILE* file)
 
         Vertex* tmp = v->adjacent;
 
+        uint32_t f = 0;
         for(uint32_t i = 0; i < v->count; i++){
 
                 if(!tmp[i]) continue;
 
-                fprintf(file, "%"PRIu32",", (tmp[i])->id);
+                if(!f){
+                        /* Hack to remove trailing commas */
+                        fprintf(file, "%"PRIu32, (tmp[i])->id);
+                        f++;
+                        continue;
+                }
+
+                fprintf(file, ",%"PRIu32, (tmp[i])->id);
 
         }
 

@@ -204,6 +204,7 @@ void printGraph(Graph g, uint32_t n)
 void freeVertex(Vertex v)
 {
         if(v && v->adjacent){
+                free(v->reversedBy);
                 free(v->adjacent);
                 free(v);
         }
@@ -214,13 +215,15 @@ void freeVertex(Vertex v)
 
 void freeGraph(Graph g)
 {
+        Graph tmp = g;
         if(!g) return;
 
         while(*g){
                 freeVertex(*g);
+                g++;
         }
 
-        free(g);
+        free(tmp);
 
 }
 
