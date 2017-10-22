@@ -7,7 +7,7 @@
 #include "vertex.h"
 
 #define BASE            10
-#define VERTICAL_LINES  64
+#define VERTICAL_LINES  32
 
 
 void writeAdjacencyList(Graph g, const char* path, uint32_t n);
@@ -25,7 +25,6 @@ uint32_t strtoint(char* s);
 uint32_t** parseFile(const char* path, size_t ls)
 {
         FILE* file = NULL;
-
         size_t vert = VERTICAL_LINES;
 
         uint32_t** adjList = calloc(vert, sizeof(uint32_t*));
@@ -45,8 +44,18 @@ uint32_t** parseFile(const char* path, size_t ls)
                 /* Note that ls is decisively overkill */
                 adjList[i] = readVertices(line, ls);
 
-                if(i == vert - 1){
-                        // reaaaalloccc and update veeert
+                if(i == vert - 2){
+                        vert *= 2;
+                        uint32_t** tmp;
+                        tmp = realloc(adjList, vert * sizeof(uint32_t*));
+                        if(tmp){
+                                adjList = tmp;
+                        } else {
+                                printf("Cannot reallocate memory\n");
+                                free(tmp);
+                                exit(2);
+                        }
+
                 }
 
         }
