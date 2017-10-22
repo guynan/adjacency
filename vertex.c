@@ -18,12 +18,12 @@ Vertex initVertex(uint32_t vid, uint32_t n)
          * that the adjacency list is initialised to */
         if(vid == (uint32_t) -1) vid = 0;
 
-        Vertex v = malloc(sizeof(__vertex));
+        Vertex v = calloc(1, sizeof(__vertex));
 
         v->id = vid;
-        v->adjacent = malloc((n + 1) * sizeof(Vertex));
+        v->adjacent = calloc((n + 1), sizeof(Vertex));
         v->count = n;
-        v->reversedBy = malloc((n + 1) * sizeof(Vertex));
+        v->reversedBy = calloc((n + 1), sizeof(Vertex));
         v->visited = 0;
 
         return v;
@@ -233,7 +233,7 @@ void freeGraph(Graph g)
  * for you! Returns a pointer to said array */
 Vertex* initVertices(uint32_t n)
 {
-        Vertex* vert = malloc((n + 2) * sizeof(Vertex));
+        Vertex* vert = calloc((n + 2), sizeof(Vertex));
 
         if(!vert) return NULL;
 
@@ -265,6 +265,7 @@ void linkVertices(Vertex* vertices, uint32_t** adjlist, uint32_t n)
                         addAdjacent(vertices[i], vertices[line[j]]);
                 }
         }
+
         return;
 }
 
@@ -312,6 +313,7 @@ void sortGraph(Graph g, uint32_t n)
 
         for(uint32_t i = 0; i < n; i++){
                 Vertex a = g[i];
+                if(!g[i]) continue;
                 qsort(a->adjacent, a->count, sizeof(Vertex), vertexCompare);
         }
 

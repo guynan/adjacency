@@ -28,8 +28,8 @@ uint32_t** parseFile(const char* path, size_t ls)
 
         size_t vert = VERTICAL_LINES;
 
-        uint32_t** adjList = malloc(vert * sizeof(uint32_t*));
-        char* line = malloc(ls * sizeof(char));
+        uint32_t** adjList = calloc(vert, sizeof(uint32_t*));
+        char* line = calloc(ls, sizeof(char));
 
         file = fopen(path, "r");
 
