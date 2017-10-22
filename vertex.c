@@ -22,8 +22,7 @@ Vertex initVertex(uint32_t vid, uint32_t n)
 
         v->id = vid;
         v->adjacent = malloc((n + 1) * sizeof(Vertex));
-        v->count = 0;
-        v->eletotal = n;
+        v->count = n;
         v->reversedBy = malloc((n + 1) * sizeof(Vertex));
         v->visited = 0;
 
@@ -36,13 +35,15 @@ Vertex initVertex(uint32_t vid, uint32_t n)
  * of vertex v */
 void addAdjacent(Vertex v, Vertex adj)
 {
-        /* Now that we have trivial edge cases out of the way... */
-        if(v->count == v->eletotal){
-                return;
+        if(!v || !adj) return;
+
+        for(uint32_t i = 0; i < v->count; i++){
+                if(!(v->adjacent)[i]){
+                        (v->adjacent)[i] = adj;
+                        return;
+                }
         }
-        
-        (v->adjacent)[v->count] = adj;
-        v->count++; 
+
         return;
 
 }
@@ -63,9 +64,7 @@ void addAdjacent(Vertex v, Vertex adj)
  *
  * v <---> adj
  *
- * And in this case we do nothing.
- *
- * */
+ * And in this case we do nothing. */
 void reverseArcs(Vertex v)
 {
         if(!v) return;
@@ -80,8 +79,6 @@ void reverseArcs(Vertex v)
 
                 /* An arc is reversible either when neither are reversed
                  * or both are reversed. We can check this thusly: */
-
-                /* Then we reverse */
                 if(!reversedBy(v, adj) && !isAdjacent(v, adj)){
                                 addAdjacent(adj, v);
                                 removeAdjacent(v, adj);
@@ -92,9 +89,13 @@ void reverseArcs(Vertex v)
         }
 
 
+        return;
 }
 
 
+/* We initially iterate over the graph and reverse all the arcs in it. After
+ * this, we reset all the reversedBy arrays to NULL such that subsequent 
+ * reversals will not be polluted by the previous. */
 void reverseGraph(Graph g, uint32_t n)
 {
         for(uint32_t i = 0; i < n; i++){
@@ -219,8 +220,7 @@ void freeGraph(Graph g)
         if(!g) return;
 
         while(*g){
-                freeVertex(*g);
-                g++;
+                freeVertex(*g++);
         }
 
         free(tmp);
@@ -311,13 +311,17 @@ void sortGraph(Graph g, uint32_t n)
         if(!g) return;
 
         for(uint32_t i = 0; i < n; i++){
-                Vertex adj = g[i];
-                qsort(adj->adjacent, adj->count, sizeof(Vertex), vertexCompare);
+                Vertex a = g[i];
+                qsort(a->adjacent, a->count, sizeof(Vertex), vertexCompare);
         }
+
+        return;
 
 }
 
 
+/* This function is passed into the quicksort used to sort the adjacency lists
+ * of the vertices. */
 int vertexCompare(const void* a, const void* b)
 {
         return (((Vertex) a)->id > ((Vertex) b)->id);

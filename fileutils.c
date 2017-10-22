@@ -49,7 +49,6 @@ uint32_t** parseFile(const char* path, size_t ls)
                         // reaaaalloccc and update veeert
                 }
 
-//                memset(line, 0, ls);
         }
 
         free(line); 
@@ -65,17 +64,12 @@ uint32_t* readVertices(char* line, uint32_t ls)
         uint32_t* vert = malloc(ls * sizeof(uint32_t));
         char* s;
 
-//        uint32_t len = strlen(line);
-
-        /* Replace all the commas with null terminators */
-        /*
-        for(uint32_t i = 0; i < len; i++){
-                if(s[i] == ',') s[i] = '\0';
-        }
-        */
-
         for(uint32_t i = 0; (s = strtok(line, ",")); i++){
                 vert[i] = strtoint(s);
+
+                /* This hack is explained in `initVertex`. This is so that 
+                 * we can iterate over a zero value and not stop our program.
+                 * Yes, its a bit edgy casting a negative number into uint */
                 if(vert[i] == 0){
                         vert[i] = -1;
                 }
@@ -104,9 +98,8 @@ uint32_t strtoint(char* s)
 
 void writeAdjacencyList(Graph g, const char* path, uint32_t n)
 {
-
-
         Graph tmp = g;
+
         FILE *file = fopen(path, "w");
 
         if (!file){

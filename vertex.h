@@ -18,7 +18,6 @@ typedef struct _vertex {
         uint32_t id;
         struct _vertex** adjacent;
         uint32_t count;
-        uint32_t eletotal;
         struct _vertex** reversedBy;
         uint16_t visited;
 } __vertex, *Vertex, **Graph;

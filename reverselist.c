@@ -7,7 +7,7 @@
 
 #define LINE_SIZE               128
 #define FILE_PATH               "./list.txt"
-#define FILE_OUT                "reverselist.txt"
+#define FILE_OUT                "./reverselist.txt"
 
 extern void writeAdjacencyList(Graph g, const char* path, uint32_t n);
 extern uint32_t** parseFile(const char* path, size_t ls);
@@ -40,6 +40,7 @@ int main(int argc, char** argv)
 }
 
 
+/* Simply counts how many vertices are present in the adjacency list */
 uint32_t countAdjList(uint32_t** adj)
 {
         uint32_t** tmp = adj;
@@ -62,3 +63,4 @@ void freeAdjacencyList(uint32_t** adjlist)
         return;
 
 }
+
