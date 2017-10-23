@@ -2,10 +2,10 @@ CC=gcc
 CFLAGS=-Wall -Wextra -g 
 LFLAGS= 
 DEBUG= -pg
-REVSRC= reverselist.c vertex.c fileutils.c
-DFSSRC= dfs.c vertex.c fileutils.c
+REVSRC= src/reverselist.c src/vertex.c src/fileutils.c
+DFSSRC= src/dfs.c src/vertex.c src/fileutils.c
 OUT=main
-GARBAGE=gmon.out
+GARBAGE= reverselist.txt dfs.txt
 
 all:
 	$(CC) $(CFLAGS) -o $(OUT) $(REVSRC) $(LFLAGS)
