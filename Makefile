@@ -7,8 +7,7 @@ DFSSRC= src/dfs.c src/vertex.c src/fileutils.c
 OUT=main
 GARBAGE= reverselist.txt dfs.txt
 
-all:
-	$(CC) $(CFLAGS) -o $(OUT) $(REVSRC) $(LFLAGS)
+all: run-dfs run-rev
 
 rev:
 	$(CC) $(CFLAGS) -o $(OUT) $(REVSRC) $(LFLAGS)
@@ -25,7 +24,7 @@ rev-dbg:
 run-dfs: dfs
 	./$(OUT)
 
-run-rev: dfs
+run-rev: rev
 	./$(OUT)
 
 clean:
