@@ -25,12 +25,15 @@ typedef struct _vertex {
 
 /* Vertex compilation unit function prototypes */
 void linkVertices(Vertex* vertices, uint32_t** adjlist, uint32_t n);
+void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s);
 int vertexCompare(const void* a, const void* b);
 void insertReversedBy(Vertex v, Vertex adj);
 Vertex initVertex(uint32_t vid, uint32_t n);
 void removeAdjacent(Vertex v, Vertex adj);
 void addAdjacent(Vertex v, Vertex adj);
+Graph* DFSForrest(Graph g, uint32_t n);
 void reverseGraph(Graph g, uint32_t n);
+void freeGraphP(Graph* gp, uint32_t n);
 void printGraph(Graph g, uint32_t n);
 int reversedBy(Vertex v, Vertex adj);
 int isAdjacent(Vertex v, Vertex adj);

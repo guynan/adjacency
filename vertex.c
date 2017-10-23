@@ -228,6 +228,22 @@ void freeGraph(Graph g)
 }
 
 
+void freeGraphP(Graph* gp, uint32_t n)
+{
+        Graph* tmp  = gp;
+
+        if(!tmp) return;
+
+        for(uint32_t i = 0; i < n; i++){
+                if(!tmp[i]) continue;
+                free(tmp[i]);
+        }
+
+        free(gp);
+
+}
+
+
 /* If you are lazy and want to initialise `n` vertices and have
  * them packaged nicely in an array for you, this is the function
  * for you! Returns a pointer to said array */
@@ -327,5 +343,61 @@ void sortGraph(Graph g, uint32_t n)
 int vertexCompare(const void* a, const void* b)
 {
         return (((Vertex) a)->id > ((Vertex) b)->id);
+}
+
+
+Graph* DFSForrest(Graph g, uint32_t n)
+{
+
+        Graph* forrestOrder = calloc(n, sizeof(Graph));
+
+        /* This should run once for each forrest */
+        for(uint32_t i = 0; i < n; i++){
+
+                if(g[i]->visited) continue;
+
+                Vertex* dfsOrder = calloc(n, sizeof(Vertex));
+
+                uint32_t k = 0;
+                uint32_t* s = &k;
+
+                DFS(g[i], dfsOrder, s);
+
+                forrestOrder[i] = dfsOrder;
+        }
+
+        return forrestOrder;
+
+}
+
+
+/* Pseudo code for DFS from Wikipedia  
+ *
+ *   procedure DFS(G,v):
+ *       label v as discovered
+ *       for all edges from v to w in G.adjacentEdges(v) do
+ *           if vertex w is not labeled as discovered then
+ *               recursively call DFS(G,w)
+ *
+ * Where G is a graph and v is a vertex index */
+void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s)
+{
+        if(!v) return;
+
+        v->visited = 1;
+        Vertex* adjacent = v->adjacent;
+        for(uint32_t i = 0; i < v->count; i++){
+                if(!adjacent[i]) continue;
+                if(!adjacent[i]->visited){
+                        DFS(adjacent[i], dfsOrder, s);
+                }
+        }
+        
+        /* Once it gets to here we know that all of the adjacent
+         * nodes have completed and we thusly `pop` the Vertex by 
+         * writing it to the file */
+
+        dfsOrder[(*s)++] = v;
+        
 }
 

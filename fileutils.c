@@ -11,6 +11,7 @@
 
 
 void writeAdjacencyList(Graph g, const char* path, uint32_t n);
+void writeDFS(Graph* tmp, const char* path, uint32_t n);
 uint32_t** parseFile(const char* path, size_t ls);
 uint32_t* readVertices(char* line, uint32_t ls);
 void writeAdjacent(Vertex v, FILE* file);
@@ -155,6 +156,45 @@ void writeAdjacent(Vertex v, FILE* file)
         }
 
         fprintf(file, "\n");
+
+        return;
+
+}
+
+
+void writeDFS(Graph* tmp, const char* path, uint32_t n)
+{
+        FILE *file = fopen(path, "w");
+
+        if (!file){
+                printf("Error writing file!\n");
+                exit(1);
+        }
+
+        Graph* dfs = tmp;
+
+        if(!dfs) return;
+
+        uint32_t c = 0;
+
+        for(uint32_t i = 0; i < n; i++){
+
+                if(!dfs[i]) continue;
+
+                Graph k = dfs[i];
+
+                for(uint32_t j  = 0; j < n; j++){
+                        Vertex v = k[j];
+                        if(!v) continue;
+                        fprintf(file, "%"PRIu32",%"PRIu32"\n", c++, v->id);
+
+                }
+
+                fprintf(file, "\n");
+                 
+        }
+
+        fclose(file);
 
         return;
 
