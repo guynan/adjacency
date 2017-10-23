@@ -202,6 +202,7 @@ void printGraph(Graph g, uint32_t n)
 }
 
 
+/* Frees all resources associated with a Vertex */
 void freeVertex(Vertex v)
 {
         if(v && v->adjacent){
@@ -214,6 +215,7 @@ void freeVertex(Vertex v)
 }
 
 
+/* Takes a graph object and frees the vertices by calling freeVertex */
 void freeGraph(Graph g)
 {
         Graph tmp = g;
@@ -228,6 +230,8 @@ void freeGraph(Graph g)
 }
 
 
+/* Should be distinguished from the freeGraph function as it does *not* free
+ * and vertices that have been inserted into this structure. */
 void freeGraphP(Graph* gp, uint32_t n)
 {
         Graph* tmp  = gp;
@@ -303,6 +307,8 @@ int reversedBy(Vertex v, Vertex adj)
 }
 
 
+/* Puts the vertex `adj` into the list of `reversedBy` for `v`. This is done
+ * by a very simple check and insert manouvre. */
 void insertReversedBy(Vertex v, Vertex adj)
 {
         if(!v || !adj) return;
@@ -346,6 +352,8 @@ int vertexCompare(const void* a, const void* b)
 }
 
 
+/* This function takes a graph and explores all the sub graphs in the dfs
+ * forest, and returning the order in which they are visited */
 Graph* DFSForrest(Graph g, uint32_t n)
 {
 
