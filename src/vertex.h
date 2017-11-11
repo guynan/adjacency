@@ -47,15 +47,18 @@ void addAdjacent(Vertex v, Vertex adj);
 Graph* DFSForrest(Graph g, uint32_t n);
 void reverseGraph(Graph g, uint32_t n);
 void freeGraphP(Graph* gp, uint32_t n);
+uint32_t countAdjacencyList(Vertex v);
 void printGraph(Graph g, uint32_t n);
 int reversedBy(Vertex v, Vertex adj);
 int isAdjacent(Vertex v, Vertex adj);
 void sortGraph(Graph g, uint32_t n);
+uint32_t degree(Vertex v, char f);
 Vertex* initVertices(uint32_t n);
 void printAdjacent(Vertex v);
 void reverseArcs(Vertex v);
 void freeVertex(Vertex v);
 void freeGraph(Graph g);
+int isSink(Vertex v);
 
 
 #endif

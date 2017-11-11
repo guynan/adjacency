@@ -409,3 +409,44 @@ void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s)
         
 }
 
+
+/* Checks if a vertex is a sink. This means that while other vertices may point
+ * at the vertex, none must point out from the vertex. This is a convenient 
+ * alias for asking for the out degree of the vertex is 0 */
+int isSink(Vertex v)
+{
+       return (0 == degree(v, 'o'));
+}
+
+
+/* Here we pass in a conditional flag `f` which is a char which is either equal
+ * to 'i' indicating we wish to assess the in degree of the vertex, or 'o'
+ * which will indicate that we wish to assess the out degree. If an invalid
+ * flag is returned or the vertex has no traversable resources. */
+uint32_t degree(Vertex v, char f)
+{
+        if(f == 'o' || f == 'O'){
+                return countAdjacencyList(v);
+        }
+
+        /* Incomplete */
+
+        return 0;
+
+}
+
+
+/* Takes the count of how many nodes are in the adjacency list of vertex v */
+uint32_t countAdjacencyList(Vertex v)
+{
+        Vertex* adj = v->adjacent;
+
+        if(adj){
+               for(uint32_t i = 0; i < v->count; i++){
+                       if(!adj[i]) return i;
+                }
+        }
+
+        return 0;
+}
+
