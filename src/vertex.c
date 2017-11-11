@@ -25,8 +25,27 @@ Vertex initVertex(uint32_t vid, uint32_t n)
         v->count = n;
         v->reversedBy = calloc((n + 1), sizeof(Vertex));
         v->visited = 0;
+        v->meta = NULL;
 
         return v;
+
+}
+
+
+/* This is a purposely barren initialisation, we want the memory for the more
+ * sizeable elements to be allocated on the fly as opposed to allocating memory
+ * long before it is needed, if it is even needed at all. */
+vertexmeta initVertexmeta(void)
+{
+        vertexmeta vm = calloc(1, sizeof(__vertexmeta__));
+
+        if(!vm) return NULL;
+
+        vm->inDegree = 0;
+        vm->outDegree = 0;
+        vm->density = 0.0;
+
+        return vm;
 
 }
 
@@ -263,7 +282,7 @@ Vertex* initVertices(uint32_t n)
 
         for(uint32_t i = 0; i < n; i++){
                Vertex v = initVertex(i, n); 
-               vert[i] = v;
+               if(v) vert[i] = v;
         }
 
         return vert;
@@ -426,7 +445,19 @@ int isSink(Vertex v)
 uint32_t degree(Vertex v, char f)
 {
         if(f == 'o' || f == 'O'){
-                return countAdjacencyList(v);
+
+                /* Note here - if the vertex has 0 out degree, the count will
+                 * always be updated. In my mind this is a bug */
+                if(v->meta && v->meta->outDegree){
+                        return v->meta->outDegree;
+                }
+
+                uint32_t c = countAdjacencyList(v);
+
+                if(!v->meta) v->meta = initVertexmeta();
+                v->meta->outDegree = c;
+
+                return c;
         }
 
         /* Incomplete */

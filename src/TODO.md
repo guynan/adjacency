@@ -17,3 +17,6 @@
 - Support a new Graph type; this would contain an array of vertices, but 
 also associated metadata that will speed up calculations and mean that the 
 graph object is more containerised and not a convenient alias
+
+- For searching adjacency lists, if the graph is over a specific size/density,
+it would be good to implement it as a binary search
