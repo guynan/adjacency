@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -g 
+CFLAGS=-Wall -Wextra -pedantic -g 
 LFLAGS= 
 DEBUG= -pg
 REVSRC= src/reverselist.c src/vertex.c src/fileutils.c
