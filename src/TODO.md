@@ -11,3 +11,9 @@
 - Query vertices for density, order, degree, whether or not is source or sink
 
 - Work out how to implement checking if it is source in less than O(n)
+
+- Support undirected graphs
+
+- Support a new Graph type; this would contain an array of vertices, but 
+also associated metadata that will speed up calculations and mean that the 
+graph object is more containerised and not a convenient alias
