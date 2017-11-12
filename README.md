@@ -1,6 +1,8 @@
 # Adjacency
 
-## A high level interface for manipulating graph theory objects in C
+A high level interface for manipulating graph theory objects in C
+
+## About
 
 This is designed to be a standalone library written in pure C99.
 
