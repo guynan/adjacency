@@ -3,7 +3,7 @@
 #include "vertex.h"
 
 #define LINE_SIZE               128
-#define FILE_PATH               "./list.txt"
+#define FILE_PATH               "../data/list.txt"
 #define FILE_OUT                "./dfs.txt"
 
 extern uint32_t** parseFile(const char* path, size_t ls);

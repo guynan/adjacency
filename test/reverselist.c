@@ -6,7 +6,7 @@
 #include "vertex.h"
 
 #define LINE_SIZE               128
-#define FILE_PATH               "./list.txt"
+#define FILE_PATH               "../data/list.txt"
 #define FILE_OUT                "./reverselist.txt"
 
 extern void writeAdjacencyList(Graph g, const char* path, uint32_t n);
