@@ -1,6 +1,7 @@
 
 
 #include "vertex.h"
+#include "graph.h"
 
 #define LINE_SIZE               128
 #define FILE_PATH               "data/list.txt"

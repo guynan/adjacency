@@ -50,7 +50,7 @@ vertex.o: src/vertex.c src/vertex.h src/meta.h
 meta.o: src/meta.c src/meta.h
 	$(CC) $(CFLAGS) -fPIC -c src/meta.c
 
-graph.o: src/graph.c src/vertex.h
+graph.o: src/graph.c src/vertex.h src/graph.h
 	$(CC) $(CFLAGS) -fPIC -c src/graph.c
 
 fileutils.o: src/fileutils.c

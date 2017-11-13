@@ -1,4 +1,5 @@
 #include "vertex.h"
+#include "graph.h"
 
 void printGraph(Graph g, uint32_t n)
 {

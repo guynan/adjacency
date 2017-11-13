@@ -4,6 +4,7 @@
  * to the file that is defined by FILE_OUT */
 
 #include "vertex.h"
+#include "graph.h"
 
 #define LINE_SIZE               128
 #define FILE_PATH               "data/list.txt"
