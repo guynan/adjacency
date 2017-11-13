@@ -21,6 +21,7 @@ SHELL = /bin/sh
 # LD_LIBRARY_FLAG to include ~/lib/ and then source your bashrc
 LIBPREFIX = ~/lib/
 #LIBPREFIX = usr/local/lib/
+INCLPREFIX = ~/include/
 
 # Prefixes for commonly used directories.
 SRCDIR = src/
@@ -35,7 +36,7 @@ DEBUG= -g -pg
 
 .PHONY: clean clean-test cp-lib set-ld
 
-PROG = create-build-dir build-objs so-gen cp-lib
+PROG = create-build-dir build-objs so-gen cp-lib cp-headers
 
 all: $(PROG)
 
@@ -60,6 +61,10 @@ cp-lib:
 	mkdir -p $(LIBPREFIX)
 	cp $(BUILDDIR)$(LIBNAME).$(VERSION) $(LIBPREFIX)
 	ln -sf ~/lib/$(LIBNAME).$(VERSION) $(LIBPREFIX)$(LIBNAME)
+
+cp-headers:
+	mkdir -p $(INCLPREFIX)
+	cp $(SRCDIR)*.h $(INCLPREFIX)
 	
 test-dfs: all
 	$(CC) $(CFLAGS) test/dfs.c -Isrc/ -g -ladjacency -o test/dfs

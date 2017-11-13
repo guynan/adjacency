@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <inttypes.h>
-#include "vertex.h"
+#include <vertex.h>
 
 #define BASE            10
 #define VERTICAL_LINES  32

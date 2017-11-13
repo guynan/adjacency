@@ -2,7 +2,7 @@
  * initialising and manipulating relationships betweeen vertices */
 
 
-#include "vertex.h"
+#include <vertex.h>
 
 
 /* This function breathes life into our vertex structure. We give it a 
