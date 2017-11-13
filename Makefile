@@ -46,10 +46,13 @@ create-build-dir:
 vertex.o: src/vertex.c src/vertex.h
 	$(CC) $(CFLAGS) -fPIC -c src/vertex.c
 
+graph.o: src/graph.c src/vertex.h
+	$(CC) $(CFLAGS) -fPIC -c src/graph.c
+
 fileutils.o: src/fileutils.c
 	$(CC) $(CFLAGS) -fPIC -c src/fileutils.c
 
-build-objs: vertex.o fileutils.o
+build-objs: vertex.o fileutils.o graph.o
 
 so-gen: vertex.o fileutils.o
 	$(CC) -dynamiclib -shared -Wl,-soname,$(LIBNAME) -o \
