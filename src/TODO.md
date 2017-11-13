@@ -20,3 +20,9 @@ graph object is more containerised and not a convenient alias
 
 - For searching adjacency lists, if the graph is over a specific size/density,
 it would be good to implement it as a binary search
+
+- HOLY FUCK fix the build environment - namely, find a pretty simple way of
+changing the ldconfig path. 
+
+- Make sure that when you make no changes to the C library files make doesn't 
+recompile the whole lot
