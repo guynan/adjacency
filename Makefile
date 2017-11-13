@@ -69,7 +69,7 @@ test-reverse: all
 set-ld:
 	mkdir -p ~/lib/
 	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:$(LIBPREFIX)" >> \
-			~/.bash_profile
+			~/.profile
 	. ~/.profile
 
 clean-test: 
