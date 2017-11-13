@@ -1,9 +1,8 @@
-
-
 main
 build/
 
-*.txt
+*.o
+
 gmon.out
 
 *.swp*
