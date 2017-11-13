@@ -26,3 +26,5 @@ changing the ldconfig path.
 
 - Make sure that when you make no changes to the C library files make doesn't 
 recompile the whole lot
+
+- Fix the header dependency hell that has been created
