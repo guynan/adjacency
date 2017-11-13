@@ -7,3 +7,7 @@ gmon.out
 
 *.swp*
 
+# Ignore binaries and output in test directory
+test/dfs
+test/reverse
+test/*.txt
