@@ -1,6 +1,7 @@
 
 
 main
+build/
 
 *.txt
 gmon.out
