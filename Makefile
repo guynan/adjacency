@@ -1,4 +1,6 @@
+#
 # Adjacency Makefile, Guy Nankivell, 2017
+#
 
 # Library specific options
 LIBNAME=libadjacency.so
@@ -11,8 +13,17 @@ SHELL = /bin/sh
 .SUFFIXES:
 .SUFFIXES: .c .o
 
+# This is where the shared library will get copied to. If you have permission
+# to write into /usr/local/lib, this is the most painless way to go about it.
+# Else, if you have elevated permission but do not wish to be writing the 
+# library as root whilst you are developing, edit /etc/ld.so.conf and add in
+# /home/user/lib/ and as root run ldconfig. Alternatively, export the 
+# LD_LIBRARY_FLAG to include ~/lib/ and then source your bashrc
+LIBPREFIX = ~/lib/
+#LIBPREFIX = usr/local/lib/
+
 # Prefixes for commonly used directories.
-SRCDIR= src/
+SRCDIR = src/
 TESTDIR = test/
 BUILDDIR = build/
 
@@ -44,20 +55,16 @@ so-gen: vertex.o fileutils.o
 	mv *.o $(BUILDDIR)
 	mv $(LIBNAME)* $(BUILDDIR)
 
-# This is a bit of a cheap way of doing it.
-# To use the lib directory in home, you can either export the LD_LIBRARY_PATH
-# or edit /etc/ld.so.conf && ldconfig as root. Temporary solution so I can
-# speed up debuggind time
 cp-lib:
-	mkdir -p ~/lib/
-	cp $(BUILDDIR)/$(LIBNAME).$(VERSION) ~/lib/
-	ln -sf ~/lib/$(LIBNAME).$(VERSION) ~/lib/$(LIBNAME)
+	mkdir -p $(LIBPREFIX)
+	cp $(BUILDDIR)$(LIBNAME).$(VERSION) $(LIBPREFIX)
+	ln -sf ~/lib/$(LIBNAME).$(VERSION) $(LIBPREFIX)$(LIBNAME)
 	
 test-dfs: all
-	$(CC) $(CFLAGS) test/dfs.c -Isrc/ -Lbuild/ -g -ladjacency -o test/dfs
+	$(CC) $(CFLAGS) test/dfs.c -Isrc/ -g -ladjacency -o test/dfs
 
 test-reverse: all
-	$(CC) $(CFLAGS) test/reverse.c -Isrc/ -Lbuild/ -g -ladjacency -o test/rev
+	$(CC) $(CFLAGS) test/reverse.c -Isrc/ -g -ladjacency -o test/rev
 
 clean-test: 
 	rm -rf test/*.txt dfs rev
