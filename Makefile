@@ -1,32 +1,50 @@
-CC=gcc
-CFLAGS=-Wall -Wextra -pedantic -g 
+# Adjacency Makefile, Guy Nankivell, 2017
+
+# 
+VERSION = devel
+
+# Avoid inheritance of shell from environment
+SHELL = /bin/sh
+
+# Clear implicit suffixes
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+SRCDIR= src/
+TESTDIR = test/
+
+# Compilation Options
+CC = gcc
+CFLAGS= -Wall -Wextra -pedantic 
 LFLAGS= 
-DEBUG= -pg
+DEBUG= -g -pg
+
 REVSRC= src/reverselist.c src/vertex.c src/fileutils.c
 DFSSRC= src/dfs.c src/vertex.c src/fileutils.c
 OUT=main
+LIBSRC= src/vertex.c src/fileutils.c
 GARBAGE= reverselist.txt dfs.txt
+LIBNAME=libadjacency.so
+BUILD = build
 
-all: run-dfs run-rev
+.PHONY: clean
 
-rev:
-	$(CC) $(CFLAGS) -o $(OUT) $(REVSRC) $(LFLAGS)
+all: build-lib 
 
-dfs:
-	$(CC) $(CFLAGS) -o $(OUT) $(DFSSRC) $(LFLAGS)
+build-objs:
+	$(CC) $(CFLAGS) -fPIC -c $(LIBSRC) 
 
-dfs-dbg:
-	$(CC) $(CFLAGS) -o $(OUT) $(REVSRC) $(DEBUG) $(LFLAGS)
+build-lib: build-objs
+	mkdir -p $(BUILD)
+	$(CC) -shared -Wl,-soname,$(LIBNAME) -o $(LIBNAME).$(VERSION) *.o
+	mv *.o $(BUILD)
+	mv $(LIBNAME)* $(BUILD)
+	cd $(BUILD)
+	ln -sf $(LIBNAME).$(VERSION) $(BUILD)/$(LIBNAME)
 
-rev-dbg:
-	$(CC) $(CFLAGS) -o $(OUT) $(REVSRC) $(DEBUG) $(LFLAGS)
-
-run-dfs: dfs
-	./$(OUT)
-
-run-rev: rev
-	./$(OUT)
-
+test-dfs: #build-lib
+	$(CC) $(CFLAGS) test/dfs.c -Isrc/ -Lbuild/ -g -ladjacency -o dfs
+	
 clean:
-	rm $(OUT) $(GARBAGE)
+	rm -rf $(BUILD) *.o
 
