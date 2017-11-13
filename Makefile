@@ -51,7 +51,8 @@ fileutils.o: src/fileutils.c
 build-objs: vertex.o fileutils.o
 
 so-gen: vertex.o fileutils.o
-	$(CC) -shared -Wl,-soname,$(LIBNAME) -o $(LIBNAME).$(VERSION) *.o
+	$(CC) -dynamiclib -shared -Wl,-soname,$(LIBNAME) -o \
+			$(LIBNAME).$(VERSION) *.o
 	mv *.o $(BUILDDIR)
 	mv $(LIBNAME)* $(BUILDDIR)
 
