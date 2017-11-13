@@ -33,7 +33,7 @@ CFLAGS= -Wall -Wextra -pedantic
 LFLAGS= 
 DEBUG= -g -pg
 
-.PHONY: clean clean-test cp-lib
+.PHONY: clean clean-test cp-lib set-ld
 
 PROG = create-build-dir build-objs so-gen cp-lib
 
@@ -65,6 +65,12 @@ test-dfs: all
 
 test-reverse: all
 	$(CC) $(CFLAGS) test/reverse.c -Isrc/ -g -ladjacency -o test/rev
+
+set-ld:
+	mkdir -p ~/lib/
+	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:$(LIBPREFIX)" >> \
+			~/.bash_profile
+	source ~/.bash_profile
 
 clean-test: 
 	rm -rf test/*.txt dfs rev
