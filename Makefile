@@ -1,6 +1,7 @@
 # Adjacency Makefile, Guy Nankivell, 2017
 
-# 
+# Library specific options
+LIBNAME=libadjacency.so
 VERSION = devel
 
 # Avoid inheritance of shell from environment
@@ -10,22 +11,16 @@ SHELL = /bin/sh
 .SUFFIXES:
 .SUFFIXES: .c .o
 
+# Prefixes for commonly used directories.
 SRCDIR= src/
 TESTDIR = test/
+BUILDDIR = build/
 
 # Compilation Options
 CC = gcc
 CFLAGS= -Wall -Wextra -pedantic 
 LFLAGS= 
 DEBUG= -g -pg
-
-REVSRC= src/reverselist.c src/vertex.c src/fileutils.c
-DFSSRC= src/dfs.c src/vertex.c src/fileutils.c
-OUT=main
-LIBSRC= src/vertex.c src/fileutils.c
-GARBAGE= reverselist.txt dfs.txt
-LIBNAME=libadjacency.so
-BUILD = build
 
 .PHONY: clean clean-test cp-lib
 
@@ -34,7 +29,7 @@ PROG = create-build-dir build-objs so-gen cp-lib
 all: $(PROG)
 
 create-build-dir: 
-	mkdir -p $(BUILD)
+	mkdir -p $(BUILDDIR)
 
 vertex.o: src/vertex.c src/vertex.h
 	$(CC) $(CFLAGS) -fPIC -c src/vertex.c
@@ -46,18 +41,18 @@ build-objs: vertex.o fileutils.o
 
 so-gen: vertex.o fileutils.o
 	$(CC) -shared -Wl,-soname,$(LIBNAME) -o $(LIBNAME).$(VERSION) *.o
-	mv *.o $(BUILD)
-	mv $(LIBNAME)* $(BUILD)
+	mv *.o $(BUILDDIR)
+	mv $(LIBNAME)* $(BUILDDIR)
 
+# This is a bit of a cheap way of doing it.
+# To use the lib directory in home, you can either export the LD_LIBRARY_PATH
+# or edit /etc/ld.so.conf && ldconfig as root. Temporary solution so I can
+# speed up debuggind time
 cp-lib:
 	mkdir -p ~/lib/
-	cp $(BUILD)/$(LIBNAME).$(VERSION) ~/lib/
+	cp $(BUILDDIR)/$(LIBNAME).$(VERSION) ~/lib/
 	ln -sf ~/lib/$(LIBNAME).$(VERSION) ~/lib/$(LIBNAME)
 	
-#build-lib: create-build-dir build-objs
-#	cd $(BUILD)
-#	ln -sf $(LIBNAME).$(VERSION) $(BUILD)/$(LIBNAME)
-
 test-dfs: all
 	$(CC) $(CFLAGS) test/dfs.c -Isrc/ -Lbuild/ -g -ladjacency -o test/dfs
 
@@ -67,12 +62,6 @@ test-reverse: all
 clean-test: 
 	rm -rf test/*.txt dfs rev
 
-
-# This is a bit of a cheap way of doing it.
-# To use the lib directory in home, you can either export the LD_LIBRARY_PATH
-# or edit /etc/ld.so.conf && ldconfig as root. Temporary solution so I can
-# speed up debuggind time
-	
-clean:
-	rm -rf $(BUILD) *.o
+clean: clean-test
+	rm -rf $(BUILDDIR) *.o
 
