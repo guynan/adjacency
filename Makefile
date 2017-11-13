@@ -70,7 +70,7 @@ set-ld:
 	mkdir -p ~/lib/
 	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:$(LIBPREFIX)" >> \
 			~/.bash_profile
-	source ~/.bash_profile
+	. ~/.bash_profile
 
 clean-test: 
 	rm -rf test/*.txt dfs rev
