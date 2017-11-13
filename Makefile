@@ -43,8 +43,12 @@ all: $(PROG)
 create-build-dir: 
 	mkdir -p $(BUILDDIR)
 
-vertex.o: src/vertex.c src/vertex.h
+# Object files for dependency checks at compile time
+vertex.o: src/vertex.c src/vertex.h src/meta.h
 	$(CC) $(CFLAGS) -fPIC -c src/vertex.c
+
+meta.o: src/meta.c src/meta.h
+	$(CC) $(CFLAGS) -fPIC -c src/meta.c
 
 graph.o: src/graph.c src/vertex.h
 	$(CC) $(CFLAGS) -fPIC -c src/graph.c
@@ -52,7 +56,7 @@ graph.o: src/graph.c src/vertex.h
 fileutils.o: src/fileutils.c
 	$(CC) $(CFLAGS) -fPIC -c src/fileutils.c
 
-build-objs: vertex.o fileutils.o graph.o
+build-objs: vertex.o fileutils.o graph.o meta.o
 
 so-gen: vertex.o fileutils.o
 	$(CC) -dynamiclib -shared -Wl,-soname,$(LIBNAME) -o \

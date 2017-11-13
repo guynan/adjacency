@@ -20,23 +20,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <inttypes.h>
-
-
-/* I have not decided upon whether this is the path that I would like to take,
- * though there is a lot of associated data that pertains to particular vertex.
- * This structure would be initialised whenever a variable is calculated for 
- * particularly expensive calculations, effectively caching the data so
- * subsequent calculations are more rapid. It will by default not be
- * initialised so to initially speed up the setup of the Vertex structure and
- * not compromise the complexity if you are only dealing with very simple graph
- * problems. This will probably include data such as the in degree, out degree,
- * density, order and I will probably eschew the reversed by and visited
- * attributes from the vertex structure as they are pretty niche. */
-typedef struct {
-        uint32_t inDegree;
-        uint32_t outDegree;
-        double density;
-} __vertexmeta__, *vertexmeta;
+#include "meta.h"
 
 
 /* Contains a distinguishing id (for human readable purposes), pointer
@@ -72,7 +56,6 @@ int isAdjacent(Vertex v, Vertex adj);
 void sortGraph(Graph g, uint32_t n);
 uint32_t degree(Vertex v, char f);
 Vertex* initVertices(uint32_t n);
-vertexmeta initVertexmeta(void);
 void printAdjacent(Vertex v);
 void reverseArcs(Vertex v);
 void freeVertex(Vertex v);
