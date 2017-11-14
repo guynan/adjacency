@@ -1,11 +1,9 @@
 
-#include <stdlib.h>
-#include <stdint.h>
-
-
 #ifndef         __VERTEX_META_H__
 #define         __VERTEX_META_H__
 
+#include <stdlib.h>
+#include <stdint.h>
 
 /* I have not decided upon whether this is the path that I would like to take,
  * though there is a lot of associated data that pertains to particular vertex.

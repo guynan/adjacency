@@ -30,6 +30,7 @@ BUILDDIR = build/
 
 # Compilation Options
 CC = gcc
+#CC = clang
 CFLAGS= -Wall -Wextra -pedantic 
 LFLAGS= 
 DEBUG= -g -pg
@@ -37,6 +38,11 @@ DEBUG= -g -pg
 .PHONY: clean clean-test cp-lib set-ld
 
 PROG = create-build-dir build-objs so-gen cp-lib cp-headers
+
+# Dumb way of passing the correct compiler options
+ifeq ($(CC),clang)
+	PROG = create-build-dir build-objs so-gen-clang cp-lib cp-headers
+endif
 
 all: $(PROG)
 
@@ -53,13 +59,19 @@ meta.o: src/meta.c src/meta.h
 graph.o: src/graph.c src/vertex.h src/graph.h
 	$(CC) $(CFLAGS) -fPIC -c src/graph.c
 
-fileutils.o: src/fileutils.c
+fileutils.o: src/fileutils.c src/fileutils.h
 	$(CC) $(CFLAGS) -fPIC -c src/fileutils.c
 
 build-objs: vertex.o fileutils.o graph.o meta.o
 
 so-gen: vertex.o fileutils.o
 	$(CC) -dynamiclib -shared -Wl,-soname,$(LIBNAME) -o \
+			$(LIBNAME).$(VERSION) *.o
+	mv *.o $(BUILDDIR)
+	mv $(LIBNAME)* $(BUILDDIR)
+
+so-gen-clang: vertex.o fileutils.o
+	$(CC) -dynamiclib -shared -Wl,-install_name,$(LIBNAME) -o \
 			$(LIBNAME).$(VERSION) *.o
 	mv *.o $(BUILDDIR)
 	mv $(LIBNAME)* $(BUILDDIR)
@@ -77,7 +89,7 @@ test-dfs: all
 	$(CC) $(CFLAGS) test/dfs.c -Isrc/ -g -ladjacency -o test/dfs
 
 test-reverse: all
-	$(CC) $(CFLAGS) test/reverse.c -Isrc/ -g -ladjacency -o test/rev
+	$(CC) $(CFLAGS) test/reverselist.c -Isrc/ -g -ladjacency -o test/rev
 
 set-ld:
 	mkdir -p ~/lib/
@@ -86,7 +98,7 @@ set-ld:
 	. ~/.profile
 
 clean-test: 
-	rm -rf test/*.txt dfs rev
+	rm -rf test/*.txt test/dfs test/rev
 
 clean: clean-test
 	rm -rf $(BUILDDIR) *.o

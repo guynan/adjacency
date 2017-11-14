@@ -5,13 +5,12 @@
 
 #include "vertex.h"
 #include "graph.h"
+#include "fileutils.h"
 
 #define LINE_SIZE               128
 #define FILE_PATH               "data/list.txt"
 #define FILE_OUT                "./reverselist.txt"
 
-extern void writeAdjacencyList(Graph g, const char* path, uint32_t n);
-extern uint32_t** parseFile(const char* path, size_t ls);
 void freeAdjacencyList(uint32_t** adjlist);
 uint32_t countAdjList(uint32_t** adj);
 int main(int argc, char** argv);
@@ -26,14 +25,15 @@ int main(int argc, char** argv)
 
         uint32_t count = countAdjList(adjlist);
 
-        Graph g = initVertices(count);
+        Vertex* vs = initVertices(count);
+        Graph g = initGraph(vs, count);
 
-        linkVertices(g, adjlist, count);
+        linkVertices(g, adjlist);
         freeAdjacencyList(adjlist);
-        reverseGraph(g, count);
-        sortGraph(g, count);
+        reverseGraph(g);
+        sortGraph(g);
 
-        writeAdjacencyList(g, FILE_OUT, count);
+        writeAdjacencyList(g, FILE_OUT);
 
         freeGraph(g);
 

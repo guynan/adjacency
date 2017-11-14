@@ -1,23 +1,7 @@
 /* This compilation unit deals with general file i/o */
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <inttypes.h>
-#include "graph.h"
-#include "vertex.h"
-
-#define BASE            10
-#define VERTICAL_LINES  32
 
 
-void writeDFS(Vertex** tmp, const char* path, uint32_t n);
-void writeAdjacencyList(Graph g, const char* path);
-uint32_t** parseFile(const char* path, size_t ls);
-uint32_t* readVertices(char* line, uint32_t ls);
-void writeAdjacent(Vertex v, FILE* file);
-int main(int argc, char** argv);
-uint32_t strtoint(char* s);
+#include "fileutils.h"
 
 
 /* The path to the file and the *proposed* size of the line are passed in
