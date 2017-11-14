@@ -1,9 +1,10 @@
 #include "vertex.h"
 #include "graph.h"
 
+
 void printGraph(Graph g)
 {
-        Graph tmp = g;
+        Vertex* tmp = g;
         
         for(uint32_t i = 0; i < g->count; i++){
                 if(!tmp[i]) continue;
@@ -20,18 +21,20 @@ void printGraph(Graph g)
 /* We initially iterate over the graph and reverse all the arcs in it. After
  * this, we reset all the reversedBy arrays to NULL such that subsequent 
  * reversals will not be polluted by the previous. */
-void reverseGraph(Graph g, uint32_t n)
+void reverseGraph(Graph g)
 {
-        for(uint32_t i = 0; i < n; i++){
+        for(uint32_t i = 0; i < g->count; i++){
                 if(!g[i]) continue;
                 reverseArcs(g[i]);
         }
 
-        /* Make the graph reversible again */
-        for(uint32_t i = 0; i < n; i++){
-                if(!g[i]) continue;
+        Vertex* vs = graph->vertices;
 
-                Vertex v = g[i];
+        /* Make the graph reversible again */
+        for(uint32_t i = 0; i < g->count; i++){
+                if(!vs[i]) continue;
+
+                Vertex v = vs[i];
                 for(uint32_t i = 0; i < v->count; i++){
                         v->reversedBy[i] = NULL;
                 }

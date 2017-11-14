@@ -4,14 +4,15 @@
 #include <stdint.h>
 #include <string.h>
 #include <inttypes.h>
-#include <vertex.h>
+#include "graph.h"
+#include "vertex.h"
 
 #define BASE            10
 #define VERTICAL_LINES  32
 
 
-void writeAdjacencyList(Graph g, const char* path, uint32_t n);
-void writeDFS(Graph* tmp, const char* path, uint32_t n);
+void writeDFS(Vertex** tmp, const char* path, uint32_t n);
+void writeAdjacencyList(Graph g, const char* path);
 uint32_t** parseFile(const char* path, size_t ls);
 uint32_t* readVertices(char* line, uint32_t ls);
 void writeAdjacent(Vertex v, FILE* file);
@@ -106,9 +107,9 @@ uint32_t strtoint(char* s)
 }
 
 
-void writeAdjacencyList(Graph g, const char* path, uint32_t n)
+void writeAdjacencyList(Graph g, const char* path)
 {
-        Graph tmp = g;
+        Vertex* tmp = g->vertices;
 
         FILE *file = fopen(path, "w");
 
@@ -118,7 +119,7 @@ void writeAdjacencyList(Graph g, const char* path, uint32_t n)
         }
 
         
-        for(uint32_t i = 0; i < n; i++){
+        for(uint32_t i = 0; i < g->count; i++){
 
                 if(!tmp[i]) continue;
 
@@ -162,7 +163,7 @@ void writeAdjacent(Vertex v, FILE* file)
 }
 
 
-void writeDFS(Graph* tmp, const char* path, uint32_t n)
+void writeDFS(Vertex** tmp, const char* path, uint32_t n)
 {
         FILE *file = fopen(path, "w");
 
@@ -171,7 +172,7 @@ void writeDFS(Graph* tmp, const char* path, uint32_t n)
                 exit(1);
         }
 
-        Graph* dfs = tmp;
+        Vertex** dfs = tmp;
 
         if(!dfs) return;
 
@@ -181,7 +182,7 @@ void writeDFS(Graph* tmp, const char* path, uint32_t n)
 
                 if(!dfs[i]) continue;
 
-                Graph k = dfs[i];
+                Vertex* k = dfs[i];
 
                 for(uint32_t j  = 0; j < n; j++){
                         Vertex v = k[j];
