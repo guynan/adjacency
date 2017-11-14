@@ -198,25 +198,6 @@ Vertex* initVertices(uint32_t n)
 }
 
 
-/* Links the `n` vertices according to the adjacency list provided */
-void linkVertices(Vertex* vertices, uint32_t** adjlist, uint32_t n)
-{
-        for(uint32_t i = 0; i < n; i++){
-
-                uint32_t* line = adjlist[i];
-                for(uint32_t j = 0; j < n; j++){
-                        if(!line[j]) break;
-
-                        /* To understand this hack see initVertex */
-                        if(line[j] == (uint32_t) -1) line[j] = 0;
-                        addAdjacent(vertices[i], vertices[line[j]]);
-                }
-        }
-
-        return;
-}
-
-
 /* Checks to see if the vertex v has reversed the arc between v and adj */
 int reversedBy(Vertex v, Vertex adj)
 {

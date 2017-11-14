@@ -2,9 +2,25 @@
 #include "graph.h"
 
 
+Graph initGraph(Vertex* vs, uint32_t n)
+{
+        
+        Graph g = calloc(n, sizeof(__graph));
+
+        if(!g)
+                return NULL;
+
+        g->vertices = vs;
+        g->count = n;
+
+        return g;
+
+}
+
+
 void printGraph(Graph g)
 {
-        Vertex* tmp = g;
+        Vertex* tmp = g->vertices;
         
         for(uint32_t i = 0; i < g->count; i++){
                 if(!tmp[i]) continue;
@@ -23,12 +39,13 @@ void printGraph(Graph g)
  * reversals will not be polluted by the previous. */
 void reverseGraph(Graph g)
 {
-        for(uint32_t i = 0; i < g->count; i++){
-                if(!g[i]) continue;
-                reverseArcs(g[i]);
-        }
 
-        Vertex* vs = graph->vertices;
+        Vertex* vs = g->vertices;
+
+        for(uint32_t i = 0; i < g->count; i++){
+                if(!vs[i]) continue;
+                reverseArcs(vs[i]);
+        }
 
         /* Make the graph reversible again */
         for(uint32_t i = 0; i < g->count; i++){
@@ -65,11 +82,11 @@ void freeGraph(Graph g)
 
 /* Should be distinguished from the freeGraph function as it does *not* free
  * and vertices that have been inserted into this structure. */
-void freeGraphP(Graph* gp, uint32_t n)
+void freeGraphP(Vertex** gp, uint32_t n)
 {
         /* Revise this strucure */
         return;
-        Graph* tmp  = gp;
+        Vertex** tmp  = gp;
 
         if(!tmp) return;
 
@@ -104,10 +121,10 @@ void sortGraph(Graph g)
 
 /* This function takes a graph and explores all the sub graphs in the dfs
  * forest, and returning the order in which they are visited */
-Graph* DFSForrest(Graph g)
+Vertex** DFSForrest(Graph g)
 {
 
-        Graph* forrestOrder = calloc(n, sizeof(Graph));
+        Vertex** forrestOrder = calloc(g->count, sizeof(Vertex*));
 
         Vertex* vs = g->vertices;
         /* This should run once for each forrest */
@@ -158,6 +175,28 @@ void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s)
 
         dfsOrder[(*s)++] = v;
         
+}
+
+
+/* Links the `n` vertices according to the adjacency list provided */
+void linkVertices(Graph g, uint32_t** adjlist)
+{
+        uint32_t n = g->count;
+        Vertex* vs = g->vertices;
+
+        for(uint32_t i = 0; i < n; i++){
+
+                uint32_t* line = adjlist[i];
+                for(uint32_t j = 0; j < n; j++){
+                        if(!line[j]) break;
+
+                        /* To understand this hack see initVertex */
+                        if(line[j] == (uint32_t) -1) line[j] = 0;
+                        addAdjacent(vs[i], vs[line[j]]);
+                }
+        }
+
+        return;
 }
 
 

@@ -39,7 +39,6 @@ typedef struct _vertex {
 
 
 /* Vertex compilation unit function prototypes */
-void linkVertices(Vertex* vertices, uint32_t** adjlist, uint32_t n);
 int vertexCompare(const void* a, const void* b);
 void insertReversedBy(Vertex v, Vertex adj);
 Vertex initVertex(uint32_t vid, uint32_t n);

@@ -8,7 +8,7 @@
 #define FILE_OUT                "./dfs.txt"
 
 extern uint32_t** parseFile(const char* path, size_t ls);
-extern void writeDFS(Graph* tmp, const char* path, uint32_t n);
+extern void writeDFS(Vertex** tmp, const char* path, uint32_t n);
 void freeAdjacencyList(uint32_t** adjlist);
 uint32_t countAdjList(uint32_t** adj);
 int main(int argc, char** argv);
@@ -23,13 +23,15 @@ int main(int argc, char** argv)
 
         uint32_t count = countAdjList(adjlist);
 
-        Graph g = initVertices(count);
-        sortGraph(g, count);
+        Vertex* vs = initVertices(count);
+        Graph g = initGraph(vs, count);
+        
+        sortGraph(g);
 
-        linkVertices(g, adjlist, count);
+        linkVertices(g, adjlist);
         freeAdjacencyList(adjlist);
         
-        Graph* dfs = DFSForrest(g, count);
+        Vertex** dfs = DFSForrest(g);
         writeDFS(dfs, FILE_OUT, count);
 
         freeGraphP(dfs, count);
