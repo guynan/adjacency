@@ -37,11 +37,11 @@ DEBUG= -g -pg
 
 .PHONY: clean clean-test cp-lib set-ld
 
-PROG = create-build-dir build-objs so-gen cp-lib cp-headers
+PROG = create-build-dir so-gen cp-lib cp-headers
 
 # Dumb way of passing the correct compiler options
 ifeq ($(CC),clang)
-	PROG = create-build-dir build-objs so-gen-clang cp-lib cp-headers
+	PROG = create-build-dir so-gen-clang cp-lib cp-headers
 endif
 
 all: $(PROG)
@@ -67,7 +67,7 @@ adjlist.o: src/adjlist.c src/adjlist.h
 
 build-objs: vertex.o fileutils.o graph.o meta.o adjlist.o
 
-so-gen: vertex.o fileutils.o
+so-gen: build-objs
 	$(CC) -dynamiclib -shared -Wl,-soname,$(LIBNAME) -o \
 			$(LIBNAME).$(VERSION) *.o
 	mv *.o $(BUILDDIR)

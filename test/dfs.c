@@ -3,15 +3,13 @@
 #include "vertex.h"
 #include "graph.h"
 #include "adjlist.h"
+#include "fileutils.h"
 
 #define LINE_SIZE               128
 #define FILE_PATH               "data/list.txt"
 #define FILE_OUT                "./dfs.txt"
 
 extern uint32_t** parseFile(const char* path, size_t ls);
-extern void writeDFS(Vertex** tmp, const char* path, uint32_t n);
-void freeAdjacencyList(uint32_t** adjlist);
-uint32_t countAdjList(uint32_t** adj);
 int main(int argc, char** argv);
 
 
@@ -27,8 +25,6 @@ int main(int argc, char** argv)
         Vertex* vs = initVertices(count);
         Graph g = initGraph(vs, count);
         
-        sortGraph(g);
-
         linkVertices(g, adjlist);
         freeAdjacencyList(adjlist);
         
