@@ -2,6 +2,7 @@
 
 #include "vertex.h"
 #include "graph.h"
+#include "adjlist.h"
 
 #define LINE_SIZE               128
 #define FILE_PATH               "data/list.txt"
@@ -40,29 +41,4 @@ int main(int argc, char** argv)
 
         return 0;
 }
-
-
-uint32_t countAdjList(uint32_t** adj)
-{
-        uint32_t** tmp = adj;
-        uint32_t c = 0;
-
-        for( ; *tmp++; c++)
-                ;
-
-        return c;
-}
-
-
-void freeAdjacencyList(uint32_t** adjlist)
-{
-        uint32_t** a = adjlist;
-        while(*a) free(*a++);
-                
-        free(adjlist);
-
-        return;
-
-}
-
 

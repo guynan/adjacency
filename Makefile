@@ -62,7 +62,10 @@ graph.o: src/graph.c src/vertex.h src/graph.h
 fileutils.o: src/fileutils.c src/fileutils.h
 	$(CC) $(CFLAGS) -fPIC -c src/fileutils.c
 
-build-objs: vertex.o fileutils.o graph.o meta.o
+adjlist.o: src/adjlist.c src/adjlist.h
+	$(CC) $(CFLAGS) -fPIC -c src/adjlist.c
+
+build-objs: vertex.o fileutils.o graph.o meta.o adjlist.o
 
 so-gen: vertex.o fileutils.o
 	$(CC) -dynamiclib -shared -Wl,-soname,$(LIBNAME) -o \
