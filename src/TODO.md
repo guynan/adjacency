@@ -28,3 +28,5 @@ changing the ldconfig path.
 recompile the whole lot
 
 - Fix the header dependency hell that has been created
+
+- Implement weighted edges
