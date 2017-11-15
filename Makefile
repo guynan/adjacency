@@ -30,10 +30,15 @@ BUILDDIR = build/
 
 # Compilation Options
 CC = gcc
-#CC = clang
 CFLAGS= -Wall -Wextra -pedantic 
 LFLAGS= 
 DEBUG= -g -pg
+
+# Crude compiler detection
+CLANG := $(shell command  -v clang --version 2> /dev/null)
+ifdef CLANG
+	CC = clang
+endif
 
 .PHONY: clean clean-test cp-lib set-ld
 
@@ -73,7 +78,7 @@ so-gen: build-objs
 	mv *.o $(BUILDDIR)
 	mv $(LIBNAME)* $(BUILDDIR)
 
-so-gen-clang: vertex.o fileutils.o
+so-gen-clang: build-objs
 	$(CC) -dynamiclib -shared -Wl,-install_name,$(LIBNAME) -o \
 			$(LIBNAME).$(VERSION) *.o
 	mv *.o $(BUILDDIR)
@@ -97,6 +102,8 @@ test-reverse: all
 set-ld:
 	mkdir -p ~/lib/
 	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:$(LIBPREFIX)" >> \
+			~/.profile
+	echo "export LIBRARY_PATH=\$$LIBRARY_PATH:$(LIBPREFIX)" >> \
 			~/.profile
 	. ~/.profile
 
