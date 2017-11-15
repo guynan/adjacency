@@ -99,6 +99,8 @@ test-dfs: all
 test-reverse: all
 	$(CC) $(CFLAGS) test/reverselist.c -Isrc/ -g -ladjacency -o test/rev
 
+tests: test-dfs test-reverse
+
 set-ld:
 	mkdir -p ~/lib/
 	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:$(LIBPREFIX)" >> \

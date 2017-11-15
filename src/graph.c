@@ -11,7 +11,7 @@ Graph initGraph(Vertex* vs, uint32_t n)
                 return NULL;
 
         g->vertices = vs;
-        g->count = n;
+        g->order= n;
 
         return g;
 
@@ -22,7 +22,7 @@ void printGraph(Graph g)
 {
         Vertex* tmp = g->vertices;
         
-        for(uint32_t i = 0; i < g->count; i++){
+        for(uint32_t i = 0; i < g->order; i++){
                 if(!tmp[i]) continue;
 
                 printAdjacent(tmp[i]);
@@ -42,13 +42,13 @@ void reverseGraph(Graph g)
 
         Vertex* vs = g->vertices;
 
-        for(uint32_t i = 0; i < g->count; i++){
+        for(uint32_t i = 0; i < g->order; i++){
                 if(!vs[i]) continue;
                 reverseArcs(vs[i]);
         }
 
         /* Make the graph reversible again */
-        for(uint32_t i = 0; i < g->count; i++){
+        for(uint32_t i = 0; i < g->order; i++){
                 if(!vs[i]) continue;
 
                 Vertex v = vs[i];
@@ -104,7 +104,7 @@ void freeGraphP(Vertex** gp, uint32_t n)
 void sortGraph(Graph g)
 {
         if(!g) return;
-        uint32_t n = g->count;
+        uint32_t n = g->order;
 
         Vertex* vs = g->vertices;
 
@@ -124,15 +124,15 @@ void sortGraph(Graph g)
 Vertex** DFSForrest(Graph g)
 {
 
-        Vertex** forrestOrder = calloc(g->count, sizeof(Vertex*));
+        Vertex** forrestOrder = calloc(g->order, sizeof(Vertex*));
 
         Vertex* vs = g->vertices;
         /* This should run once for each forrest */
-        for(uint32_t i = 0; i < g->count; i++){
+        for(uint32_t i = 0; i < g->order; i++){
 
                 if(vs[i]->visited) continue;
 
-                Vertex* dfsOrder = calloc(g->count, sizeof(Vertex));
+                Vertex* dfsOrder = calloc(g->order, sizeof(Vertex));
 
                 uint32_t k = 0;
                 uint32_t* s = &k;
@@ -181,7 +181,7 @@ void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s)
 /* Links the `n` vertices according to the adjacency list provided */
 void linkVertices(Graph g, uint32_t** adjlist)
 {
-        uint32_t n = g->count;
+        uint32_t n = g->order;
         Vertex* vs = g->vertices;
 
         for(uint32_t i = 0; i < n; i++){

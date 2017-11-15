@@ -12,7 +12,7 @@
  * manipulations can be performed on the structure */
 typedef struct {
         Vertex* vertices;
-        uint32_t count;
+        uint32_t order;
 } __graph, *Graph;
 
 

@@ -103,7 +103,7 @@ void writeAdjacencyList(Graph g, const char* path)
         }
 
         
-        for(uint32_t i = 0; i < g->count; i++){
+        for(uint32_t i = 0; i < g->order; i++){
 
                 if(!tmp[i]) continue;
 
