@@ -296,3 +296,15 @@ uint32_t countAdjacencyList(Vertex v)
         return 0;
 }
 
+
+Vertex* getAdjacent(Vertex v)
+{
+        return v->adjacent;
+}
+
+
+uint32_t getVertexId(Vertex v)
+{
+        return v->id;
+}
+
