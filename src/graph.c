@@ -42,6 +42,11 @@ void reverseGraph(Graph g)
 
         Vertex* vs = g->vertices;
 
+        /* Fix this ... */
+        for(uint32_t i = 0; i < g->order; i++){
+                __initReversedBy(vs[i]);
+        }
+
         for(uint32_t i = 0; i < g->order; i++){
                 if(!vs[i]) continue;
                 reverseArcs(vs[i]);

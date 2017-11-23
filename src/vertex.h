@@ -49,6 +49,7 @@ int reversedBy(Vertex v, Vertex adj);
 int isAdjacent(Vertex v, Vertex adj);
 uint32_t degree(Vertex v, char f);
 Vertex* initVertices(uint32_t n);
+void __initReversedBy(Vertex v);
 uint32_t getVertexId(Vertex v);
 Vertex* getAdjacent(Vertex v);
 void printAdjacent(Vertex v);

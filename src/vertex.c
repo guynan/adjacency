@@ -23,7 +23,7 @@ Vertex initVertex(uint32_t vid, uint32_t n)
         v->id = vid;
         v->adjacent = calloc((n + 1), sizeof(Vertex));
         v->count = n;
-        v->reversedBy = calloc((n + 1), sizeof(Vertex));
+        v->reversedBy = NULL;
         v->visited = 0;
         v->meta = NULL;
 
@@ -195,6 +195,19 @@ Vertex* initVertices(uint32_t n)
 
         return vert;
 
+}
+
+
+void __initReversedBy(Vertex v)
+{
+        void* b = calloc((v->count + 1), sizeof(Vertex));
+
+        /* Do something */
+        if(!b) return;
+
+        v->reversedBy = b;
+
+        return;
 }
 
 
