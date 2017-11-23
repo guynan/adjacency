@@ -21,10 +21,11 @@ Vertex initVertex(uint32_t vid, uint32_t n)
         Vertex v = calloc(1, sizeof(__vertex));
 
         v->id = vid;
-        v->adjacent = calloc((n + 1), sizeof(Vertex));
+        v->adjacent = NULL;
+//        v->adjacent = calloc((n + 1), sizeof(Vertex));
         v->count = n;
         v->reversedBy = NULL;
-        v->visited = 0;
+        memset(&v->flags, 0, sizeof(struct _vflags));
         v->meta = NULL;
 
         return v;
@@ -165,12 +166,20 @@ void printAdjacent(Vertex v)
 /* Frees all resources associated with a Vertex */
 void freeVertex(Vertex v)
 {
-        if(v && v->adjacent){
+        if(!v) return;
+
+        if(v->reversedBy){
                 free(v->reversedBy);
+                v->reversedBy = NULL;
+        }
+
+        if(v->adjacent){
                 free(v->adjacent);
-                free(v);
+                v->adjacent = NULL;
         }
         
+        free(v);
+
         return;
 }
 

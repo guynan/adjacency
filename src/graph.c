@@ -11,7 +11,8 @@ Graph initGraph(Vertex* vs, uint32_t n)
                 return NULL;
 
         g->vertices = vs;
-        g->order= n;
+        g->order = n;
+        memset(&g->flags, 0, sizeof(struct _gflags));
 
         return g;
 
@@ -39,12 +40,14 @@ void printGraph(Graph g)
  * reversals will not be polluted by the previous. */
 void reverseGraph(Graph g)
 {
-
+         
         Vertex* vs = g->vertices;
 
-        /* Fix this ... */
-        for(uint32_t i = 0; i < g->order; i++){
-                __initReversedBy(vs[i]);
+
+        if(!g->flags.REVERSED){
+                for(uint32_t i = 0; i < g->order; i++){
+                        __initReversedBy(vs[i]);
+                }
         }
 
         for(uint32_t i = 0; i < g->order; i++){
@@ -70,17 +73,18 @@ void reverseGraph(Graph g)
 /* Takes a graph object and frees the vertices by calling freeVertex */
 void freeGraph(Graph g)
 {
-        Graph tmp = g;
         if(!g) return;
 
         if(!g->vertices)
                 return;
 
-        while(*(g->vertices)){
-                freeVertex(*(g->vertices)++);
+        for(uint32_t i = 0; i < g->order; i++){
+                freeVertex(g->vertices[i]);
         }
 
-        free(tmp);
+        free(g->vertices);
+
+        free(g);
 
 }
 
@@ -135,7 +139,7 @@ Vertex** DFSForrest(Graph g)
         /* This should run once for each forrest */
         for(uint32_t i = 0; i < g->order; i++){
 
-                if(vs[i]->visited) continue;
+                if(vs[i]->flags.VISITED) continue;
 
                 Vertex* dfsOrder = calloc(g->order, sizeof(Vertex));
 
@@ -165,11 +169,13 @@ void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s)
 {
         if(!v) return;
 
-        v->visited = 1;
+        v->flags.VISITED = 1;
+
         Vertex* adjacent = v->adjacent;
         for(uint32_t i = 0; i < v->count; i++){
                 if(!adjacent[i]) continue;
-                if(!adjacent[i]->visited){
+
+                if(!(adjacent[i]->flags.VISITED)){
                         DFS(adjacent[i], dfsOrder, s);
                 }
         }

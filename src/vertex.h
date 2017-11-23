@@ -1,4 +1,7 @@
 
+#ifndef         __VERTEX_220_H__
+#define         __VERTEX_220_H__
+
 /* Note: This has been purposely over-engineered. I liked the idea of
  * structures in memory and the idea that pointers between them formed the arcs
  * of the graph. Though in saying that, there is machinery here that would be
@@ -13,14 +16,23 @@
  * pointer takes up no more room than a 64 bit integer meaning manipulating
  * these complex structures is not a great processing hardship. */
 
-#ifndef         __VERTEX_220_H__
-#define         __VERTEX_220_H__
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 #include <inttypes.h>
 #include "meta.h"
+
+
+/* The flag construction is so that we can store many boolean values in what is
+ * the perfect array -- an unsigned integer. As we only need single bits to
+ * register these values, below are the masks that make it easy to address
+ * these in code. Supports 8 boolean values */
+struct _vflags {
+        uint8_t VISITED         : 1;
+        uint8_t REVERSED        : 1;
+        uint8_t                 : 6;
+};
 
 
 /* Contains a distinguishing id (for human readable purposes), pointer
@@ -29,13 +41,14 @@
  * array of adjacent vertices. The amount of vertices that are allocated
  * for are also stored in eletotal; read: element total */
 typedef struct _vertex {
-        uint32_t id;
-        struct _vertex** adjacent;
-        uint32_t count;
-        struct _vertex** reversedBy;
-        uint16_t visited;
-        vertexmeta meta;
+        uint32_t                id;
+        struct _vertex**        adjacent;
+        uint32_t                count;
+        struct _vertex**        reversedBy;
+        struct _vflags          flags;
+        vertexmeta              meta;
 } __vertex, *Vertex;
+
 
 
 /* Vertex compilation unit function prototypes */

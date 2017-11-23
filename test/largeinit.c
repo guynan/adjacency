@@ -11,7 +11,7 @@ int main(int argc, char** argv)
         (void) argv;
 
 
-        uint32_t k = 100000;
+        uint32_t k = 1000000;
 
         Vertex* vs = initVertices(k);
         Graph g = initGraph(vs, k);
