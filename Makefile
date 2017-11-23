@@ -35,10 +35,10 @@ LFLAGS=
 DEBUG= -g -pg
 
 # Crude compiler detection
-CLANG := $(shell command  -v clang --version 2> /dev/null)
-ifdef CLANG
-	CC = clang
-endif
+#CLANG := $(shell command  -v clang --version 2> /dev/null)
+#ifdef CLANG
+#	CC = clang
+#endif
 
 .PHONY: clean clean-test cp-lib set-ld
 
