@@ -99,7 +99,10 @@ test-dfs: all
 test-reverse: all
 	$(CC) $(CFLAGS) test/reverselist.c -Isrc/ -g -ladjacency -o test/rev
 
-tests: test-dfs test-reverse
+test-init: all
+	$(CC) $(CFLAGS) test/largeinit.c -Isrc/ -g -ladjacency -o test/init
+
+tests: test-dfs test-reverse test-init
 
 set-ld:
 	mkdir -p ~/lib/
@@ -110,7 +113,7 @@ set-ld:
 	. ~/.profile
 
 clean-test: 
-	rm -rf test/*.txt test/dfs test/rev
+	rm -rf test/*.txt test/dfs test/rev test/init
 
 clean: clean-test
 	rm -rf $(BUILDDIR) *.o
