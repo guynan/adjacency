@@ -1,6 +1,6 @@
 
-#ifndef         __VERTEX_META_H__
-#define         __VERTEX_META_H__
+#ifndef         __ADJACENCY_VERTEX_META__
+#define         __ADJACENCY_VERTEX_META__
 
 #include <stdlib.h>
 #include <stdint.h>

@@ -1,7 +1,6 @@
 
-
-#ifndef         __GRAPH_ADJ_H__
-#define         __GRAPH_ADJ_H__
+#ifndef         __ADJACENCY_GRAPH__
+#define         __ADJACENCY_GRAPH__
 
 #include "vertex.h"
 

@@ -1,6 +1,6 @@
 
-#ifndef __ADJACENCY_W_GRAPH__
-#define __ADJACENCY_W_GRAPH__
+#ifndef         __ADJACENCY_W_GRAPH__
+#define         __ADJACENCY_W_GRAPH__
 
 #include "edgeweight.h"
 #include <stdint.h>

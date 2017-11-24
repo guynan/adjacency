@@ -1,6 +1,6 @@
 
-#ifndef __FILEUTILS_ADJACENCY__
-#define __FILEUTILS_ADJACENCY__
+#ifndef         __ADJACENCY_FILEUTILS__
+#define         __ADJACENCY_FILEUTILS__
 
 #include <stdio.h>
 #include <stdlib.h>

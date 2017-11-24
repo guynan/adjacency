@@ -1,6 +1,6 @@
 
-#ifndef         __VERTEX_220_H__
-#define         __VERTEX_220_H__
+#ifndef         __ADJACENCY_VERTEX__
+#define         __ADJACENCY_VERTEX__
 
 /* Note: This has been purposely over-engineered. I liked the idea of
  * structures in memory and the idea that pointers between them formed the arcs

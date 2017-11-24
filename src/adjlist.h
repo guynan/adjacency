@@ -1,6 +1,6 @@
 
-#ifndef __ADJLIST_ADJACENCY__
-#define __ADJLIST_ADJACENCY__
+#ifndef __ADJACENCY_ADJLIST__
+#define __ADJACENCY_ADJLIST__
 
 #include <stdint.h>
 #include <stdlib.h>
