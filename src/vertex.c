@@ -22,13 +22,78 @@ Vertex initVertex(uint32_t vid, uint32_t n)
 
         v->id = vid;
         v->adjacent = NULL;
-//        v->adjacent = calloc((n + 1), sizeof(Vertex));
+        v->order = n;
         v->count = n;
         v->reversedBy = NULL;
-        memset(&v->flags, 0, sizeof(struct _vflags));
         v->meta = NULL;
 
+        memset(&v->flags, 0, sizeof(struct _vflags));
+
+        __initAdjacent(&v->adjacent, &v->count, n);
+
         return v;
+
+}
+
+
+/* This is called when we have no more space left in the adjacency list and
+ * (most importantly) the current length of the adjacency list of the vertex is
+ * *not* equal to the order of the graph. Shouldn't get called too much */
+void __reallocAdjacent(Vertex v)
+{
+        void* tmp = NULL;
+        uint32_t new_len = (v->order / VERT_ADJACENT_SEGMENT);
+
+        /* Don't assign the current length to be longer than order */
+        v->count = (new_len < v->order) ? new_len : v->order;
+
+        tmp = realloc(v->adjacent, (v->count * sizeof(Vertex)));
+
+        /* Fuck */
+        if(!tmp) return; 
+
+        v->adjacent = tmp;
+
+        return;
+
+}
+
+
+void __initAdjacent(Vertex** vs_ptr, uint32_t* len, uint32_t n)
+{
+        void* tmp = NULL;
+
+        /* Improve handling of error transactions */
+        /* The FULL VERT THRESHOLD is the amount that we deem to be small
+         * enough so that we have an adjacency list that is capable of storing
+         * a 100% filled adjacency list from the start. It has been done this
+         * way as the memory overhead is negligible but the potential speed
+         * benefits are tangible for dense, small graphs */
+        if(n <= FULL_VERT_THRESHOLD){
+                *len = n;
+                tmp = calloc(*len, sizeof(Vertex));
+                *vs_ptr = (tmp) ? tmp : NULL;
+                return;
+        }
+
+        /* Initially allocate only segments of size VERT_ADJACENT_SEGMENT
+         * meaning that the adjacency lists only are 100 * the inverse of the
+         * segment size. For example, when $VAS = 5, that means it is optimised
+         * for 20% filled adjacency lists from the start. If a particular
+         * vertex requires more space than this, we realloc the vertex array on
+         * the fly. This means that we arent allocating n^2 space.
+         *
+         * This in turn means that every transaction that deals with iterating
+         * over the adjacency list of a vertex must be aware of the array size
+         * and not the order of the graph. The list of each vertex will grow
+         * not by a factor, but by the initial fraction of the order */
+
+        *len = n / VERT_ADJACENT_SEGMENT;
+        tmp = calloc(*len, sizeof(Vertex));
+        *vs_ptr = (tmp) ? tmp : NULL;
+        *len = n;
+
+        return;
 
 }
 
@@ -40,11 +105,21 @@ void addAdjacent(Vertex v, Vertex adj)
         if(!v || !adj) return;
 
         for(uint32_t i = 0; i < v->count; i++){
+
                 if(!(v->adjacent)[i]){
                         (v->adjacent)[i] = adj;
                         return;
                 }
         }
+
+        /* If we get here, this means that we have not inserted the vertex into
+         * the adjacency list. In this case we need to check whether we need to
+         * allocate some more space or do nothing */
+        if(v->count == v->order) return;
+
+        __reallocAdjacent(v);
+
+        addAdjacent(v, adj);
 
         return;
 
