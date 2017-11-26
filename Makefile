@@ -30,9 +30,27 @@ BUILDDIR = build/
 
 # Compilation Options
 CC = gcc
-CFLAGS= -Wall -Wextra -pedantic 
+CFLAGS= -Wall -Wextra -pedantic --std=c99
+DEBUG_FLAGS= -Werror -Wstrict-prototypes -Wpointer-arith -Wshadow \
+			 -pg -g 
+#			 -fsanitise=address -fsanitize=undefined \
+#
+
 LFLAGS= 
-DEBUG= -g -pg
+
+# Flags for enabling or disabling compiler options for either strict debugging
+# or allowing the debugging options to be disabled and produce faster code with
+# no debugging symbols
+DEBUG=1
+DIST=0
+
+ifeq ($(DEBUG), 0)
+		DEBUG_FLAGS = 
+endif
+
+ifeq ($(DIST), 1)
+		DEBUG_FLAGS = -O2
+endif
 
 # Crude compiler detection
 #CLANG := $(shell command  -v clang --version 2> /dev/null)
@@ -56,19 +74,19 @@ create-build-dir:
 
 # Object files for dependency checks at compile time
 vertex.o: src/vertex.c src/vertex.h src/meta.h
-	$(CC) $(CFLAGS) -fPIC -c src/vertex.c
+	$(CC) $(CFLAGS) -fPIC -c src/vertex.c $(DEBUG_FLAGS)
 
 meta.o: src/meta.c src/meta.h
-	$(CC) $(CFLAGS) -fPIC -c src/meta.c
+	$(CC) $(CFLAGS) -fPIC -c src/meta.c $(DEBUG_FLAGS)
 
 graph.o: src/graph.c src/vertex.h src/graph.h
-	$(CC) $(CFLAGS) -fPIC -c src/graph.c
+	$(CC) $(CFLAGS) -fPIC -c src/graph.c $(DEBUG_FLAGS)
 
 fileutils.o: src/fileutils.c src/fileutils.h
-	$(CC) $(CFLAGS) -fPIC -c src/fileutils.c
+	$(CC) $(CFLAGS) -fPIC -c src/fileutils.c $(DEBUG_FLAGS)
 
 adjlist.o: src/adjlist.c src/adjlist.h
-	$(CC) $(CFLAGS) -fPIC -c src/adjlist.c
+	$(CC) $(CFLAGS) -fPIC -c src/adjlist.c $(DEBUG_FLAGS)
 
 build-objs: vertex.o fileutils.o graph.o meta.o adjlist.o
 

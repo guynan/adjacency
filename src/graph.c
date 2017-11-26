@@ -60,8 +60,8 @@ void reverseGraph(Graph g)
                 if(!vs[i]) continue;
 
                 Vertex v = vs[i];
-                for(uint32_t i = 0; i < v->count; i++){
-                        v->reversedBy[i] = NULL;
+                for(uint32_t j = 0; i < v->count; j++){
+                        v->reversedBy[j] = NULL;
                 }
         }
 
