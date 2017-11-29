@@ -37,7 +37,7 @@ void printGraph(Graph g)
 
 /* We initially iterate over the graph and reverse all the arcs in it. After
  * this, we reset all the reversedBy arrays to NULL such that subsequent 
- * reversals will not be polluted by the previous. */
+ * reversals will not be polluted by the previous. Note that this is inplace */
 void reverseGraph(Graph g)
 {
          
@@ -46,9 +46,12 @@ void reverseGraph(Graph g)
 
         if(!g->flags.REVERSED){
                 for(uint32_t i = 0; i < g->order; i++){
-                        __initReversedBy(vs[i]);
+                        __verticesrealloc(&vs[i]->reversedBy, &vs[i]->revlen, 
+                                        g->order);
                 }
         }
+
+        g->flags.REVERSED = 1;
 
         for(uint32_t i = 0; i < g->order; i++){
                 if(!vs[i]) continue;
@@ -60,7 +63,7 @@ void reverseGraph(Graph g)
                 if(!vs[i]) continue;
 
                 Vertex v = vs[i];
-                for(uint32_t j = 0; i < v->count; j++){
+                for(uint32_t j = 0; j < v->revlen; j++){
                         v->reversedBy[j] = NULL;
                 }
         }

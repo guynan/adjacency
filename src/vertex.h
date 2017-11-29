@@ -45,6 +45,7 @@ typedef struct _vertex {
         struct _vertex**        adjacent;
         uint32_t                count;
         uint32_t                order;
+        uint32_t                revlen;
         struct _vertex**        reversedBy;
         struct _vflags          flags;
         vertexmeta              meta;
@@ -53,12 +54,16 @@ typedef struct _vertex {
 
 
 /* Definitions */
-#define FULL_VERT_THRESHOLD             10
-#define VERT_ADJACENT_SEGMENT           5 
+#define FULL_VERT_THRESHOLD             10000
+#define VERT_ADJACENT_SEGMENT           1000
+#define VERT_ADJ_DENSITY                1
+
+#define VERT_ADJ_PERCENT(order)         (VERT_ADJ_DENSITY * order) / 100
 
 
 
 /* Vertex compilation unit function prototypes */
+void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order);
 void __initAdjacent(Vertex** vs_ptr, uint32_t* len, uint32_t n);
 int vertexCompare(const void* a, const void* b);
 void insertReversedBy(Vertex v, Vertex adj);
@@ -71,6 +76,7 @@ int reversedBy(Vertex v, Vertex adj);
 int isAdjacent(Vertex v, Vertex adj);
 uint32_t degree(Vertex v, char f);
 Vertex* initVertices(uint32_t n);
+void __reallocAdjacent(Vertex v);
 void __initReversedBy(Vertex v);
 uint32_t getVertexId(Vertex v);
 Vertex* getAdjacent(Vertex v);

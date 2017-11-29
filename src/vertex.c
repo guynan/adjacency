@@ -23,13 +23,15 @@ Vertex initVertex(uint32_t vid, uint32_t n)
         v->id = vid;
         v->adjacent = NULL;
         v->order = n;
-        v->count = n;
+        v->count = 0;
         v->reversedBy = NULL;
+        v->revlen = 0;
         v->meta = NULL;
 
         memset(&v->flags, 0, sizeof(struct _vflags));
 
-        __initAdjacent(&v->adjacent, &v->count, n);
+//        __initAdjacent(&v->adjacent, &v->count, n);
+        __verticesrealloc(&v->adjacent, &v->count, v->order);
 
         return v;
 
@@ -42,7 +44,9 @@ Vertex initVertex(uint32_t vid, uint32_t n)
 void __reallocAdjacent(Vertex v)
 {
         void* tmp = NULL;
-        uint32_t new_len = (v->order / VERT_ADJACENT_SEGMENT);
+
+        uint32_t old_len = v->count;
+        uint32_t new_len = v->count + (v->order / VERT_ADJACENT_SEGMENT);
 
         /* Don't assign the current length to be longer than order */
         v->count = (new_len < v->order) ? new_len : v->order;
@@ -50,9 +54,61 @@ void __reallocAdjacent(Vertex v)
         tmp = realloc(v->adjacent, (v->count * sizeof(Vertex)));
 
         /* Fuck */
-        if(!tmp) return; 
+        if(!tmp){
+                v->count = old_len;
+                return;
+        }
 
         v->adjacent = tmp;
+        
+        /* Zero out other slots in memory that have been added */
+        for(uint32_t i = old_len; i < v->count; i++){
+                (v->adjacent)[i] = NULL;
+        }
+
+        return;
+
+}
+
+
+/* Here we construct a general purpose vertex pointer reallocation method. This
+ * is designed so that it can be used in many situations where you need to
+ * lengthen the array, assign it to the pointer to the array if it is
+ * successful and update the current length of the array if the length changes.
+ * It also goes along after the reallocation and NULL's out the newly allocated
+ * slots so that we can rely on checking those slots won't be addressing old
+ * memory. Note that the order is the upper bound and will not be modified */
+void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order)
+{
+        /* This means that it can be used as an initialisation function too. It
+         * is likely that the initialisation method will be deprecated in
+         * favour of this */
+        if(order <= FULL_VERT_THRESHOLD){
+                *currlen = order;
+        }
+
+        void* tmp = NULL;
+        uint32_t newlen = *currlen + (order / VERT_ADJACENT_SEGMENT);
+
+        /* Experiment with percentages or log *//*
+        uint32_t newlen = *currlen + VERT_ADJ_PERCENT(order);
+        */
+
+        /* Don't assign the current length to be longer than order. */
+        newlen = (newlen < order) ? newlen : order;
+        tmp = realloc(*vsptr, (newlen * sizeof(Vertex)));
+
+        /* Fuck */
+        if(!tmp) return;
+
+        *vsptr = tmp;
+        
+        /* Zero out other slots in memory that have been added */
+        for(uint32_t i = *currlen; i < newlen; i++){
+                (*vsptr)[i] = NULL;
+        }
+
+        *currlen = newlen;
 
         return;
 
@@ -91,7 +147,6 @@ void __initAdjacent(Vertex** vs_ptr, uint32_t* len, uint32_t n)
         *len = n / VERT_ADJACENT_SEGMENT;
         tmp = calloc(*len, sizeof(Vertex));
         *vs_ptr = (tmp) ? tmp : NULL;
-        *len = n;
 
         return;
 
@@ -104,6 +159,14 @@ void addAdjacent(Vertex v, Vertex adj)
 {
         if(!v || !adj) return;
 
+        Vertex* vs = v->adjacent;
+
+        /* Check if the adjacency list is already full. */
+        if(vs[v->count -1]){
+                __reallocAdjacent(v);
+        }
+
+
         for(uint32_t i = 0; i < v->count; i++){
 
                 if(!(v->adjacent)[i]){
@@ -115,11 +178,9 @@ void addAdjacent(Vertex v, Vertex adj)
         /* If we get here, this means that we have not inserted the vertex into
          * the adjacency list. In this case we need to check whether we need to
          * allocate some more space or do nothing */
-        if(v->count == v->order) return;
+//        if(v->count == v->order) return;
 
-        __reallocAdjacent(v);
 
-        addAdjacent(v, adj);
 
         return;
 
@@ -284,12 +345,20 @@ Vertex* initVertices(uint32_t n)
 
 void __initReversedBy(Vertex v)
 {
-        void* b = calloc((v->count + 1), sizeof(Vertex));
+        /* Should also check whether or not it has been initialised before.
+         * otherwise memory leaks are likely */
 
-        /* Do something */
-        if(!b) return;
+        void* b = NULL;
 
-        v->reversedBy = b;
+        /* Reversing is not a space efficient transaction unless one knows the
+         * maximum inDegree. If you do know this, you can set the size to be
+         * that. If we do not know the max indegree
+         * 
+         * Further optimisation could be to set the length of the reversedBy
+         * array to the indegree per vertex. */
+        b = calloc(v->order, sizeof(Vertex));
+
+        v->reversedBy = (b) ? b : NULL;
 
         return;
 }
