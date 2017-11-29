@@ -88,7 +88,8 @@ void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order)
         }
 
         void* tmp = NULL;
-        uint32_t newlen = *currlen + (order / VERT_ADJACENT_SEGMENT);
+//        uint32_t newlen = *currlen + (order / VERT_ADJACENT_SEGMENT);
+        uint32_t newlen = __memprovisbs(*currlen, order);
 
         /* Experiment with percentages or log *//*
         uint32_t newlen = *currlen + VERT_ADJ_PERCENT(order);
@@ -112,6 +113,14 @@ void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order)
 
         return;
 
+}
+
+
+uint32_t __memprovisbs(uint32_t currlen, uint32_t order)
+{
+        (void) order;
+
+        return (!currlen) ? VERT_ADJ_ST_CAPACITY : currlen * 2;
 }
 
 
@@ -451,12 +460,17 @@ uint32_t degree(Vertex v, char f)
 /* Takes the count of how many nodes are in the adjacency list of vertex v */
 uint32_t countAdjacencyList(Vertex v)
 {
-        Vertex* adj = v->adjacent;
+        return countvertices(v->adjacent, v->count);
+}
 
-        if(adj){
-               for(uint32_t i = 0; i < v->count; i++){
-                       if(!adj[i]) return i;
-                }
+
+/* Generic function to count vertices in whatever application */
+uint32_t countvertices(Vertex* vs, uint32_t max)
+{
+        if(!vs) return 0;
+
+        for(uint32_t i = 0; i < max; i++){
+                if(!vs[i]) return i;
         }
 
         return 0;

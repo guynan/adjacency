@@ -57,19 +57,20 @@ typedef struct _vertex {
 #define FULL_VERT_THRESHOLD             10000
 #define VERT_ADJACENT_SEGMENT           1000
 #define VERT_ADJ_DENSITY                1
-
 #define VERT_ADJ_PERCENT(order)         (VERT_ADJ_DENSITY * order) / 100
+#define VERT_ADJ_ST_CAPACITY            16
 
 
 
 /* Vertex compilation unit function prototypes */
 void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order);
 void __initAdjacent(Vertex** vs_ptr, uint32_t* len, uint32_t n);
+uint32_t __memprovisbs(uint32_t currlen, uint32_t order);
+uint32_t countvertices(Vertex* vs, uint32_t max);
 int vertexCompare(const void* a, const void* b);
 void insertReversedBy(Vertex v, Vertex adj);
 Vertex initVertex(uint32_t vid, uint32_t n);
 void removeAdjacent(Vertex v, Vertex adj);
-void __reallocAdjacent(Vertex v);
 void addAdjacent(Vertex v, Vertex adj);
 uint32_t countAdjacencyList(Vertex v);
 int reversedBy(Vertex v, Vertex adj);
