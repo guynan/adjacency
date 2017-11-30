@@ -23,6 +23,10 @@ moment is governed by my csv parser which imposes a pretty low limit. This is
 of course not a problem if you are inputting the data in manually through the 
 interface provided. 
 
+This software is released under the GNU GPL V3. License provided in `doc`
+
+
+
 ## Usage
 
 As I develop, I prefer to run compile the library and be able to run binaries
