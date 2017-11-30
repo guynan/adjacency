@@ -1,0 +1,31 @@
+.\" .TH [name of program] [section number] [center footer] [left footer] [center header]
+.TH ADJACENCY 1 "December, 2017" "Adajcency 0.1" "Technical Documentation"
+.DT
+
+.SH NAME
+Adjacency \- A high level graph theory library written in C99.
+
+.SH SYNOPSIS
+.BR #include
+\fB<adjacency.h>\fR
+
+.SH DESCRIPTION
+This abstracts the problems that one engages with in graph theory from programming
+complications.
+
+\fBOpaque types are your friends\fR
+
+We build up the graph through the \fBVertex\fR type. Initialisation of the structure and
+subsequent sub-structures is done automatically through accessor methods provided. 
+
+The \fBVertex\fR structure has all the attributes you would expect; it keeps track of vertices
+that it is adjacent to, the order of the parent graph, etc. Expensive calculations will be cached
+so that subsequent recalculation will be more speedy. 
+
+Memory is allocated in chunks and only if required. So expect on large dense calculations
+
+The \fBGraph\fR structure is in effect a container for which the vertices reside and can be accessed in
+O(1) time iff you have the id of the vertex you are trying to access. It also has associated
+metadata to speed up transactions that are reliant on pre-calculated values.
+
+
