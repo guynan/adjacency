@@ -3,6 +3,7 @@
 #
 
 # Library specific options
+NAME = adjacency
 LIBNAME=libadjacency.so
 VERSION = devel
 
@@ -21,6 +22,9 @@ SHELL = /bin/sh
 # LD_LIBRARY_FLAG to include ~/lib/ and then source your bashrc
 LIBPREFIX = ~/lib/
 INCLPREFIX = ~/include/
+
+LIBINSTALL = /usr/local/lib/
+INCLINSTALL = /usr/local/include/
 
 # Prefixes for commonly used directories.
 SRCDIR = src/
@@ -114,13 +118,27 @@ so-gen-clang: build-objs
 cp-lib:
 	mkdir -p $(LIBPREFIX)
 	cp $(BUILDDIR)$(LIBNAME).$(VERSION) $(LIBPREFIX)
-	ln -sf ~/lib/$(LIBNAME).$(VERSION) $(LIBPREFIX)$(LIBNAME)
+	ln -sf $(LIBPREFIX)/$(LIBNAME).$(VERSION) $(LIBPREFIX)$(LIBNAME)
 
 cp-headers:
 	mkdir -p $(INCLPREFIX)
 	cp $(SRCDIR)*.h $(INCLPREFIX)
 
+#
+# Install
+#
 
+install: create-build-dir so-gen
+	mkdir -p $(LIBINSTALL)
+	mkdir -p $(INCLINSTALL)/$(NAME)/
+	cp $(BUILDDIR)$(LIBNAME).$(VERSION) $(LIBINSTALL)
+	ln -sf $(LIBINSTALL)/$(LIBNAME).$(VERSION) $(LIBINSTALL)$(LIBNAME)
+	cp $(SRCDIR)*.h $(INCLINSTALL)/$(NAME)/
+
+uninstall:
+	rm -rf $(LIBINSTALL)/$(LIBNAME)*
+	rm -rf $(INCLINSTALL)/$(NAME)/
+	
 
 #
 # Test Targets
