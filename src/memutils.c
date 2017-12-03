@@ -1,38 +1,6 @@
 
 #include "memutils.h"
 
-/* This is called when we have no more space left in the adjacency list and
- * (most importantly) the current length of the adjacency list of the vertex is
- * *not* equal to the order of the graph. Shouldn't get called too much */
-void __reallocAdjacent(Vertex v)
-{
-        void* tmp = NULL;
-
-        uint32_t old_len = v->count;
-        uint32_t new_len = v->count + (v->order / VERT_ADJACENT_SEGMENT);
-
-        /* Don't assign the current length to be longer than order */
-        v->count = (new_len < v->order) ? new_len : v->order;
-
-        tmp = realloc(v->adjacent, (v->count * sizeof(Vertex)));
-
-        /* Fuck */
-        if(!tmp){
-                v->count = old_len;
-                return;
-        }
-
-        v->adjacent = tmp;
-        
-        /* Zero out other slots in memory that have been added */
-        for(uint32_t i = old_len; i < v->count; i++){
-                (v->adjacent)[i] = NULL;
-        }
-
-        return;
-
-}
-
 
 /* Here we construct a general purpose vertex pointer reallocation method. This
  * is designed so that it can be used in many situations where you need to
@@ -51,12 +19,8 @@ void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order)
         }
 
         void* tmp = NULL;
-//        uint32_t newlen = *currlen + (order / VERT_ADJACENT_SEGMENT);
-        uint32_t newlen = __memprovisbs(*currlen, order);
 
-        /* Experiment with percentages or log *//*
-        uint32_t newlen = *currlen + VERT_ADJ_PERCENT(order);
-        */
+        uint32_t newlen = __memprovisbs(*currlen, order);
 
         /* Don't assign the current length to be longer than order. */
         newlen = (newlen < order) ? newlen : order;
@@ -79,9 +43,14 @@ void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order)
 }
 
 
+/* Provision more memory and return the new block size */
 uint32_t __memprovisbs(uint32_t currlen, uint32_t order)
 {
         (void) order;
+
+        /* Experiment with percentages or log *//*
+        uint32_t newlen = *currlen + VERT_ADJ_PERCENT(order);
+        */
 
         return (!currlen) ? VERT_ADJ_ST_CAPACITY : currlen * 2;
 }
@@ -125,34 +94,33 @@ void __initAdjacent(Vertex** vs_ptr, uint32_t* len, uint32_t n)
 }
 
 
-/* This function adds the adjacent vertex `adj` to the adjacency list
- * of vertex v */
-void addAdjacent(Vertex v, Vertex adj)
+/* This is called when we have no more space left in the adjacency list and
+ * (most importantly) the current length of the adjacency list of the vertex is
+ * *not* equal to the order of the graph. Shouldn't get called too much */
+void __reallocAdjacent(Vertex v)
 {
-        if(!v || !adj) return;
+        void* tmp = NULL;
 
-        Vertex* vs = v->adjacent;
+        uint32_t old_len = v->count;
+        uint32_t new_len = v->count + (v->order / VERT_ADJACENT_SEGMENT);
 
-        /* Check if the adjacency list is already full. */
-        if(vs[v->count -1]){
-                __reallocAdjacent(v);
+        /* Don't assign the current length to be longer than order */
+        v->count = (new_len < v->order) ? new_len : v->order;
+
+        tmp = realloc(v->adjacent, (v->count * sizeof(Vertex)));
+
+        /* Fuck */
+        if(!tmp){
+                v->count = old_len;
+                return;
         }
 
-
-        for(uint32_t i = 0; i < v->count; i++){
-
-                if(!(v->adjacent)[i]){
-                        (v->adjacent)[i] = adj;
-                        return;
-                }
+        v->adjacent = tmp;
+        
+        /* Zero out other slots in memory that have been added */
+        for(uint32_t i = old_len; i < v->count; i++){
+                (v->adjacent)[i] = NULL;
         }
-
-        /* If we get here, this means that we have not inserted the vertex into
-         * the adjacency list. In this case we need to check whether we need to
-         * allocate some more space or do nothing */
-//        if(v->count == v->order) return;
-
-
 
         return;
 

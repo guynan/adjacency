@@ -39,6 +39,40 @@ Vertex initVertex(uint32_t vid, uint32_t n)
 }
 
 
+/* This function adds the adjacent vertex `adj` to the adjacency list
+ * of vertex v */
+void addAdjacent(Vertex v, Vertex adj)
+{
+        if(!v || !adj) return;
+
+        Vertex* vs = v->adjacent;
+
+        /* Check if the adjacency list is already full. */
+        if(vs[v->count -1]){
+                __reallocAdjacent(v);
+        }
+
+
+        for(uint32_t i = 0; i < v->count; i++){
+
+                if(!(v->adjacent)[i]){
+                        (v->adjacent)[i] = adj;
+                        return;
+                }
+        }
+
+        /* If we get here, this means that we have not inserted the vertex into
+         * the adjacency list. In this case we need to check whether we need to
+         * allocate some more space or do nothing */
+//        if(v->count == v->order) return;
+
+
+
+        return;
+
+}
+
+
 /* We reverse an arc when there is a directed arc pointing at one vertex
  * but the vertex does not return the love. 
  *
