@@ -1,5 +1,6 @@
 #include "vertex.h"
 #include "graph.h"
+#include "memutils.h"
 
 
 Graph initGraph(Vertex* vs, uint32_t n)

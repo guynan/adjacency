@@ -6,5 +6,6 @@
 #include "graph.h"
 #include "fileutils.h"
 #include "adjlist.h"
+#include "memutils.h"
 
 #endif

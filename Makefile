@@ -81,6 +81,9 @@ create-build-dir:
 # Object files for dependency checks at compile time
 #
 
+memutils.o: src/memutils.c src/memutils.h src/vertex.h
+	$(CC) $(CFLAGS) -fPIC -c src/memutils.c $(DEBUG_FLAGS) $(LFLAGS)
+
 vertex.o: src/vertex.c src/vertex.h src/meta.h
 	$(CC) $(CFLAGS) -fPIC -c src/vertex.c $(DEBUG_FLAGS) $(LFLAGS)
 
@@ -97,7 +100,7 @@ adjlist.o: src/adjlist.c src/adjlist.h
 	$(CC) $(CFLAGS) -fPIC -c src/adjlist.c $(DEBUG_FLAGS) $(LFLAGS)
 
 
-build-objs: vertex.o fileutils.o graph.o meta.o adjlist.o
+build-objs: vertex.o fileutils.o graph.o meta.o adjlist.o memutils.o
 
 #
 # Build the Library
