@@ -9,7 +9,7 @@
  * properties which can be modified. */
 
 #include "vertex.h"
-
+#include "graph.h"
 
 /* Function prototypes */
 void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order);
@@ -17,7 +17,6 @@ void __initAdjacent(Vertex** vs_ptr, uint32_t* len, uint32_t n);
 uint32_t __memprovisbs(uint32_t currlen, uint32_t order);
 void __reallocAdjacent(Vertex v);
 void __initReversedBy(Vertex v);
-
 
 
 /* Definitions */

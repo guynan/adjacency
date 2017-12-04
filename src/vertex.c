@@ -12,27 +12,26 @@
  * the total number of elements in the adjacency matrix as it could 
  * be at max adjacent to that many elements. We also keep track of 
  * whether or not the arc has been reversed in the past */
-Vertex initVertex(uint32_t vid, uint32_t n)
+Vertex initVertex(uint32_t vid, Graph g)
 {
         /* The following hack is such that we can distinguish between 
          * a value that is read from the file as 0, and also the 0 value
          * that the adjacency list is initialised to */
         if(vid == (uint32_t) -1) vid = 0;
 
-        Vertex v = calloc(1, sizeof(__vertex));
+        Vertex v = calloc(1, sizeof(struct _vertex));
 
         v->id = vid;
         v->adjacent = NULL;
-        v->order = n;
         v->count = 0;
+        v->graph = (g) ? g : EMPTY_GRAPH;
         v->reversedBy = NULL;
         v->revlen = 0;
         v->meta = NULL;
 
         memset(&v->flags, 0, sizeof(struct _vflags));
 
-//        __initAdjacent(&v->adjacent, &v->count, n);
-        __verticesrealloc(&v->adjacent, &v->count, v->order);
+        __verticesrealloc(&v->adjacent, &v->count, v->graph->order);
 
         return v;
 
@@ -219,10 +218,12 @@ Vertex* initVertices(uint32_t n)
          *      This array starts at 1 as 0 is an invalid
          *      node name... Maybe? */
 
+        /*
         for(uint32_t i = 0; i < n; i++){
                Vertex v = initVertex(i, n); 
                if(v) vert[i] = v;
         }
+        */
 
         return vert;
 

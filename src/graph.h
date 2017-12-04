@@ -1,8 +1,12 @@
 
-#ifndef         __ADJACENCY_GRAPH__
-#define         __ADJACENCY_GRAPH__
+#ifndef __ADJACENCY_GRAPH__
+#define __ADJACENCY_GRAPH__
 
-#include "vertex.h"
+#include <stdint.h>
+#include <stdlib.h>
+#include "defs.h"
+
+
 
 /* The flag construction is so that we can store many boolean values in what is
  * the perfect array -- an unsigned integer. As we only need single bits to
@@ -14,16 +18,29 @@ struct _gflags {
         uint8_t                 : 6;
 };
 
+
 /* This is the proposed structure for the new graph object.
  * It will mean that it is a proper object and not an alias to a several 
  * pointer level deep structure. It will mean things that are inherently
  * related to the graph are contained in the structure meaning more advanced
  * manipulations can be performed on the structure */
-typedef struct {
+struct _graph {
         Vertex* vertices;
         uint32_t order;
         struct _gflags flags; 
-} __graph, *Graph;
+};
+
+
+/* Define the `EMPTY_GRAPH`; all vertices that are not initialised to a graph
+ * will all have this graph as the parent */
+/*
+#if ! defined(EMPTY_GRAPH_CONSTANT)
+#define EMPTY_GRAPH_CONSTANT
+static struct _graph EMPTY_GRAPH_STRUCT;
+Graph EMPTY_GRAPH = &EMPTY_GRAPH_STRUCT;
+
+#endif
+*/
 
 
 /* Graph specific prototypes */
@@ -38,3 +55,4 @@ void sortGraph(Graph g);
 void freeGraph(Graph g);
 
 #endif
+

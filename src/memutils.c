@@ -102,10 +102,10 @@ void __reallocAdjacent(Vertex v)
         void* tmp = NULL;
 
         uint32_t old_len = v->count;
-        uint32_t new_len = v->count + (v->order / VERT_ADJACENT_SEGMENT);
+        uint32_t new_len = v->count + (v->graph->order / VERT_ADJACENT_SEGMENT);
 
         /* Don't assign the current length to be longer than order */
-        v->count = (new_len < v->order) ? new_len : v->order;
+        v->count = (new_len < v->graph->order) ? new_len : v->graph->order;
 
         tmp = realloc(v->adjacent, (v->count * sizeof(Vertex)));
 
@@ -140,7 +140,7 @@ void __initReversedBy(Vertex v)
          * 
          * Further optimisation could be to set the length of the reversedBy
          * array to the indegree per vertex. */
-        b = calloc(v->order, sizeof(Vertex));
+        b = calloc(v->graph->order, sizeof(Vertex));
 
         v->reversedBy = (b) ? b : NULL;
 

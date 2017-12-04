@@ -1,6 +1,6 @@
 
-#ifndef         __ADJACENCY_VERTEX__
-#define         __ADJACENCY_VERTEX__
+#ifndef __ADJACENCY_VERTEX__
+#define __ADJACENCY_VERTEX__
 
 /* Note: This has been purposely over-engineered. I liked the idea of
  * structures in memory and the idea that pointers between them formed the arcs
@@ -21,7 +21,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
+
+
 #include "meta.h"
+#include "defs.h"
 
 
 /* The flag construction is so that we can store many boolean values in what is
@@ -40,16 +43,18 @@ struct _vflags {
  * a count that keeps track of how many vertices are contained in the
  * array of adjacent vertices. The amount of vertices that are allocated
  * for are also stored in eletotal; read: element total */
-typedef struct _vertex {
+struct _vertex {
         uint32_t                id;
         struct _vertex**        adjacent;
         uint32_t                count;
-        uint32_t                order;
+        struct _graph*           graph;
         uint32_t                revlen;
         struct _vertex**        reversedBy;
         struct _vflags          flags;
         vertexmeta              meta;
-} __vertex, *Vertex;
+};
+
+
 
 
 
@@ -57,8 +62,8 @@ typedef struct _vertex {
 uint32_t countvertices(Vertex* vs, uint32_t max);
 int vertexCompare(const void* a, const void* b);
 void insertReversedBy(Vertex v, Vertex adj);
-Vertex initVertex(uint32_t vid, uint32_t n);
 void removeAdjacent(Vertex v, Vertex adj);
+Vertex initVertex(uint32_t vid, Graph g);
 void addAdjacent(Vertex v, Vertex adj);
 uint32_t countAdjacencyList(Vertex v);
 int reversedBy(Vertex v, Vertex adj);

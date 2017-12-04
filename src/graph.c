@@ -1,12 +1,14 @@
-#include "vertex.h"
+
 #include "graph.h"
 #include "memutils.h"
 
+static struct _graph EMPTY_GRAPH_STRUCT;
+static Graph EMPTY_GRAPH = &EMPTY_GRAPH_STRUCT;
 
 Graph initGraph(Vertex* vs, uint32_t n)
 {
         
-        Graph g = calloc(n, sizeof(__graph));
+        Graph g = calloc(n, sizeof(struct _graph));
 
         if(!g)
                 return NULL;
