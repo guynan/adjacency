@@ -158,14 +158,17 @@ test-reverse: all
 test-init: all
 	$(CC) $(CFLAGS) test/largeinit.c -Isrc/ -g -o test/init $(TEST_LD)
 
-tests: test-dfs test-reverse test-init
+test-memclean: all
+	$(CC) $(CFLAGS) test/memclean.c -Isrc/ -g -o test/memclean $(TEST_LD)
+
+tests: test-dfs test-reverse test-init test-memclean
 
 #
 # Clean Targets
 #
 
 clean-test: 
-	rm -rf test/*.txt test/dfs test/rev test/init
+	rm -rf test/*.txt test/dfs test/rev test/init test/memclean
 
 clean: clean-test
 	rm -rf $(BUILDDIR) *.o
