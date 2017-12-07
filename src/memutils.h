@@ -8,6 +8,7 @@
  * There are also some definitions that set the initial values for a lot of
  * properties which can be modified. */
 
+#include <string.h>
 #include "vertex.h"
 #include "graph.h"
 

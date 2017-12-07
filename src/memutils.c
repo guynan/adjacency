@@ -32,9 +32,7 @@ void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order)
         *vsptr = tmp;
         
         /* Zero out other slots in memory that have been added */
-        for(uint32_t i = *currlen; i < newlen; i++){
-                (*vsptr)[i] = NULL;
-        }
+        memset(*vsptr + *currlen, 0, (newlen - *currlen) * sizeof(Vertex));
 
         *currlen = newlen;
 
