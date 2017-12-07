@@ -9,5 +9,7 @@ gmon.out
 
 # Ignore binaries and output in test directory
 test/dfs
-test/reverse
+test/rev
+test/init
+
 test/*.txt
