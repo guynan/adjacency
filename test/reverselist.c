@@ -24,11 +24,14 @@ int main(int argc, char** argv)
 
         uint32_t count = countAdjList(adjlist);
 
-        Vertex* vs = initVertices(count);
-        Graph g = initGraph(vs, count);
+        Graph g = initGraph(NULL, count);
+
+        Vertex* vs = initVertices(count, g);
+        setVertices(g, vs);
 
         linkVertices(g, adjlist);
         freeAdjacencyList(adjlist);
+        printGraph(g);
         reverseGraph(g);
         sortGraph(g);
 

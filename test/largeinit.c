@@ -13,8 +13,9 @@ int main(int argc, char** argv)
 
         uint32_t k = 1000000;
 
-        Vertex* vs = initVertices(k);
-        Graph g = initGraph(vs, k);
+        Graph g = initGraph(NULL, k);
+        Vertex* vs = initVertices(k, g);
+        setVertices(g, vs);
 
         freeGraph(g);
 
