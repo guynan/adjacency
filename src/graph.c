@@ -1,19 +1,21 @@
 
 #include "graph.h"
+#include "vertex.h"
 #include "memutils.h"
 
-static struct _graph EMPTY_GRAPH_STRUCT;
-static Graph EMPTY_GRAPH = &EMPTY_GRAPH_STRUCT;
 
 Graph initGraph(Vertex* vs, uint32_t n)
 {
         
-        Graph g = calloc(n, sizeof(struct _graph));
+        Graph g = calloc(1, sizeof(struct _graph));
 
         if(!g)
                 return NULL;
 
+
         g->vertices = vs;
+        /* Okay this needs some work*/
+//        g->order = (vs) ? n : 0;
         g->order = n;
         memset(&g->flags, 0, sizeof(struct _gflags));
 
@@ -139,6 +141,9 @@ void sortGraph(Graph g)
 Vertex** DFSForrest(Graph g)
 {
 
+        if(!g || !g->vertices)
+                return NULL;
+
         Vertex** forrestOrder = calloc(g->order, sizeof(Vertex*));
 
         Vertex* vs = g->vertices;
@@ -195,6 +200,13 @@ void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s)
 }
 
 
+void setVertices(Graph g, Vertex* vs)
+{
+        g->vertices = vs;
+        g->order = countvertices(vs, 1000000);
+}
+
+
 /* Links the `n` vertices according to the adjacency list provided */
 void linkVertices(Graph g, uint32_t** adjlist)
 {
@@ -215,5 +227,4 @@ void linkVertices(Graph g, uint32_t** adjlist)
 
         return;
 }
-
 

@@ -17,59 +17,24 @@
  * these complex structures is not a great processing hardship. */
 
 #include <stdio.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
 
-
-#include "meta.h"
 #include "defs.h"
-
-
-/* The flag construction is so that we can store many boolean values in what is
- * the perfect array -- an unsigned integer. As we only need single bits to
- * register these values, below are the masks that make it easy to address
- * these in code. Supports 8 boolean values */
-struct _vflags {
-        uint8_t VISITED         : 1;
-        uint8_t REVERSED        : 1;
-        uint8_t                 : 6;
-};
-
-
-/* Contains a distinguishing id (for human readable purposes), pointer
- * to an array of other vertices that this vertex is adjacent to, and
- * a count that keeps track of how many vertices are contained in the
- * array of adjacent vertices. The amount of vertices that are allocated
- * for are also stored in eletotal; read: element total */
-struct _vertex {
-        uint32_t                id;
-        struct _vertex**        adjacent;
-        uint32_t                count;
-        struct _graph*           graph;
-        uint32_t                revlen;
-        struct _vertex**        reversedBy;
-        struct _vflags          flags;
-        vertexmeta              meta;
-};
-
-
-
-
 
 /* Vertex compilation unit function prototypes */
 uint32_t countvertices(Vertex* vs, uint32_t max);
 int vertexCompare(const void* a, const void* b);
 void insertReversedBy(Vertex v, Vertex adj);
 void removeAdjacent(Vertex v, Vertex adj);
+Vertex* initVertices(uint32_t n, Graph g);
 Vertex initVertex(uint32_t vid, Graph g);
 void addAdjacent(Vertex v, Vertex adj);
 uint32_t countAdjacencyList(Vertex v);
 int reversedBy(Vertex v, Vertex adj);
 int isAdjacent(Vertex v, Vertex adj);
 uint32_t degree(Vertex v, char f);
-Vertex* initVertices(uint32_t n);
 uint32_t getVertexId(Vertex v);
 Vertex* getAdjacent(Vertex v);
 void printAdjacent(Vertex v);

@@ -1,6 +1,7 @@
 #ifndef         __ADJACENCY_MASTER_ADJACENCY__
 #define         __ADJACENCY_MASTER_ADJACENCY__
 
+#include "defs.h"
 #include "meta.h"
 #include "vertex.h"
 #include "graph.h"

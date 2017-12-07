@@ -2,9 +2,25 @@
  * initialising and manipulating relationships betweeen vertices */
 
 
+#include "defs.h"
 #include "vertex.h"
+#include "meta.h"
 #include "memutils.h"
 
+#if !defined __EMPTY_GRAPH_CONSTANT__DEF
+
+struct _graph EMPTY_GRAPH_STRUCT = {
+        .vertices = NULL,
+        .order = 0,
+
+        .flags = {
+                .EMPTY = 1,
+                .REVERSED = 1,
+        },
+};
+
+#define __EMPTY_GRAPH_CONSTANT__DEF
+#endif
 
 /* This function breathes life into our vertex structure. We give it a 
  * unique vertex id, and pass in how many possible elements in the 
@@ -24,7 +40,7 @@ Vertex initVertex(uint32_t vid, Graph g)
         v->id = vid;
         v->adjacent = NULL;
         v->count = 0;
-        v->graph = (g) ? g : EMPTY_GRAPH;
+        v->graph = (g) ? g : &EMPTY_GRAPH_STRUCT;
         v->reversedBy = NULL;
         v->revlen = 0;
         v->meta = NULL;
@@ -47,8 +63,8 @@ void addAdjacent(Vertex v, Vertex adj)
         Vertex* vs = v->adjacent;
 
         /* Check if the adjacency list is already full. */
-        if(vs[v->count -1]){
-                __reallocAdjacent(v);
+        if(!vs || vs[v->count -1]){
+                __verticesrealloc(&v->adjacent, &v->count, v->graph->order);
         }
 
 
@@ -208,9 +224,9 @@ void freeVertex(Vertex v)
 /* If you are lazy and want to initialise `n` vertices and have
  * them packaged nicely in an array for you, this is the function
  * for you! Returns a pointer to said array */
-Vertex* initVertices(uint32_t n)
+Vertex* initVertices(uint32_t n, Graph g)
 {
-        Vertex* vert = calloc((n + 2), sizeof(Vertex));
+        Vertex* vert = calloc((n+1), sizeof(Vertex));
 
         if(!vert) return NULL;
 
@@ -218,12 +234,12 @@ Vertex* initVertices(uint32_t n)
          *      This array starts at 1 as 0 is an invalid
          *      node name... Maybe? */
 
-        /*
         for(uint32_t i = 0; i < n; i++){
-               Vertex v = initVertex(i, n); 
+               Vertex v = initVertex(i, g); 
                if(v) vert[i] = v;
         }
-        */
+
+        g->order = n;
 
         return vert;
 
