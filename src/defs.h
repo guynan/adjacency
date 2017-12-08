@@ -20,7 +20,9 @@
 struct _vflags {
         uint8_t VISITED         : 1;
         uint8_t REVERSED        : 1;
-        uint8_t                 : 6;
+        uint8_t FULL_ADJ        : 1;
+        uint8_t                 : 1;
+        uint8_t                 : 4;
 };
 
 

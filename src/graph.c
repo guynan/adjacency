@@ -26,6 +26,9 @@ Graph initGraph(Vertex* vs, uint32_t n)
 
 void printGraph(Graph g)
 {
+        if(!g || !g->vertices)
+                return;
+
         Vertex* tmp = g->vertices;
         
         for(uint32_t i = 0; i < g->order; i++){
@@ -152,7 +155,7 @@ Vertex** DFSForrest(Graph g)
 
                 if(vs[i]->flags.VISITED) continue;
 
-                Vertex* dfsOrder = calloc(g->order, sizeof(Vertex));
+                Vertex* dfsOrder = calloc((g->order + 1), sizeof(Vertex));
 
                 uint32_t k = 0;
                 uint32_t* s = &k;
@@ -203,7 +206,6 @@ void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s)
 void setVertices(Graph g, Vertex* vs)
 {
         g->vertices = vs;
-        g->order = countvertices(vs, 1000000);
 }
 
 

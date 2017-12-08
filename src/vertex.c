@@ -63,12 +63,19 @@ void addAdjacent(Vertex v, Vertex adj)
         Vertex* vs = v->adjacent;
 
         /* Check if the adjacency list is already full. */
-        if(!vs || vs[v->count -1]){
+        if(!vs || v->flags.FULL_ADJ){
                 __verticesrealloc(&v->adjacent, &v->count, v->graph->order);
+                v->flags.FULL_ADJ = 0;
         }
 
 
         for(uint32_t i = 0; i < v->count; i++){
+
+                /* Means that now the container is full and will need to be
+                 * resized probably */
+                if(i == v->count - 1){
+                        v->flags.FULL_ADJ = 1;
+                }
 
                 if(!(v->adjacent)[i]){
                         (v->adjacent)[i] = adj;
@@ -181,9 +188,10 @@ void removeAdjacent(Vertex v, Vertex adj)
  * Which designates that vertex 2 (v) is adjacent to vertices 3, 5, 6 */
 void printAdjacent(Vertex v)
 {
+        if(!v || !v->adjacent)
+                return;
+ 
         Vertex* tmp = v->adjacent;
-
-        if(!v) return;
 
         printf("%"PRIu32": ", v->id);
 
