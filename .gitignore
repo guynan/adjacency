@@ -11,5 +11,6 @@ gmon.out
 test/dfs
 test/rev
 test/init
+test/memclean
 
 test/*.txt
