@@ -8,6 +8,12 @@
 #include "defs.h"
 
 
+/* These macro expansions can (and should) be used to control how the order is
+ * incremented and decremented */
+#define GRAPH_ORDER_INCR(g)     g->order++
+#define GRAPH_ORDER_DECR(g)     g->order--
+
+
 /* Graph specific prototypes */
 void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s);
 void linkVertices(Graph g, uint32_t** adjlist);
