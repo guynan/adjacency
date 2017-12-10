@@ -14,6 +14,11 @@ uint32_t** parseFile(const char* path, size_t ls)
         size_t vert = VERTICAL_LINES;
 
         uint32_t** adjList = calloc(vert, sizeof(uint32_t*));
+
+        for(uint32_t i = 0; i < vert; i++){
+                adjList[i] = NULL;
+        }
+
         char* line = calloc(ls, sizeof(char));
 
         file = fopen(path, "r");
@@ -30,7 +35,7 @@ uint32_t** parseFile(const char* path, size_t ls)
                 /* Note that ls is decisively overkill */
                 adjList[i] = readVertices(line, ls);
 
-                if(i == vert - 2){
+                if(i == vert - 1){
                         vert *= 2;
                         uint32_t** tmp;
                         tmp = realloc(adjList, vert * sizeof(uint32_t*));
@@ -47,6 +52,8 @@ uint32_t** parseFile(const char* path, size_t ls)
         }
 
         free(line); 
+//        fclose(file);
+//        file = NULL;
 
         return adjList;
 
@@ -56,7 +63,7 @@ uint32_t** parseFile(const char* path, size_t ls)
 uint32_t* readVertices(char* line, uint32_t ls)
 {
 
-        uint32_t* vert = malloc(ls * sizeof(uint32_t));
+        uint32_t* vert = calloc(ls, sizeof(uint32_t));
         char* s;
 
         for(uint32_t i = 0; (s = strtok(line, ",")); i++){

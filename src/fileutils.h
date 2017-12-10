@@ -12,7 +12,7 @@
 
 
 #define BASE            10
-#define VERTICAL_LINES  32
+#define VERTICAL_LINES  56
 
 
 void writeDFS(Vertex** tmp, const char* path, uint32_t n);
