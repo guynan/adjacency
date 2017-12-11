@@ -161,7 +161,10 @@ test-init: all
 test-memclean: all
 	$(CC) $(CFLAGS) test/memclean.c -Isrc/ -g -o test/memclean $(TEST_LD)
 
-tests: test-dfs test-reverse test-init test-memclean
+test-graph-init:
+	$(CC) $(CFLAGS) test/graph_init.c -Isrc/ -g -o test/graph-init $(TEST_LD)
+
+tests: test-dfs test-reverse test-init test-memclean test-graph-init
 
 #
 # Clean Targets
