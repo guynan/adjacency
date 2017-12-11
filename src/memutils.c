@@ -146,3 +146,36 @@ void __initReversedBy(Vertex v)
 }
 
 
+/* This is a potentially very time consuming exercise which *definitely*
+ * operates in O(n^2) time. It Iterates over all structures that are included
+ * in the graph structure and releases memory where it can. This works by */
+void __memvacuum(Graph g, uint32_t opts)
+{
+        (void) g;
+        (void) opts;
+
+	return;
+}
+
+
+/* Pass this function a contiguous block of memory. The current length is
+ * stored in `len` */
+void __rm_empty_mem(Vertex* vs, uint32_t len)
+{
+	Vertex* src = vs;
+	Vertex* dst = vs;
+
+	uint32_t i;
+
+	for(i = 0; i < len; i++){
+
+		if (!src[i]){
+			*dst = src[i];
+			dst++;
+		}
+	}
+
+	return;
+
+}
+

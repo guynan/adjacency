@@ -16,6 +16,8 @@
 void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order);
 void __initAdjacent(Vertex** vs_ptr, uint32_t* len, uint32_t n);
 uint32_t __memprovisbs(uint32_t currlen, uint32_t order);
+void __rm_empty_mem(Vertex* vs, uint32_t len);
+void __memvacuum(Graph g, uint32_t opts);
 void __reallocAdjacent(Vertex v);
 void __initReversedBy(Vertex v);
 
@@ -27,6 +29,11 @@ void __initReversedBy(Vertex v);
 #define VERT_ADJ_PERCENT(order)         (VERT_ADJ_DENSITY * order) / 100
 #define VERT_ADJ_ST_CAPACITY            16
 
+
+/* Memory vacuum options */
+#define MEM_VAC_META_PURGE              0x1
+#define MEM_VAC_MEM_COMPRESS            0x2
+#define MEM_VAC_FULL_PURGE              0xFFFF
 
 
 #endif
