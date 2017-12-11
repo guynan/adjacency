@@ -32,7 +32,8 @@ void printGraph(Graph g)
         Vertex* tmp = g->vertices;
         
         for(uint32_t i = 0; i < g->order; i++){
-                if(!tmp[i]) continue;
+                if(!tmp[i])
+                        continue;
 
                 printAdjacent(tmp[i]);
 
@@ -86,7 +87,7 @@ void freeGraph(Graph g)
         if(!g || !g->vertices)
                 return;
 
-        for(uint32_t i = 0; i < g->order; i++){
+        for(uint32_t i = 0; i < g->capacity; i++){
                 freeVertex(g->vertices[i]);
         }
 
@@ -254,10 +255,13 @@ void addVertex(Graph g, Vertex v)
         /* Assume that the last vertex is at the `order` slot but because there
          * are removals etc, this is not guaranteed and so we iterate until we
          * find an empty space, while setting hard boundary of the capacity */
-        for(i = g->order - 1; i < g->capacity && (g->vertices)[i]; i++)
-                ;
+        for(i = g->order; i < g->capacity; i++){
+                if(!g->vertices[i]){
+                        (g->vertices)[i] = v;
+                        break;
+                }
+        }
 
-        (g->vertices)[i] = v;
 
         /* If almost full, make sure the next time we come around that we
          * allocate more space for subsequent insertions */

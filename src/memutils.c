@@ -49,7 +49,7 @@ void __graph_realloc(Vertex** vsptr, uint32_t* capacity, uint32_t order)
 {
         void* tmp = NULL;
 
-        uint32_t newcap = __memprovisbs(0, order);
+        uint32_t newcap = __memprovisbs(*capacity, order);
 
         tmp = realloc(*vsptr, (newcap * sizeof(Vertex)));
 
@@ -73,10 +73,6 @@ uint32_t __memprovisbs(uint32_t currlen, uint32_t order)
 {
         (void) order;
 
-        /* Experiment with percentages or log *//*
-        uint32_t newlen = *currlen + VERT_ADJ_PERCENT(order);
-        */
-
         return (!currlen) ? VERT_ADJ_ST_CAPACITY : currlen * 2;
 }
 
@@ -85,7 +81,6 @@ void __initAdjacent(Vertex** vs_ptr, uint32_t* len, uint32_t n)
 {
         void* tmp = NULL;
 
-        /* Improve handling of error transactions */
         /* The FULL VERT THRESHOLD is the amount that we deem to be small
          * enough so that we have an adjacency list that is capable of storing
          * a 100% filled adjacency list from the start. It has been done this
