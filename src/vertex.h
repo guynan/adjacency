@@ -43,5 +43,8 @@ void freeVertex(Vertex v);
 int isSink(Vertex v);
 
 
+/* Internal functions */
+uint32_t _countindegree(Vertex v);
+
 #endif
 

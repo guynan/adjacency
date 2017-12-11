@@ -37,6 +37,15 @@ struct _gflags {
 };
 
 
+/* This bit field provides flags to show whether cached values should be
+ * recalculated or not. */
+struct _mflags {
+        uint8_t UPDATE_IN_DEG   : 1;
+        uint8_t UPDATE_OUT_DEG  : 1;
+        uint8_t                 : 6;
+};
+
+
 /* I have not decided upon whether this is the path that I would like to take,
  * though there is a lot of associated data that pertains to particular vertex.
  * This structure would be initialised whenever a variable is calculated for 
@@ -50,6 +59,7 @@ struct _gflags {
 typedef struct {
         uint32_t inDegree;
         uint32_t outDegree;
+        struct _mflags flags;
         double density;
 } __vertexmeta__, *vertexmeta;
 

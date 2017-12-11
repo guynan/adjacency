@@ -11,6 +11,16 @@
 
 #include "defs.h"
 
+#define META_INCR_IN_DEG(v)             v->meta->inDegree++
+#define META_DECR_IN_DEG(v)             v->meta->inDegree--
+
+#define META_INCR_OUT_DEG(v)            v->meta->outDegree++
+#define META_DECR_OUT_DEG(v)            v->meta->outDegree--
+
+/* Use this to first check whether meta has been initialised, and then whether
+ * or not the particular field has been calculated prior to this */
+#define META_FIELD_EXISTS(v, x)         v->meta && v->meta->x
+
 
 /* Function Prototypes */
 vertexmeta initVertexmeta(void);

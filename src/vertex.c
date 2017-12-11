@@ -78,7 +78,15 @@ void addAdjacent(Vertex v, Vertex adj)
                 }
 
                 if(!(v->adjacent)[i]){
+
                         (v->adjacent)[i] = adj;
+
+                        if(META_FIELD_EXISTS(v, outDegree))
+                                META_INCR_OUT_DEG(v);
+
+                        if(META_FIELD_EXISTS(adj, inDegree))
+                                META_INCR_IN_DEG(adj);
+
                         return;
                 }
         }
@@ -238,10 +246,6 @@ Vertex* initVertices(uint32_t n, Graph g)
 
         if(!vert) return NULL;
 
-        /* A note on some of my design choices:
-         *      This array starts at 1 as 0 is an invalid
-         *      node name... Maybe? */
-
         for(uint32_t i = 0; i < n; i++){
                Vertex v = initVertex(i, g); 
                if(v) vert[i] = v;
@@ -315,26 +319,78 @@ int isSink(Vertex v)
  * flag is returned or the vertex has no traversable resources. */
 uint32_t degree(Vertex v, char f)
 {
+        uint32_t c = 0;
+
+        if(!v || !f)
+                return c;
+
         if(f == 'o' || f == 'O'){
 
                 /* Note here - if the vertex has 0 out degree, the count will
                  * always be updated. In my mind this is a bug */
-                if(v->meta && v->meta->outDegree){
+                if(META_FIELD_EXISTS(v, outDegree))
                         return v->meta->outDegree;
-                }
 
-                uint32_t c = countAdjacencyList(v);
+                c = countAdjacencyList(v);
 
-                if(!v->meta) v->meta = initVertexmeta();
+                if(!v->meta)
+                        v->meta = initVertexmeta();
+
                 v->meta->outDegree = c;
 
                 return c;
         }
 
-        /* Incomplete */
+        if(f == 'i' || f == 'I'){
 
-        return 0;
+                /* Note add a flag to see if recalculation is necessary */
+                if(META_FIELD_EXISTS(v, inDegree))
+                        return v->meta->inDegree;
 
+                c = _countindegree(v);
+
+                /* This, in particular is an expensive calculation, best to
+                 * cache the result if we can */
+                if(!v->meta)
+                        v->meta = initVertexmeta();
+
+                v->meta->inDegree = c;
+        }
+
+        return c;
+
+}
+
+
+/* This function should not be user visible - this is the machinery that is
+ * used to count the indegree of the vertex, though we only want this to be
+ * used when necessary. Results from previous calculations should be cached in
+ * the meta section. As it stands this is only really good for static graphs */
+uint32_t _countindegree(Vertex v)
+{
+        uint32_t c = 0;
+
+        Graph g = v->graph;
+
+        for(uint32_t i = 0; i < g->order; i++){
+
+                Vertex tmp = g->vertices[i];
+
+                if(!tmp)
+                        continue;
+
+                for(uint32_t j = 0; j < tmp->count; j++){
+
+                        if(!(tmp->adjacent) || !(tmp->adjacent)[j])
+                                continue;
+
+                        if((tmp->adjacent)[j] == v)
+                                c++;
+                }
+
+        }
+
+        return c;
 }
 
 
@@ -348,13 +404,18 @@ uint32_t countAdjacencyList(Vertex v)
 /* Generic function to count vertices in whatever application */
 uint32_t countvertices(Vertex* vs, uint32_t max)
 {
-        if(!vs) return 0;
+        if(!vs)
+                return 0;
+
+        uint32_t c = 0;
 
         for(uint32_t i = 0; i < max; i++){
-                if(!vs[i]) return i;
+
+                if(vs[i])
+                        c++;
         }
 
-        return 0;
+        return c;
 }
 
 
