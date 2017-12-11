@@ -171,7 +171,7 @@ tests: test-dfs test-reverse test-init test-memclean test-graph-init
 #
 
 clean-test: 
-	rm -rf test/*.txt test/dfs test/rev test/init test/memclean
+	rm -rf test/*.txt test/dfs test/rev test/init test/memclean test/graph-init
 
 clean: clean-test
 	rm -rf $(BUILDDIR) *.o
