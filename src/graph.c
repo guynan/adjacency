@@ -14,9 +14,9 @@ Graph initGraph(Vertex* vs, uint32_t n)
 
 
         g->vertices = vs;
-        /* Okay this needs some work*/
-//        g->order = (vs) ? n : 0;
         g->order = n;
+        g->capacity = n;
+
         memset(&g->flags, 0, sizeof(struct _gflags));
 
         return g;
@@ -50,7 +50,6 @@ void reverseGraph(Graph g)
 {
          
         Vertex* vs = g->vertices;
-
 
         if(!g->flags.REVERSED){
                 for(uint32_t i = 0; i < g->order; i++){
@@ -207,7 +206,10 @@ void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s)
 
 void setVertices(Graph g, Vertex* vs)
 {
-        g->vertices = vs;
+        if(g && g->vertices)
+                g->vertices = vs;
+
+        return;
 }
 
 
@@ -230,5 +232,42 @@ void linkVertices(Graph g, uint32_t** adjlist)
         }
 
         return;
+}
+
+
+/* Add a vertex to the graph, allocating more space if necessary and inserting
+ * into an empty spot. */
+void addVertex(Graph g, Vertex v)
+{
+        /* Note that this does allow addition of null vertices */
+        if(!g)
+                return;
+
+        /* If the graph is empty at the moment, initialise storage space */
+        if(!g->vertices || g->flags.GRAPH_FULL){
+                __graph_realloc(&g->vertices, &g->capacity, g->order);
+                g->flags.GRAPH_FULL = 0;
+        }
+
+        uint32_t i = 0;
+
+        /* Assume that the last vertex is at the `order` slot but because there
+         * are removals etc, this is not guaranteed and so we iterate until we
+         * find an empty space, while setting hard boundary of the capacity */
+        for(i = g->order - 1; i < g->capacity && (g->vertices)[i]; i++)
+                ;
+
+        (g->vertices)[i] = v;
+
+        /* If almost full, make sure the next time we come around that we
+         * allocate more space for subsequent insertions */
+        if(i == g->capacity - 1){
+                g->flags.GRAPH_FULL = 1;
+        }
+        
+        g->order++;
+
+        return;
+
 }
 

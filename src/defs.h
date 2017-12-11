@@ -33,7 +33,9 @@ struct _vflags {
 struct _gflags {
         uint8_t EMPTY           : 1;
         uint8_t REVERSED        : 1;
-        uint8_t                 : 6;
+        uint8_t GRAPH_FULL      : 1;
+        uint8_t                 : 1;
+        uint8_t                 : 4;
 };
 
 
@@ -89,6 +91,7 @@ struct _vertex {
 struct _graph {
         struct _vertex**        vertices;
         uint32_t                order;
+        uint32_t                capacity;
         struct _gflags          flags;
 };
 

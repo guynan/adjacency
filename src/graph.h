@@ -20,6 +20,7 @@ void linkVertices(Graph g, uint32_t** adjlist);
 void freeGraphP(Vertex** gp, uint32_t n);
 Graph initGraph(Vertex* vs, uint32_t n);
 void setVertices(Graph g, Vertex* vs);
+void addVertex(Graph g, Vertex v);
 Vertex** DFSForrest(Graph g);
 void reverseGraph(Graph g);
 void printGraph(Graph g);

@@ -41,6 +41,33 @@ void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order)
 }
 
 
+/* This grows the graph structure as vertices are added. The thing to note here
+ * is that the graph order must remain constant during the operation as it is
+ * not the upper bound. In fact there is no upper bound, graphs can grow
+ * arbitrarily large. */
+void __graph_realloc(Vertex** vsptr, uint32_t* capacity, uint32_t order)
+{
+        void* tmp = NULL;
+
+        uint32_t newcap = __memprovisbs(0, order);
+
+        tmp = realloc(*vsptr, (newcap * sizeof(Vertex)));
+
+        /* Fuck */
+        if(!tmp)
+                return;
+
+        *vsptr = tmp;
+
+        memset(*vsptr + *capacity, 0, (newcap - *capacity) * sizeof(Vertex));
+
+        *capacity = newcap;
+
+        return;
+
+}
+
+
 /* Provision more memory and return the new block size */
 uint32_t __memprovisbs(uint32_t currlen, uint32_t order)
 {

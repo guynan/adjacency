@@ -91,13 +91,6 @@ void addAdjacent(Vertex v, Vertex adj)
                 }
         }
 
-        /* If we get here, this means that we have not inserted the vertex into
-         * the adjacency list. In this case we need to check whether we need to
-         * allocate some more space or do nothing */
-//        if(v->count == v->order) return;
-
-
-
         return;
 
 }
