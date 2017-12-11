@@ -84,9 +84,7 @@ void reverseGraph(Graph g)
 /* Takes a graph object and frees the vertices by calling freeVertex */
 void freeGraph(Graph g)
 {
-        if(!g) return;
-
-        if(!g->vertices)
+        if(!g || !g->vertices)
                 return;
 
         for(uint32_t i = 0; i < g->order; i++){
@@ -96,7 +94,6 @@ void freeGraph(Graph g)
         free(g->vertices);
 
         free(g);
-
 }
 
 
@@ -123,14 +120,19 @@ void freeGraphP(Vertex** gp, uint32_t n)
 /* Sort the adjacency lists using a quicksort according to the id of vertex */
 void sortGraph(Graph g)
 {
-        if(!g) return;
+        if(!g)
+                return;
+
         uint32_t n = g->order;
 
         Vertex* vs = g->vertices;
 
         for(uint32_t i = 0; i < n; i++){
                 Vertex a = vs[i];
-                if(!vs[i]) continue;
+
+                if(!vs[i])
+                        continue;
+
                 qsort(a->adjacent, a->count, sizeof(Vertex), vertexCompare);
         }
 
