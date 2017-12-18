@@ -205,10 +205,20 @@ void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s)
 }
 
 
+/* This is an unforgiving operation; if you have a graph with an allocated set
+ * of vertices, then this will go and free all resources associated with those
+ * vertices, and update it with the new block that have been designated. */
 void setVertices(Graph g, Vertex* vs)
 {
-        if(g && g->vertices)
+        if(g){
+                if(g->vertices){
+                        for(uint32_t i = 0; i < g->capacity; i++){
+                                freeVertex(g->vertices[i]);
+                        }
+                }
+
                 g->vertices = vs;
+        }
 
         return;
 }
