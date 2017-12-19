@@ -32,6 +32,8 @@ int main(int argc, char** argv)
          * right. We now cast it to a char* so we can inspect each byte */
         testblock(v->adjacent, v->count * sizeof(Vertex));
 
+        freeVertex(v);
+
 
 }
 
