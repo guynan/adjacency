@@ -114,60 +114,6 @@ void __initAdjacent(Vertex** vs_ptr, uint32_t* len, uint32_t n)
 }
 
 
-/* This is called when we have no more space left in the adjacency list and
- * (most importantly) the current length of the adjacency list of the vertex is
- * *not* equal to the order of the graph. Shouldn't get called too much */
-void __reallocAdjacent(Vertex v)
-{
-        void* tmp = NULL;
-
-        uint32_t old_len = v->count;
-        uint32_t new_len = v->count + (v->graph->order / VERT_ADJACENT_SEGMENT);
-
-        /* Don't assign the current length to be longer than order */
-        v->count = (new_len < v->graph->order) ? new_len : v->graph->order;
-
-        tmp = realloc(v->adjacent, (v->count * sizeof(Vertex)));
-
-        /* Fuck */
-        if(!tmp){
-                v->count = old_len;
-                return;
-        }
-
-        v->adjacent = tmp;
-        
-        /* Zero out other slots in memory that have been added */
-        for(uint32_t i = old_len; i < v->count; i++){
-                (v->adjacent)[i] = NULL;
-        }
-
-        return;
-
-}
-
-
-void __initReversedBy(Vertex v)
-{
-        /* Should also check whether or not it has been initialised before.
-         * otherwise memory leaks are likely */
-
-        void* b = NULL;
-
-        /* Reversing is not a space efficient transaction unless one knows the
-         * maximum inDegree. If you do know this, you can set the size to be
-         * that. If we do not know the max indegree
-         * 
-         * Further optimisation could be to set the length of the reversedBy
-         * array to the indegree per vertex. */
-        b = calloc(v->graph->order, sizeof(Vertex));
-
-        v->reversedBy = (b) ? b : NULL;
-
-        return;
-}
-
-
 /* This is a potentially very time consuming exercise which *definitely*
  * operates in O(n^2) time. It Iterates over all structures that are included
  * in the graph structure and releases memory where it can. This works by */
