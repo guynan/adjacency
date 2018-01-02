@@ -72,14 +72,14 @@ typedef struct {
  * array of adjacent vertices. The amount of vertices that are allocated
  * for are also stored in eletotal; read: element total */
 struct _vertex {
-        uint32_t                id;
         struct _vertex**        adjacent;
-        uint32_t                count;
         struct _graph*          graph;
-        uint32_t                revlen;
         struct _vertex**        reversedBy;
-        struct _vflags          flags;
         vertexmeta              meta;
+        uint32_t                id;
+        uint32_t                count;
+        uint32_t                revlen;
+        struct _vflags          flags;
 };
 
 
