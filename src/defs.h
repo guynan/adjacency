@@ -61,8 +61,8 @@ struct _mflags {
 typedef struct {
         uint32_t inDegree;
         uint32_t outDegree;
+        float density;
         struct _mflags flags;
-        double density;
 } __vertexmeta__, *vertexmeta;
 
 
