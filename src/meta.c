@@ -6,7 +6,7 @@
  * long before it is needed, if it is even needed at all. */
 vertexmeta initVertexmeta(void)
 {
-        vertexmeta vm = calloc(1, sizeof(__vertexmeta__));
+        vertexmeta vm = calloc(1, sizeof(struct _vertexmeta));
 
         if(!vm) return NULL;
 

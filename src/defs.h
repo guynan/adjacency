@@ -58,12 +58,12 @@ struct _mflags {
  * problems. This will probably include data such as the in degree, out degree,
  * density, order and I will probably eschew the reversed by and visited
  * attributes from the vertex structure as they are pretty niche. */
-typedef struct {
-        uint32_t inDegree;
-        uint32_t outDegree;
-        float density;
-        struct _mflags flags;
-} __vertexmeta__, *vertexmeta;
+struct _vertexmeta {
+        uint32_t                inDegree;
+        uint32_t                outDegree;
+        float                   density;
+        struct _mflags          flags;
+};
 
 
 /* Contains a distinguishing id (for human readable purposes), pointer
@@ -75,7 +75,7 @@ struct _vertex {
         struct _vertex**        adjacent;
         struct _graph*          graph;
         struct _vertex**        reversedBy;
-        vertexmeta              meta;
+        struct _vertexmeta*     meta;
         uint32_t                id;
         uint32_t                count;
         uint32_t                revlen;
@@ -97,6 +97,7 @@ struct _graph {
 
 
 typedef struct _vertex*         Vertex;
+typedef struct _vertexmeta*     vertexmeta;
 typedef struct _graph*          Graph;
 
 
@@ -104,7 +105,7 @@ typedef struct _graph*          Graph;
  * will all have this graph as the parent. Is later defined in vertex.c */
 #if !defined __EMPTY_GRAPH_CONSTANT__
 #define __EMPTY_GRAPH_CONSTANT__
-extern struct _graph EMPTY_GRAPH_STRUCT;
+extern struct _graph            EMPTY_GRAPH_STRUCT;
 #endif
 
 #endif
