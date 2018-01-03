@@ -73,7 +73,7 @@ uint32_t __memprovisbs(uint32_t currlen, uint32_t order)
 {
         (void) order;
 
-        return (!currlen) ? VERT_ADJ_ST_CAPACITY : currlen * 2;
+        return (!currlen) ? VERT_ADJ_ST_CAPACITY : currlen * MEM_SCALE_FACTOR;
 }
 
 
@@ -146,4 +146,22 @@ void __rm_empty_mem(Vertex* vs, uint32_t len)
 	return;
 
 }
+
+
+void __dealloc_vertices(void)
+{
+//        __rm_empty_mem(vs, capacity);
+
+  //      for(uint32_t i = 0; i < capacity; i++){
+                /* need to get to i + 1 so I can have a null terminating
+                 * pointer to indicate the end of the array */
+//                if(vs[i])
+ //                       continue;
+   //     }
+}
+
+                
+
+
+
 

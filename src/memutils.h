@@ -28,11 +28,14 @@ void __reallocAdjacent(Vertex v);
 #define VERT_ADJ_PERCENT(order)         (VERT_ADJ_DENSITY * order) / 100
 #define VERT_ADJ_ST_CAPACITY            16
 
+#define MEM_SCALE_FACTOR                2
 
 /* Memory vacuum options */
 #define MEM_VAC_META_PURGE              0x1
 #define MEM_VAC_MEM_COMPRESS            0x2
 #define MEM_VAC_FULL_PURGE              0xFFFF
+
+#define unlikely(x)                     (x)
 
 
 #endif
