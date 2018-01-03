@@ -12,11 +12,12 @@ Graph initGraph(Vertex* vs, uint32_t n)
         if(!g)
                 return NULL;
 
-
         g->vertices = vs;
         g->order = n;
         g->capacity = n;
 
+        /* Somewhat redundant since we calloc the graph in the first place,
+         * but hey, explicit is better than implicit, right? */
         memset(&g->flags, 0, sizeof(struct _gflags));
 
         return g;
@@ -49,6 +50,8 @@ void printGraph(Graph g)
  * reversals will not be polluted by the previous. Note that this is inplace */
 void reverseGraph(Graph g)
 {
+        if(!g)
+                return;
          
         Vertex* vs = g->vertices;
 
@@ -250,8 +253,9 @@ void linkVertices(Graph g, uint32_t** adjlist)
  * into an empty spot. */
 void addVertex(Graph g, Vertex v)
 {
-        /* Note that this does allow addition of null vertices */
-        if(!g)
+        /* If there is no vertex, we would search for a slot and insert it.
+         * better to reject it now and be done with it. */
+        if(!g || !v)
                 return;
 
         /* If the graph is empty at the moment, initialise storage space */

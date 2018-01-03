@@ -37,6 +37,9 @@ Vertex initVertex(uint32_t vid, Graph g)
 
         Vertex v = calloc(1, sizeof(struct _vertex));
 
+        if(!v)
+                return NULL;
+
         v->id = vid;
         v->adjacent = NULL;
         v->count = 0;
@@ -173,6 +176,7 @@ void removeAdjacent(Vertex v, Vertex adj)
 
                 if(tmp[i] == adj){
                         tmp[i] = NULL; 
+                        return;
                 }
 
         }
