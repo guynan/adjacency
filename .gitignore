@@ -12,5 +12,9 @@ test/dfs
 test/rev
 test/init
 test/memclean
+test/graph-init
 
 test/*.txt
+
+# Syntax - close enough
+# vim:syntax=sh
