@@ -24,10 +24,8 @@ int main(int argc, char** argv)
 
         uint32_t count = countAdjList(adjlist);
 
-        Graph g = initGraph(NULL, count);
-
-        Vertex* vs = initVertices(count, g);
-        setVertices(g, vs);
+        Graph g = initGraph();
+        createVertices(g, count);
 
         linkVertices(g, adjlist);
         freeAdjacencyList(adjlist);

@@ -8,7 +8,7 @@ int main();
 
 int main()
 {
-        Graph g = initGraph(NULL, 0);
+        Graph g = initGraph();
 
         for(uint32_t i = 0; i < MAX; i++){
                 Vertex v = initVertex(i, g);
