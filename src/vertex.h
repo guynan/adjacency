@@ -28,6 +28,7 @@ uint32_t countvertices(Vertex* vs, uint32_t max);
 int vertexCompare(const void* a, const void* b);
 void insertReversedBy(Vertex v, Vertex adj);
 void removeAdjacent(Vertex v, Vertex adj);
+void freeVertices(Vertex* vs, uint32_t n);
 Vertex* initVertices(uint32_t n, Graph g);
 Vertex initVertex(uint32_t vid, Graph g);
 void addAdjacent(Vertex v, Vertex adj);

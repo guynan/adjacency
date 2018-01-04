@@ -16,16 +16,18 @@
 
 /* Graph specific prototypes */
 void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s);
+void setVertices(Graph g, Vertex* vs, uint32_t n);
 void linkVertices(Graph g, uint32_t** adjlist);
+void createVertices(Graph g, uint32_t n);
 void freeGraphP(Vertex** gp, uint32_t n);
-Graph initGraph(Vertex* vs, uint32_t n);
-void setVertices(Graph g, Vertex* vs);
+void addVertices(Graph g, uint32_t n);
 void addVertex(Graph g, Vertex v);
 Vertex** DFSForrest(Graph g);
 void reverseGraph(Graph g);
 void printGraph(Graph g);
 void sortGraph(Graph g);
 void freeGraph(Graph g);
+Graph initGraph(void);
 
 #endif
 

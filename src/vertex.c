@@ -234,6 +234,17 @@ void freeVertex(Vertex v)
 }
 
 
+/* Frees a container of vertices with the hard limit of the capacity */
+void freeVertices(Vertex* vs, uint32_t n)
+{
+        for(u32 i = 0; i < n; i++){
+                freeVertex(vs[i]);
+        }
+
+        free(vs);
+}
+
+
 /* If you are lazy and want to initialise `n` vertices and have
  * them packaged nicely in an array for you, this is the function
  * for you! Returns a pointer to said array */
@@ -242,6 +253,8 @@ Vertex* initVertices(uint32_t n, Graph g)
         Vertex* vert = calloc((n+1), sizeof(Vertex));
 
         if(!vert) return NULL;
+
+        vert[n] = NULL;
 
         for(uint32_t i = 0; i < n; i++){
                Vertex v = initVertex(i, g); 

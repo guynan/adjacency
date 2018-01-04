@@ -4,17 +4,16 @@
 #include "memutils.h"
 
 
-Graph initGraph(Vertex* vs, uint32_t n)
+Graph initGraph(void)
 {
-        
         Graph g = calloc(1, sizeof(struct _graph));
 
         if(!g)
                 return NULL;
 
-        g->vertices = vs;
-        g->order = n;
-        g->capacity = n;
+        g->vertices = NULL;
+        g->order = 0;
+        g->capacity = 0;
 
         /* Somewhat redundant since we calloc the graph in the first place,
          * but hey, explicit is better than implicit, right? */
@@ -211,16 +210,16 @@ void DFS(Vertex v, Vertex* dfsOrder, uint32_t* s)
 /* This is an unforgiving operation; if you have a graph with an allocated set
  * of vertices, then this will go and free all resources associated with those
  * vertices, and update it with the new block that have been designated. */
-void setVertices(Graph g, Vertex* vs)
+void setVertices(Graph g, Vertex* vs, uint32_t n)
 {
         if(g){
                 if(g->vertices){
-                        for(uint32_t i = 0; i < g->capacity; i++){
-                                freeVertex(g->vertices[i]);
-                        }
+                        freeVertices(g->vertices, g->capacity);
                 }
 
                 g->vertices = vs;
+                g->capacity = n;
+                g->order = n;
         }
 
         return;
@@ -284,6 +283,62 @@ void addVertex(Graph g, Vertex v)
         }
         
         g->order++;
+
+        return;
+
+}
+
+
+/* This is a safer way of initialising n vertices and adding them to a graph.
+ * The notion of allowing the user to create an array of vertices by however
+ * means they see fit leads to the introduction of a lot of error. Since this
+ * method is handled in a santised environment where the only input is the
+ * graph and the number of vertices they would like to create, we can thusly
+ * say categorically that we will know both the order and the capacity of the
+ * graph with certainty. */
+void createVertices(Graph g, uint32_t n)
+{
+        if(!g || !n)
+                return;
+
+        /* Destroy the old vertices if they exist */
+        if(g->vertices){
+                freeVertices(g->vertices, g->capacity);
+        }
+
+        Vertex* vs = initVertices(n, g);
+
+        if(!vs)
+                return;
+
+        g->vertices = vs;
+        g->capacity = n;
+        g->order = n;
+
+        return;
+
+}
+
+
+/* As opposed to destroying the old vertices on the graph, this function
+ * instead generates the new vertices and then *adds* them to the current
+ * graph, thereby preserving the old ones, and adding n vertices to g */
+void addVertices(Graph g, uint32_t n)
+{
+        if(!g || !n)
+                return;
+
+        if(!g->vertices){
+                createVertices(g, n);
+                return;
+        }
+
+        for(u32 i = 0; i < n; i++){
+
+                /* Create the new vertex and subsequently add it to g */
+                Vertex v = initVertex(i, g);
+                addVertex(g, v);
+        }
 
         return;
 
