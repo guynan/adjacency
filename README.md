@@ -1,4 +1,5 @@
 # Adjacency
+[![Build Status](https://travis-ci.org/guynan/adjacency.svg?branch=master)](https://travis-ci.org/guynan/adjacency)
 
 A high level interface for manipulating graph theory objects in C
 
