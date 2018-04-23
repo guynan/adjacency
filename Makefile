@@ -84,22 +84,22 @@ create-build-dir:
 # Object files for dependency checks at compile time
 #
 
-memutils.o: src/memutils.c src/memutils.h src/vertex.h src/defs.h
+memutils.o:
 	$(CC) $(CFLAGS) -fPIC -c src/memutils.c $(DEBUG_FLAGS) $(LFLAGS)
 
-vertex.o: src/vertex.c src/vertex.h src/meta.h src/defs.h
+vertex.o:
 	$(CC) $(CFLAGS) -fPIC -c src/vertex.c $(DEBUG_FLAGS) $(LFLAGS)
 
-meta.o: src/meta.c src/meta.h src/defs.h
+meta.o:
 	$(CC) $(CFLAGS) -fPIC -c src/meta.c $(DEBUG_FLAGS) $(LFLAGS)
 
-graph.o: src/graph.c src/vertex.h src/graph.h src/defs.h
+graph.o:
 	$(CC) $(CFLAGS) -fPIC -c src/graph.c $(DEBUG_FLAGS) $(LFLAGS)
 
-fileutils.o: src/fileutils.c src/fileutils.h src/defs.h
+fileutils.o:
 	$(CC) $(CFLAGS) -fPIC -c src/fileutils.c $(DEBUG_FLAGS) $(LFLAGS)
 
-adjlist.o: src/adjlist.c src/adjlist.h src/defs.h
+adjlist.o:
 	$(CC) $(CFLAGS) -fPIC -c src/adjlist.c $(DEBUG_FLAGS) $(LFLAGS)
 
 
