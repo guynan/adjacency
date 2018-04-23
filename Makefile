@@ -3,9 +3,11 @@
 #
 
 # Library specific options
+CC ?= gcc
 NAME = adjacency
 LIBNAME=libadjacency.so
 VERSION = devel
+PREFIX?=~
 
 # Avoid inheritance of shell from environment
 SHELL = /bin/sh
@@ -20,23 +22,24 @@ SHELL = /bin/sh
 # library as root whilst you are developing, edit /etc/ld.so.conf and add in
 # /home/user/lib/ and as root run ldconfig. Alternatively, export the 
 # LD_LIBRARY_FLAG to include ~/lib/ and then source your bashrc
-LIBPREFIX = ~/lib/
-INCLPREFIX = ~/include/
+LIBPREFIX = $(PREFIX)/lib/
+INCLPREFIX = $(PREFIX)/include/
 
 LIBINSTALL = /usr/local/lib/
 INCLINSTALL = /usr/local/include/
 
 # Prefixes for commonly used directories.
 SRCDIR = src/
+OBJDIR = obj/
 TESTDIR = test/
 BUILDDIR = build/
+
 
 #
 # Compilation Options
 #
 
-CC = gcc
-CFLAGS = -Wall -Wextra -pedantic --std=c99
+CFLAGS = -Wall -Wextra --std=c99
 DEBUG_FLAGS = -Werror -Wstrict-prototypes -Wpointer-arith -Wshadow \
 			 -pg -g 
 
