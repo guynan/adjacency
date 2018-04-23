@@ -7,19 +7,19 @@ TESTS= test-dfs test-reverse test-init test-memclean test-graph-init
 all: $(TESTS)
 	
 test-dfs:
-	$(CC) $(CFLAGS) dfs.c -I../src/ -g -o dfs $(TEST_LD)
+	$(CC) $(TEST_LD) $(CFLAGS) dfs.c -I../src/ -g -o dfs
 
 test-reverse:
-	$(CC) $(CFLAGS) reverselist.c -I../src/ -g -o rev $(TEST_LD)
+	$(CC) $(TEST_LD) $(CFLAGS) reverselist.c -I../src/ -g -o rev
 
 test-init:
-	$(CC) $(CFLAGS) largeinit.c -I../src/ -g -o init $(TEST_LD)
+	$(CC) $(TEST_LD) $(CFLAGS) largeinit.c -I../src/ -g -o init
 
 test-memclean:
-	$(CC) $(CFLAGS) memclean.c -I../src/ -g -o memclean $(TEST_LD)
+	$(CC) $(TEST_LD) $(CFLAGS) memclean.c -I../src/ -g -o memclean
 
 test-graph-init:
-	$(CC) $(CFLAGS) graph_init.c -I../src/ -g -o graph-init $(TEST_LD)
+	$(CC) $(TEST_LD) $(CFLAGS) graph_init.c -I../src/ -g -o graph-init
 
 clean:
 	rm -rf $(PROGS) *.txt 
