@@ -8,6 +8,7 @@ NAME = adjacency
 LIBNAME=libadjacency.so
 VERSION = devel
 PREFIX?=~
+MAKE += --no-print-directory
 
 # Avoid inheritance of shell from environment
 SHELL = /bin/sh

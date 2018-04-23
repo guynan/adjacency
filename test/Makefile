@@ -1,7 +1,7 @@
 
 
 PROGS= rev init dfs memclean graph-init
-TEST_LD = -ladjacency
+TEST_LD = -L../build/ -ladjacency
 TESTS= test-dfs test-reverse test-init test-memclean test-graph-init
 
 all: $(TESTS)
