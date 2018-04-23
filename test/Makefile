@@ -7,7 +7,7 @@ TESTS= test-dfs test-reverse test-init test-memclean test-graph-init
 all: $(TESTS)
 	
 test-dfs:
-	$(CC) $(TEST_LD) $(CFLAGS) dfs.c -I../src/ -g -o dfs
+	$(CC) $(CFLAGS) dfs.c -I../src/ -g -o dfs $(TEST_LD) 
 
 test-reverse:
 	$(CC) $(TEST_LD) $(CFLAGS) reverselist.c -I../src/ -g -o rev
