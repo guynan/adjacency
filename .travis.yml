@@ -1,7 +1,7 @@
 language: c
 sudo: false
 compiler:
- - clang
+# - clang
  - gcc
 
 script:
