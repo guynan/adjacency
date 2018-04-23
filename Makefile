@@ -125,7 +125,7 @@ so-gen-clang: build-objs
 cp-lib:
 	mkdir -p $(LIBPREFIX)
 	cp $(BUILDDIR)/$(LIBNAME).$(VERSION) $(LIBPREFIX)
-	ln -sf $(LIBPREFIX)/$(LIBNAME).$(VERSION) $(LIBPREFIX)$(LIBNAME)
+	ln -sf $(LIBPREFIX)/$(LIBNAME).$(VERSION) $(LIBPREFIX)/$(LIBNAME)
 
 cp-headers:
 	mkdir -p $(INCLPREFIX)
