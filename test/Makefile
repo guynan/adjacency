@@ -10,16 +10,16 @@ test-dfs:
 	$(CC) $(CFLAGS) dfs.c -I../src/ -g -o dfs $(TEST_LD) 
 
 test-reverse:
-	$(CC) $(TEST_LD) $(CFLAGS) reverselist.c -I../src/ -g -o rev
+	$(CC) $(CFLAGS) reverselist.c -I../src/ -g -o rev $(TEST_LD)
 
 test-init:
-	$(CC) $(TEST_LD) $(CFLAGS) largeinit.c -I../src/ -g -o init
+	$(CC) $(CFLAGS) largeinit.c -I../src/ -g -o init $(TEST_LD)
 
 test-memclean:
-	$(CC) $(TEST_LD) $(CFLAGS) memclean.c -I../src/ -g -o memclean
+	$(CC) $(CFLAGS) memclean.c -I../src/ -g -o memclean $(TEST_LD)
 
 test-graph-init:
-	$(CC) $(TEST_LD) $(CFLAGS) graph_init.c -I../src/ -g -o graph-init
+	$(CC) $(CFLAGS) graph_init.c -I../src/ -g -o graph-init $(TEST_LD)
 
 clean:
 	rm -rf $(PROGS) *.txt 
