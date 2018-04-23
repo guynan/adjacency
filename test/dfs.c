@@ -1,9 +1,6 @@
 
 
-#include "vertex.h"
-#include "graph.h"
-#include "adjlist.h"
-#include "fileutils.h"
+#include "adjacency.h"
 
 #define LINE_SIZE               128
 #define FILE_PATH               "data/list.txt"
@@ -24,11 +21,11 @@ int main(int argc, char** argv)
 
         Graph g = initGraph();
         addVertices(g, count);
- 
+
         linkVertices(g, adjlist);
-        
+
         freeAdjacencyList(adjlist);
-        
+
         Vertex** dfs = DFSForrest(g);
         writeDFS(dfs, FILE_OUT, count);
 

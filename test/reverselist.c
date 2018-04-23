@@ -3,10 +3,7 @@
  * structures to form the graph. The graph is then reversed, sorted and written
  * to the file that is defined by FILE_OUT */
 
-#include "vertex.h"
-#include "graph.h"
-#include "fileutils.h"
-#include "adjlist.h"
+#include "adjacency.h"
 
 #define LINE_SIZE               128
 #define FILE_PATH               "data/list.txt"

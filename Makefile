@@ -75,7 +75,7 @@ ifeq ($(CC),clang)
 	PROG = create-build-dir so-gen-clang cp-lib cp-headers
 endif
 
-all: $(PROG)
+all: $(PROG) tests
 
 create-build-dir: 
 	mkdir -p $(BUILDDIR)
@@ -150,34 +150,16 @@ uninstall:
 # Test Targets
 #
 
-TEST_LD = -ladjacency
-	
-test-dfs: all
-	$(CC) $(CFLAGS) test/dfs.c -Isrc/ -g -o test/dfs $(TEST_LD)
-
-test-reverse: all
-	$(CC) $(CFLAGS) test/reverselist.c -Isrc/ -g -o test/rev $(TEST_LD)
-
-test-init: all
-	$(CC) $(CFLAGS) test/largeinit.c -Isrc/ -g -o test/init $(TEST_LD)
-
-test-memclean: all
-	$(CC) $(CFLAGS) test/memclean.c -Isrc/ -g -o test/memclean $(TEST_LD)
-
-test-graph-init:
-	$(CC) $(CFLAGS) test/graph_init.c -Isrc/ -g -o test/graph-init $(TEST_LD)
-
-tests: test-dfs test-reverse test-init test-memclean test-graph-init
+tests:
+	$(MAKE) -C test
 
 #
 # Clean Targets
 #
 
-clean-test: 
-	rm -rf test/*.txt test/dfs test/rev test/init test/memclean test/graph-init
-
 clean: clean-test
 	rm -rf $(BUILDDIR) *.o
+	$(MAKE) -C test clean
 
 #
 # One time use to set the LIBRARY PATH

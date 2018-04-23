@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include "adjacency.h"
 
 void testblock(void* ptr, size_t width);
