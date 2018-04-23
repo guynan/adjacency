@@ -1,5 +1,5 @@
 
-#include "memutils.h"
+#include "adjacency.h"
 
 
 /* Here we construct a general purpose vertex pointer reallocation method. This

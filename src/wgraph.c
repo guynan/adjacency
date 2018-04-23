@@ -1,5 +1,5 @@
 
-#include "wgraph.h"
+#include "adjacency.h"
 
 
 WGraph initWeighedtGraph(Edge* es, uint32_t n)

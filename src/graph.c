@@ -1,7 +1,5 @@
 
-#include "graph.h"
-#include "vertex.h"
-#include "memutils.h"
+#include "adjacency.h"
 
 
 Graph initGraph(void)

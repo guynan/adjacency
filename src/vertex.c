@@ -2,10 +2,7 @@
  * initialising and manipulating relationships betweeen vertices */
 
 
-#include "defs.h"
-#include "vertex.h"
-#include "meta.h"
-#include "memutils.h"
+#include "adjacency.h"
 
 #if !defined __EMPTY_GRAPH_CONSTANT__DEF
 

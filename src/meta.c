@@ -1,5 +1,5 @@
 
-#include "meta.h"
+#include "adjacency.h"
 
 /* This is a purposely barren initialisation, we want the memory for the more
  * sizeable elements to be allocated on the fly as opposed to allocating memory

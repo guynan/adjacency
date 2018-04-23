@@ -1,5 +1,5 @@
 
-#include "adjlist.h"
+#include "adjacency.h"
 
 /* Simply counts how many vertices are present in the adjacency list */
 uint32_t countAdjList(uint32_t** adj)

@@ -1,7 +1,7 @@
 /* This compilation unit deals with general file i/o */
 
 
-#include "fileutils.h"
+#include "adjacency.h"
 
 
 /* The path to the file and the *proposed* size of the line are passed in
