@@ -23,17 +23,17 @@ SHELL = /bin/sh
 # library as root whilst you are developing, edit /etc/ld.so.conf and add in
 # /home/user/lib/ and as root run ldconfig. Alternatively, export the 
 # LD_LIBRARY_FLAG to include ~/lib/ and then source your bashrc
-LIBPREFIX = $(PREFIX)/lib/
-INCLPREFIX = $(PREFIX)/include/
+LIBPREFIX = $(PREFIX)/lib
+INCLPREFIX = $(PREFIX)/include
 
-LIBINSTALL = /usr/local/lib/
-INCLINSTALL = /usr/local/include/
+LIBINSTALL = $(PREFIX)/lib
+INCLINSTALL = $(PREFIX)/include
 
 # Prefixes for commonly used directories.
 SRCDIR = src/
 OBJDIR = obj/
 TESTDIR = test/
-BUILDDIR = build/
+BUILDDIR = build
 
 
 #
@@ -124,7 +124,7 @@ so-gen-clang: build-objs
 
 cp-lib:
 	mkdir -p $(LIBPREFIX)
-	cp $(BUILDDIR)$(LIBNAME).$(VERSION) $(LIBPREFIX)
+	cp $(BUILDDIR)/$(LIBNAME).$(VERSION) $(LIBPREFIX)
 	ln -sf $(LIBPREFIX)/$(LIBNAME).$(VERSION) $(LIBPREFIX)$(LIBNAME)
 
 cp-headers:
@@ -138,8 +138,8 @@ cp-headers:
 install: create-build-dir so-gen
 	mkdir -p $(LIBINSTALL)
 	mkdir -p $(INCLINSTALL)/$(NAME)/
-	cp $(BUILDDIR)$(LIBNAME).$(VERSION) $(LIBINSTALL)
-	ln -sf $(LIBINSTALL)/$(LIBNAME).$(VERSION) $(LIBINSTALL)$(LIBNAME)
+	cp $(BUILDDIR)/$(LIBNAME).$(VERSION) $(LIBINSTALL)
+	ln -sf $(LIBINSTALL)/$(LIBNAME).$(VERSION) $(LIBINSTALL)/$(LIBNAME)
 	cp $(SRCDIR)*.h $(INCLINSTALL)/$(NAME)/
 
 uninstall:
