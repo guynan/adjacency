@@ -1,8 +1,13 @@
-/* This compilation unit includes all the content that pertains to 
+/* This compilation unit includes all the content that pertains to
  * initialising and manipulating relationships betweeen vertices */
 
 
 #include "adjacency.h"
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <inttypes.h>
 
 #if !defined __EMPTY_GRAPH_CONSTANT__DEF
 
@@ -19,15 +24,15 @@ struct _graph EMPTY_GRAPH_STRUCT = {
 #define __EMPTY_GRAPH_CONSTANT__DEF
 #endif
 
-/* This function breathes life into our vertex structure. We give it a 
- * unique vertex id, and pass in how many possible elements in the 
+/* This function breathes life into our vertex structure. We give it a
+ * unique vertex id, and pass in how many possible elements in the
  * adjacency list for each vertex. The safest thing to do here is pass in
- * the total number of elements in the adjacency matrix as it could 
- * be at max adjacent to that many elements. We also keep track of 
+ * the total number of elements in the adjacency matrix as it could
+ * be at max adjacent to that many elements. We also keep track of
  * whether or not the arc has been reversed in the past */
 Vertex initVertex(uint32_t vid, Graph g)
 {
-        /* The following hack is such that we can distinguish between 
+        /* The following hack is such that we can distinguish between
          * a value that is read from the file as 0, and also the 0 value
          * that the adjacency list is initialised to */
         if(vid == (uint32_t) -1) vid = 0;
@@ -97,15 +102,15 @@ void addAdjacent(Vertex v, Vertex adj)
 
 
 /* We reverse an arc when there is a directed arc pointing at one vertex
- * but the vertex does not return the love. 
+ * but the vertex does not return the love.
  *
- * Improve nomenclature 
+ * Improve nomenclature
  *
  * for example:
  *
  * v ----> adj
  *
- * if adj is in v's adjacency list, we know too that there is an arc 
+ * if adj is in v's adjacency list, we know too that there is an arc
  * between the two at least. If in adj's adjacency list we find v, then
  * this implies:
  *
@@ -172,7 +177,7 @@ void removeAdjacent(Vertex v, Vertex adj)
                 }
 
                 if(tmp[i] == adj){
-                        tmp[i] = NULL; 
+                        tmp[i] = NULL;
                         return;
                 }
 
@@ -192,7 +197,7 @@ void printAdjacent(Vertex v)
 {
         if(!v || !v->adjacent)
                 return;
- 
+
         Vertex* tmp = v->adjacent;
 
         printf("%"PRIu32": ", v->id);
@@ -224,7 +229,7 @@ void freeVertex(Vertex v)
                 free(v->adjacent);
                 v->adjacent = NULL;
         }
-        
+       
         free(v);
 
         return;
@@ -254,7 +259,7 @@ Vertex* initVertices(uint32_t n, Graph g)
         vert[n] = NULL;
 
         for(uint32_t i = 0; i < n; i++){
-               Vertex v = initVertex(i, g); 
+               Vertex v = initVertex(i, g);
                if(v) vert[i] = v;
         }
 
@@ -312,7 +317,7 @@ int vertexCompare(const void* a, const void* b)
 
 
 /* Checks if a vertex is a sink. This means that while other vertices may point
- * at the vertex, none must point out from the vertex. This is a convenient 
+ * at the vertex, none must point out from the vertex. This is a convenient
  * alias for asking for the out degree of the vertex is 0 */
 int isSink(Vertex v)
 {

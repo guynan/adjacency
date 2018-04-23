@@ -1,20 +1,12 @@
+
 #ifndef         __ADJACENCY_MASTER_ADJACENCY__
 #define         __ADJACENCY_MASTER_ADJACENCY__
 
 
-/*
- * This file is to streamline the structure defintions. There are a lot of
- * codependent structures and this ensures that if one is to granularly define
- * one header out of the adjacency module, there are no undefined references to
- * structures which often pass silently.
- */
-
+/* Includes necessary for these definitions */
 #include <stdio.h>
 #include <stdint.h>
 #include <stddef.h>
-#include <string.h>
-#include <stdlib.h>
-#include <inttypes.h>
 
 
 /* The flag construction is so that we can store many boolean values in what is
@@ -125,23 +117,45 @@ typedef int64_t                 s64;
 extern struct _graph            EMPTY_GRAPH_STRUCT;
 #endif
 
-/* The graph object will initialise this field by default if the size of the
- * graph is over a certain limit as a useful caching feature. Else the graph
- * will be small enough that the benefit would be immaterial */
-
-
-#define META_INCR_IN_DEG(v)             v->meta->inDegree++
-#define META_DECR_IN_DEG(v)             v->meta->inDegree--
-
-#define META_INCR_OUT_DEG(v)            v->meta->outDegree++
-#define META_DECR_OUT_DEG(v)            v->meta->outDegree--
 
 /* Use this to first check whether meta has been initialised, and then whether
  * or not the particular field has been calculated prior to this */
-#define META_FIELD_EXISTS(v, x)         v->meta && v->meta->x
+#define META_FIELD_EXISTS(v, x)         ((v)->meta && (v)->meta->x)
+
+/* The graph object will initialise this field by default if the size of the
+ * graph is over a certain limit as a useful caching feature. Else the graph
+ * will be small enough that the benefit would be immaterial */
+#define META_INCR_IN_DEG(v)             (v)->meta->inDegree++
+#define META_DECR_IN_DEG(v)             (v)->meta->inDegree--
+#define META_INCR_OUT_DEG(v)            (v)->meta->outDegree++
+#define META_DECR_OUT_DEG(v)            (v)->meta->outDegree--
+
+/* These macro expansions can (and should) be used to control how the order is
+ * incremented and decremented */
+#define GRAPH_ORDER_INCR(g)             (g)->order++
+#define GRAPH_ORDER_DECR(g)             (g)->order--
+
+/* Definitions */
+#define FULL_VERT_THRESHOLD             10000
+#define VERT_ADJACENT_SEGMENT           1000
+#define VERT_ADJ_DENSITY                1
+#define VERT_ADJ_ST_CAPACITY            16
+
+#define MEM_SCALE_FACTOR                2
+
+/* Memory vacuum options */
+#define MEM_VAC_META_PURGE              0x1
+#define MEM_VAC_MEM_COMPRESS            0x2
+#define MEM_VAC_FULL_PURGE              0xFFFF
+
+#define unlikely(x)                     (x)
 
 
-/* Function Prototypes */
+/* Fileutils definitions */
+#define BASE            10
+#define VERTICAL_LINES  56
+
+
 vertexmeta initVertexmeta(void);
 
 
@@ -172,6 +186,7 @@ void addAdjacent(Vertex v, Vertex adj);
 uint32_t countAdjacencyList(Vertex v);
 int reversedBy(Vertex v, Vertex adj);
 int isAdjacent(Vertex v, Vertex adj);
+uint32_t _countindegree(Vertex v);
 uint32_t degree(Vertex v, char f);
 uint32_t getVertexId(Vertex v);
 Vertex* getAdjacent(Vertex v);
@@ -179,15 +194,6 @@ void printAdjacent(Vertex v);
 void reverseArcs(Vertex v);
 void freeVertex(Vertex v);
 int isSink(Vertex v);
-
-
-/* Internal functions */
-uint32_t _countindegree(Vertex v);
-
-/* These macro expansions can (and should) be used to control how the order is
- * incremented and decremented */
-#define GRAPH_ORDER_INCR(g)     g->order++
-#define GRAPH_ORDER_DECR(g)     g->order--
 
 
 /* Graph specific prototypes */
@@ -206,10 +212,7 @@ void freeGraph(Graph g);
 Graph initGraph(void);
 
 
-#define BASE            10
-#define VERTICAL_LINES  56
-
-
+/* Fileutils function prototypes */
 void writeDFS(Vertex** tmp, const char* path, uint32_t n);
 void writeAdjacencyList(Graph g, const char* path);
 uint32_t** parseFile(const char* path, size_t ls);
@@ -217,10 +220,7 @@ uint32_t* readVertices(char* line, uint32_t ls);
 void writeAdjacent(Vertex v, FILE* file);
 uint32_t strtoint(char* s);
 
-/*
-typedef uint32_t** AdjList;
-*/
-
+/* Adjacency List function prototypes */
 void freeAdjacencyList(uint32_t** adjlist);
 uint32_t countAdjList(uint32_t** adj);
 
@@ -230,7 +230,6 @@ uint32_t countAdjList(uint32_t** adj);
  * There are also some definitions that set the initial values for a lot of
  * properties which can be modified. */
 
-/* Function prototypes */
 void __verticesrealloc(Vertex** vsptr, uint32_t* currlen, uint32_t order);
 void __graph_realloc(Vertex** vsptr, uint32_t* capacity, uint32_t order);
 uint32_t __memprovisbs(uint32_t currlen, uint32_t order);
@@ -239,21 +238,5 @@ void __memvacuum(Graph g, uint32_t opts);
 void __reallocAdjacent(Vertex v);
 
 
-/* Definitions */
-#define FULL_VERT_THRESHOLD             10000
-#define VERT_ADJACENT_SEGMENT           1000
-#define VERT_ADJ_DENSITY                1
-#define VERT_ADJ_PERCENT(order)         (VERT_ADJ_DENSITY * order) / 100
-#define VERT_ADJ_ST_CAPACITY            16
-
-#define MEM_SCALE_FACTOR                2
-
-/* Memory vacuum options */
-#define MEM_VAC_META_PURGE              0x1
-#define MEM_VAC_MEM_COMPRESS            0x2
-#define MEM_VAC_FULL_PURGE              0xFFFF
-
-#define unlikely(x)                     (x)
-
-
 #endif
+

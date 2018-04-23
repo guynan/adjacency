@@ -1,6 +1,9 @@
 
 #include "adjacency.h"
 
+#include <stdlib.h>
+#include <string.h>
+
 
 /* Here we construct a general purpose vertex pointer reallocation method. This
  * is designed so that it can be used in many situations where you need to

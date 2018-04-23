@@ -1,6 +1,8 @@
 
 #include "adjacency.h"
 
+#include <stdlib.h>
+
 /* This is a purposely barren initialisation, we want the memory for the more
  * sizeable elements to be allocated on the fly as opposed to allocating memory
  * long before it is needed, if it is even needed at all. */

@@ -3,9 +3,14 @@
 
 #include "adjacency.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <inttypes.h>
+
 
 /* The path to the file and the *proposed* size of the line are passed in
- * as arguments. It then processes the file line by line and reads the 
+ * as arguments. It then processes the file line by line and reads the
  * integers as type `uint32_t` into a two dimensional array. It is
  * functionally a CSV parser but with many more bugs :) */
 uint32_t** parseFile(const char* path, size_t ls)
@@ -31,7 +36,7 @@ uint32_t** parseFile(const char* path, size_t ls)
         /* This is all pretty sloppy, especially with how much memory
          * gets allocated here */
         for(uint32_t i = 0; fgets(line, ls, file); i++){
-               
+
                 /* Note that ls is decisively overkill */
                 adjList[i] = readVertices(line, ls);
 
@@ -51,7 +56,7 @@ uint32_t** parseFile(const char* path, size_t ls)
 
         }
 
-        free(line); 
+        free(line);
 //        fclose(file);
 //        file = NULL;
 
@@ -69,7 +74,7 @@ uint32_t* readVertices(char* line, uint32_t ls)
         for(uint32_t i = 0; (s = strtok(line, ",")); i++){
                 vert[i] = strtoint(s);
 
-                /* This hack is explained in `initVertex`. This is so that 
+                /* This hack is explained in `initVertex`. This is so that
                  * we can iterate over a zero value and not stop our program.
                  * Yes, its a bit edgy casting a negative number into uint */
                 if(vert[i] == 0){
@@ -77,7 +82,7 @@ uint32_t* readVertices(char* line, uint32_t ls)
                 }
 
                 line = NULL;
-                 
+                
         }
 
         return vert;
@@ -109,7 +114,7 @@ void writeAdjacencyList(Graph g, const char* path)
                 exit(1);
         }
 
-        
+       
         for(uint32_t i = 0; i < g->order; i++){
 
                 if(!tmp[i]) continue;
@@ -119,7 +124,7 @@ void writeAdjacencyList(Graph g, const char* path)
         }
 
         fclose(file);
-        
+       
 
 }
 
@@ -183,7 +188,7 @@ void writeDFS(Vertex** tmp, const char* path, uint32_t n)
                 }
 
                 fprintf(file, "\n");
-                 
+                
         }
 
         fclose(file);

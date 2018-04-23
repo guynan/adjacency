@@ -1,6 +1,9 @@
 
 #include "adjacency.h"
 
+#include <stdlib.h>
+#include <string.h>
+
 
 Graph initGraph(void)
 {
