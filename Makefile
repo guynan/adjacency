@@ -114,12 +114,14 @@ so-gen: build-objs
 	$(CC) -dynamiclib -shared -Wl,-soname,$(LIBNAME) -o \
 			$(LIBNAME).$(VERSION) *.o
 	mv *.o $(BUILDDIR)
+	ln -sf $(LIBNAME).$(VERSION) $(LIBNAME)
 	mv $(LIBNAME)* $(BUILDDIR)
 
 so-gen-clang: build-objs
 	$(CC) -dynamiclib -shared -Wl,-install_name,$(LIBNAME) -o \
 			$(LIBNAME).$(VERSION) *.o
 	mv *.o $(BUILDDIR)
+	ln -sf $(LIBNAME).$(VERSION) $(LIBNAME)
 	mv $(LIBNAME)* $(BUILDDIR)
 
 cp-lib:
