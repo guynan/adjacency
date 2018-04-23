@@ -17,12 +17,6 @@ SHELL = /bin/sh
 .SUFFIXES:
 .SUFFIXES: .c .o
 
-# This is where the shared library will get copied to. If you have permission
-# to write into /usr/local/lib, this is the most painless way to go about it.
-# Else, if you have elevated permission but do not wish to be writing the 
-# library as root whilst you are developing, edit /etc/ld.so.conf and add in
-# /home/user/lib/ and as root run ldconfig. Alternatively, export the 
-# LD_LIBRARY_FLAG to include ~/lib/ and then source your bashrc
 LIBPREFIX = $(PREFIX)/lib
 INCLPREFIX = $(PREFIX)/include
 
@@ -30,9 +24,8 @@ LIBINSTALL = $(PREFIX)/lib
 INCLINSTALL = $(PREFIX)/include
 
 # Prefixes for commonly used directories.
-SRCDIR = src/
-OBJDIR = obj/
-TESTDIR = test/
+SRCDIR = src
+TESTDIR = test
 BUILDDIR = build
 
 
@@ -131,7 +124,7 @@ cp-lib:
 
 cp-headers:
 	mkdir -p $(INCLPREFIX)
-	cp $(SRCDIR)*.h $(INCLPREFIX)
+	cp $(SRCDIR)/*.h $(INCLPREFIX)
 
 #
 # Install
@@ -142,7 +135,7 @@ install: create-build-dir so-gen
 	mkdir -p $(INCLINSTALL)/$(NAME)/
 	cp $(BUILDDIR)/$(LIBNAME).$(VERSION) $(LIBINSTALL)
 	ln -sf $(LIBINSTALL)/$(LIBNAME).$(VERSION) $(LIBINSTALL)/$(LIBNAME)
-	cp $(SRCDIR)*.h $(INCLINSTALL)/$(NAME)/
+	cp $(SRCDIR)/*.h $(INCLINSTALL)/$(NAME)/
 
 uninstall:
 	rm -rf $(LIBINSTALL)/$(LIBNAME)*
@@ -163,16 +156,4 @@ tests:
 clean: clean-test
 	rm -rf $(BUILDDIR) *.o
 	$(MAKE) -C test clean
-
-#
-# One time use to set the LIBRARY PATH
-#
-
-set-ld:
-	mkdir -p ~/lib/
-	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:$(LIBPREFIX)" >> \
-			~/.profile
-	echo "export LIBRARY_PATH=\$$LIBRARY_PATH:$(LIBPREFIX)" >> \
-			~/.profile
-	. ~/.profile
 
