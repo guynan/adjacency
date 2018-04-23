@@ -3,6 +3,7 @@
 PROGS= rev init dfs memclean graph-init
 TEST_LD = -L../build/ -ladjacency
 TESTS= test-dfs test-reverse test-init test-memclean test-graph-init
+CFLAGS?= -Wall -Wextra --std=c99
 
 all: $(TESTS)
 	
